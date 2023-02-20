@@ -128,10 +128,11 @@ void Vehicle::updateMessages(const float deltaTime)
 
 void Vehicle::messageReceived(MessagePosition message)
 {
+	//If the vehicle has recieved a seek message, the vehicle has reached it's destination.
 	if (message.name.compare(SEEK_MESSAGE) == 0)
 	{
-		// Tutorial Todo
-		// stop the car (how?)
+		//At the destination, so stop moving
+		m_forceMotion.clearForce();
 	}
 }
 
