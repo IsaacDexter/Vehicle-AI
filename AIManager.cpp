@@ -84,8 +84,8 @@ void AIManager::update(const float fDeltaTime)
     }
 
 	// draw the waypoints nearest to the red car
-	/*
-    Waypoint* wp = m_waypointManager.getNearestWaypoint(m_pRedCar->getPosition());
+	
+    /*Waypoint* wp = m_waypointManager.getNearestWaypoint(m_pRedCar->getPosition());
 	if (wp != nullptr)
 	{
 		vecWaypoints vwps = m_waypointManager.getNeighbouringWaypoints(wp);
@@ -93,8 +93,8 @@ void AIManager::update(const float fDeltaTime)
 		{
 			AddItemToDrawList(wp);
 		}
-	}
-    */
+	}*/
+    
 
     // update and draw the red car (and check for pickup collisions)
 	if (m_pRedCar != nullptr)
@@ -105,6 +105,11 @@ void AIManager::update(const float fDeltaTime)
 	}
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="x">The X coordinate, with 0 being the centre, ~-500 for the left border and ~500 for the right.</param>
+/// <param name="y">The Y coordinate, with 0 being the centre, ~400 for the top border and ~-400 for the bottom.</param>
 void AIManager::mouseUp(int x, int y)
 {
     // HINT you will find this useful later on...
@@ -112,7 +117,8 @@ void AIManager::mouseUp(int x, int y)
 	//if (wp == nullptr)
 	//	return;
 
-    // Tutorial todo here
+    // Applies a directional force to the car from its current position to (x,y). SEEK_MESSAGE is used to determine when the car is at it's destination.
+    m_pRedCar->applyForceToPosition(Vector2D(x, y), SEEK_MESSAGE);
 }
 
 void AIManager::keyUp(WPARAM param)
@@ -128,12 +134,17 @@ void AIManager::keyUp(WPARAM param)
     }
 }
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="param"></param>
 void AIManager::keyDown(WPARAM param)
 {
     // hint 65-90 are a-z
     const WPARAM key_a = 65;
     const WPARAM key_s = 83;
     const WPARAM key_t = 84;
+    const WPARAM key_space = 32;
 
     switch (param)
     {
@@ -163,6 +174,11 @@ void AIManager::keyDown(WPARAM param)
     }
     case key_t:
     {
+        break;
+    }
+    case key_space:
+    {
+        OutputDebugStringA("Spacebar pressed.\n");
         break;
     }
     // etc

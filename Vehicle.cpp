@@ -77,7 +77,10 @@ void Vehicle::applyForceToPosition(const Vector2D& positionTo, string name)
 	// create a message called 'SEEK' which detects when the car has reached a certain point
 	// note: this has been done for you in the updateMessages function. 
 
-	//addMessage(message);
+	MessagePosition message;
+	message.name = name;
+	message.position = positionTo;
+	addMessage(message);
 }
 
 void Vehicle::setWaypointManager(WaypointManager* wpm)

@@ -1,0 +1,3 @@
+﻿  AIManager.cpp
+C:\Users\d015349l\Documents\AIFG\Vehicle.h(17,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
+  AIFramework.vcxproj -> C:\Users\d015349l\Documents\AIFG\x64\Debug\AIFramework.exe
