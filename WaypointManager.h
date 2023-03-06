@@ -29,6 +29,7 @@ public:
 	void destroyWaypoints();
 
 	Waypoint* getWaypoint(const unsigned int index);
+	Waypoint* getRandomWaypoint();
 	size_t getWaypointCount() { return m_waypoints.size(); }
 
 	// get the points which make a building on the map

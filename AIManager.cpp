@@ -179,6 +179,7 @@ void AIManager::keyDown(WPARAM param)
     case key_space:
     {
         OutputDebugStringA("Spacebar pressed.\n");
+        m_pRedCar->applyForceToPosition(m_waypointManager.getRandomWaypoint()->getPosition(), SEEK_MESSAGE);  //Get a random waypoint and set the car to seek to that position.
         break;
     }
     // etc
