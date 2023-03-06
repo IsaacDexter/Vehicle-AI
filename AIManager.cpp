@@ -12,6 +12,7 @@
 AIManager::AIManager()
 {
     m_pRedCar = nullptr;
+    m_pBlueCar = nullptr;
 }
 
 AIManager::~AIManager()
@@ -31,11 +32,13 @@ void AIManager::release()
 
 	delete m_pRedCar;
     m_pRedCar = nullptr;
+    delete m_pBlueCar;
+    m_pBlueCar = nullptr;
 }
 
 HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 {
-    // create the vehicle 
+    // create the red vehicle 
     float xPos = -500;
     float yPos = 300;
 
@@ -45,9 +48,20 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     if (FAILED(hr))
         return hr;
 
+    // create the blue vehicle 
+    xPos = 500;
+    yPos = -300;
+
+    m_pBlueCar = new Vehicle();
+    hr = m_pBlueCar->initMesh(pd3dDevice, carColour::blueCar);
+    m_pBlueCar->setPosition(Vector2D(xPos, yPos));
+    if (FAILED(hr))
+        return hr;
+
     // setup the waypoints
     m_waypointManager.createWaypoints(pd3dDevice);
     m_pRedCar->setWaypointManager(&m_waypointManager);
+    m_pBlueCar->setWaypointManager(&m_waypointManager);
 
     // create a passenger pickup item
     PickupItem* pPickupPassenger = new PickupItem();
@@ -103,6 +117,14 @@ void AIManager::update(const float fDeltaTime)
 		checkForCollisions();
 		AddItemToDrawList(m_pRedCar);
 	}
+
+    // update and draw the blue car (and check for pickup collisions)
+    if (m_pBlueCar != nullptr)
+    {
+        m_pBlueCar->update(fDeltaTime);
+        checkForCollisions();
+        AddItemToDrawList(m_pBlueCar);
+    }
 }
 
 /// <summary>
@@ -179,7 +201,7 @@ void AIManager::keyDown(WPARAM param)
     case key_space:
     {
         OutputDebugStringA("Spacebar pressed.\n");
-        m_pRedCar->applyForceToPosition(m_waypointManager.getRandomWaypoint()->getPosition(), SEEK_MESSAGE);  //Get a random waypoint and set the car to seek to that position.
+        m_pBlueCar->applyForceToPosition(m_waypointManager.getRandomWaypoint()->getPosition(), SEEK_MESSAGE);  //Get a random waypoint and set the car to seek to that position.
         break;
     }
     // etc
