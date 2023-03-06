@@ -6,18 +6,10 @@
 #include "Collidable.h"
 #include "ForceMotion.h"
 #include <string>
+#include "Messenger.h"
+#include "State.h"
 
 #define VEHICLE_MASS 0.00005f
-#define SEEK_MESSAGE "SEEK"
-#define SEEK_RADIUS 10
-
-typedef struct MessagePosition
-{
-	Vector2D position;
-	string name;
-};
-
-
 
 
 enum class carColour
@@ -36,14 +28,18 @@ public:
 	virtual void update(const float deltaTime);
 
 	void setPosition(Vector2D position); // the current position
+
 	void setWaypointManager(WaypointManager* wpm);
+	WaypointManager* getWaypointManager() { return m_waypointManager; };
 	void hasCollided() {}
 
 	ForceMotion* getForceMotion() { return &m_forceMotion; }
 
-	void applyForceToPosition(const Vector2D& positionTo, string name = "");
+	void applyForceToPosition(const Vector2D& positionTo);
 
 	void brake(Vector2D direction);
+
+	void SetState(AIState* state);
 
 protected: // protected methods
 	Vector2D* getPositionAddress() { return &m_currentPosition; }
@@ -63,7 +59,8 @@ protected: // protected properties
 	WaypointManager* m_waypointManager;
 	ForceMotion m_forceMotion;
 
-	list<MessagePosition> m_vecMessages;
+	list<MessagePosition> m_messages;
 
+	AIState* m_state;
 };
 

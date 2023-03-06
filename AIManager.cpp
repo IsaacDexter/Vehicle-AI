@@ -6,6 +6,7 @@
 #include "main.h"
 #include "constants.h"
 #include "ForceHelper.h"
+#include "WanderState.h"
 
 // AI Manager
 
@@ -47,6 +48,7 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     m_pRedCar->setPosition(Vector2D(xPos, yPos));
     if (FAILED(hr))
         return hr;
+    m_pRedCar->SetState(new WanderState());
 
     // create the blue vehicle 
     xPos = 500;
@@ -57,6 +59,7 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     m_pBlueCar->setPosition(Vector2D(xPos, yPos));
     if (FAILED(hr))
         return hr;
+    m_pBlueCar->SetState(new WanderState());
 
     // setup the waypoints
     m_waypointManager.createWaypoints(pd3dDevice);
@@ -140,7 +143,7 @@ void AIManager::mouseUp(int x, int y)
 	//	return;
 
     // Applies a directional force to the car from its current position to (x,y). SEEK_MESSAGE is used to determine when the car is at it's destination.
-    m_pRedCar->applyForceToPosition(Vector2D(x, y), SEEK_MESSAGE);
+    m_pRedCar->applyForceToPosition(Vector2D(x, y));
 }
 
 void AIManager::keyUp(WPARAM param)
@@ -201,7 +204,6 @@ void AIManager::keyDown(WPARAM param)
     case key_space:
     {
         OutputDebugStringA("Spacebar pressed.\n");
-        m_pBlueCar->applyForceToPosition(m_waypointManager.getRandomWaypoint()->getPosition(), SEEK_MESSAGE);  //Get a random waypoint and set the car to seek to that position.
         break;
     }
     // etc

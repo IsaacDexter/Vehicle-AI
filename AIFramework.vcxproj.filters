@@ -21,6 +21,12 @@
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="CollisionHelper.cpp" />
     <ClCompile Include="ForceMotion.cpp" />
+    <ClCompile Include="State.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="WanderState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -55,6 +61,13 @@
     </ClInclude>
     <ClInclude Include="CollisionHelper.h" />
     <ClInclude Include="ForceMotion.h" />
+    <ClInclude Include="State.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="WanderState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Messenger.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\blue.dds">
@@ -103,6 +116,9 @@
     </Filter>
     <Filter Include="Core %28do not edit%29">
       <UniqueIdentifier>{c721d74b-61d3-4ae0-9d17-be739d070a1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{c41b2979-21bc-414a-9ced-869f554c7fa1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

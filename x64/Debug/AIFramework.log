@@ -1,3 +1,19 @@
 ﻿  AIManager.cpp
-C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.h(18,2): warning C4091: 'typedef ': ignored on left of 'MessagePosition' when no variable is declared
+C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\State.h(4,14): warning C4099: 'Message': type name first seen using 'struct' now seen using 'class'
+C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Messenger.h(12): message : see declaration of 'Message'
+  main.cpp
+C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\State.h(4,14): warning C4099: 'Message': type name first seen using 'struct' now seen using 'class'
+C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Messenger.h(12): message : see declaration of 'Message'
+  Vehicle.cpp
+C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\State.h(4,14): warning C4099: 'Message': type name first seen using 'struct' now seen using 'class'
+C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Messenger.h(12): message : see declaration of 'Message'
+C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(87,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(124,42): warning C4100: 'deltaTime': unreferenced formal parameter
+  WanderState.cpp
+C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Messenger.h(13,1): warning C4099: 'Message': type name first seen using 'class' now seen using 'struct'
+C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Messenger.h(12): message : see declaration of 'Message'
+C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\WanderState.cpp(15,52): warning C4100: 'dt': unreferenced formal parameter
+C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\WanderState.cpp(34,48): warning C4100: 'agent': unreferenced formal parameter
+  Generating Code...
+C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\WanderState.cpp(17): warning C4706: assignment within conditional expression
   AIFramework.vcxproj -> C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\x64\Debug\AIFramework.exe
