@@ -118,7 +118,7 @@ void AIManager::mouseUp(int x, int y)
 	//	return;
 
     // Applies a directional force to the car from its current position to (x,y). SEEK_MESSAGE is used to determine when the car is at it's destination.
-    m_pRedCar->applyForceToPosition(Vector2D(x, y), SEEK_MESSAGE);
+    m_pRedCar->forceTemp(Vector2D(x, y), SEEK_MESSAGE);
 }
 
 void AIManager::keyUp(WPARAM param)
