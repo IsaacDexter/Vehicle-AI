@@ -65,28 +65,6 @@ void Vehicle::setPosition(Vector2D position)
 
 void Vehicle::applyForceToPosition(const Vector2D& positionTo, string name)
 {
-
-	// create a vector from the position to, and the current car position
-	Vector2D posFrom = getPosition();
-	Vector2D force = positionTo - posFrom;
-
-	// normalise this (make it length 1)
-	force.Normalize();
-
-	getForceMotion()->applyForce(force);
-
-	// Tutorial todo
-	// create a message called 'SEEK' which detects when the car has reached a certain point
-	// note: this has been done for you in the updateMessages function. 
-
-	MessagePosition message;
-	message.name = name;
-	message.position = positionTo;
-	addMessage(message);
-}
-
-void Vehicle::forceTemp(const Vector2D& positionTo, string name)
-{
 	// create a vector from the position to, and the current car position
 	Vector2D posFrom = getPosition();
 	m_force = positionTo - posFrom;
@@ -107,11 +85,8 @@ void Vehicle::forceTemp(const Vector2D& positionTo, string name)
 	addMessage(message);
 }
 
-/// <summary>
-/// calculates a precentage depending on how far from the destination we are, and applies that to a normalised force that would cancel out the cars current velocity
-/// </summary>
+/// <summary>calculates a precentage depending on how far from the destination we are, and applies that to a normalised force that would cancel out the cars current velocity</summary>
 /// <param name="distance">The distance from the destination</param>
-/// <returns>the brake force</returns>
 void Vehicle::brake(Vector2D toDestination)
 {
 	float distance = toDestination.Length();

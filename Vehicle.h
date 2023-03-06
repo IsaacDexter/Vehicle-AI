@@ -42,7 +42,6 @@ public:
 	ForceMotion* getForceMotion() { return &m_forceMotion; }
 
 	void applyForceToPosition(const Vector2D& positionTo, string name = "");
-	void forceTemp(const Vector2D& positionTo, string name = "");
 
 	void brake(Vector2D direction);
 
