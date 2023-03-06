@@ -5,6 +5,7 @@
 #include "Vector2D.h"
 #include "Collidable.h"
 #include "ForceMotion.h"
+#include <string>
 
 #define VEHICLE_MASS 0.00005f
 #define SEEK_MESSAGE "SEEK"
@@ -43,6 +44,8 @@ public:
 	void applyForceToPosition(const Vector2D& positionTo, string name = "");
 	void forceTemp(const Vector2D& positionTo, string name = "");
 
+	void brake(Vector2D direction);
+
 protected: // protected methods
 	Vector2D* getPositionAddress() { return &m_currentPosition; }
 
@@ -55,6 +58,9 @@ protected: // protected methods
 protected: // protected properties
 	Vector2D m_currentPosition;
 	Vector2D m_lastPosition;
+
+	Vector2D m_force;
+
 	WaypointManager* m_waypointManager;
 	ForceMotion m_forceMotion;
 

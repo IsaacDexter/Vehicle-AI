@@ -1,6 +1,8 @@
 #include "Vehicle.h"
 
 #define VEHICLE_MASS 0.00005f
+#define BRAKE_DISTANCE 100.0f	//The distance required to slow to a stop
+
 #define SEEK_MESSAGE "SEEK"
 #define SEEK_RADIUS 10
 
@@ -87,15 +89,13 @@ void Vehicle::forceTemp(const Vector2D& positionTo, string name)
 {
 	// create a vector from the position to, and the current car position
 	Vector2D posFrom = getPosition();
-	Vector2D force = positionTo - posFrom;
-	Vector2D reverseForce;
+	m_force = positionTo - posFrom;
+	Vector2D force = m_force;
 
 	// normalise this (make it length 1)
 	force.Normalize();
-	reverseForce = force * -1 * 0.5;	//Make a reverse force vector equal to half of the forward force, in the other direction.
 
-	getForceMotion()->accummulateForce(force);
-	getForceMotion()->accummulateForce(reverseForce);
+	getForceMotion()->applyForce(force);
 
 	// Tutorial todo
 	// create a message called 'SEEK' which detects when the car has reached a certain point
@@ -105,6 +105,30 @@ void Vehicle::forceTemp(const Vector2D& positionTo, string name)
 	message.name = name;
 	message.position = positionTo;
 	addMessage(message);
+}
+
+/// <summary>
+/// calculates a precentage depending on how far from the destination we are, and applies that to a normalised force that would cancel out the cars current velocity
+/// </summary>
+/// <param name="distance">The distance from the destination</param>
+/// <returns>the brake force</returns>
+void Vehicle::brake(Vector2D toDestination)
+{
+	float distance = toDestination.Length();
+	if (distance < BRAKE_DISTANCE - SEEK_RADIUS)	//If we're within the destination area...
+	{
+		Vector2D force = m_force;	//Get the current force and apply it
+		force.Normalize();
+		m_forceMotion.applyForce(force);
+
+		force *= -1;	//Get the inverse direction of the force
+		float brakePercentage = max(0.0f, ((BRAKE_DISTANCE - SEEK_RADIUS) - distance) / (BRAKE_DISTANCE - SEEK_RADIUS));	//Calculate a percentage of how much of the brake area has been covered
+		Vector2D brakeForce = force * brakePercentage;	//Apply a brake force according to how close the car is to the location													
+		m_forceMotion.accummulateForce(brakeForce);
+
+		OutputDebugStringA((std::to_string(brakePercentage) + "%\n").c_str());
+		//OutputDebugStringA(("x = " + std::to_string(brakeForce.x) + ", y = " + std::to_string(brakeForce.y) + "\n").c_str());
+	}
 }
 
 void Vehicle::setWaypointManager(WaypointManager* wpm)
@@ -134,6 +158,7 @@ void Vehicle::updateMessages(const float deltaTime)
 		if (msg.name.compare(SEEK_MESSAGE) == 0)
 		{
 			Vector2D differenceVector = getPosition() - msg.position;
+			brake(differenceVector);
 			// WARNING - when testing distances, make sure they are large enough to be detected. Ask a lecturer if you don't understand why. 10 *should* be about right
 			if (differenceVector.Length() < SEEK_RADIUS)
 			{
