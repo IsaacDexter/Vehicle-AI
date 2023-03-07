@@ -2,19 +2,26 @@
 
 #include "DrawableGameObject.h"
 #include "WaypointManager.h"
+#include "Waypoint.h"
 #include "Vector2D.h"
 #include "Collidable.h"
 #include "ForceMotion.h"
 #include <string>
 
 #define VEHICLE_MASS 0.00005f
-#define SEEK_MESSAGE "SEEK"
 #define SEEK_RADIUS 10
+
+enum MessageType
+{
+	NONE_MESSAGE = 0,
+	SEEK_MESSAGE,
+	WANDER_MESSAGE
+};
 
 typedef struct MessagePosition
 {
 	Vector2D position;
-	string name;
+	MessageType type;
 };
 
 
@@ -41,9 +48,16 @@ public:
 
 	ForceMotion* getForceMotion() { return &m_forceMotion; }
 
-	void applyForceToPosition(const Vector2D& positionTo, string name = "");
+	void applyForceToPosition(const Vector2D& positionTo, MessageType type = MessageType::NONE_MESSAGE);
 
 	void brake(Vector2D direction);
+
+#pragma region SteeringBehaviours
+
+	void Wander();
+
+#pragma endregion
+
 
 protected: // protected methods
 	Vector2D* getPositionAddress() { return &m_currentPosition; }

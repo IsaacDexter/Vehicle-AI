@@ -3,7 +3,6 @@
 #define VEHICLE_MASS 0.00005f
 #define BRAKE_DISTANCE 100.0f	//The distance required to slow to a stop
 
-#define SEEK_MESSAGE "SEEK"
 #define SEEK_RADIUS 10
 
 Vehicle::Vehicle() : m_forceMotion(VEHICLE_MASS, getPositionAddress())
@@ -63,7 +62,7 @@ void Vehicle::setPosition(Vector2D position)
 	DrawableGameObject::setPosition(position);
 }
 
-void Vehicle::applyForceToPosition(const Vector2D& positionTo, string name)
+void Vehicle::applyForceToPosition(const Vector2D& positionTo, MessageType type)
 {
 	// create a vector from the position to, and the current car position
 	Vector2D posFrom = getPosition();
@@ -80,7 +79,7 @@ void Vehicle::applyForceToPosition(const Vector2D& positionTo, string name)
 	// note: this has been done for you in the updateMessages function. 
 
 	MessagePosition message;
-	message.name = name;
+	message.type = type;
 	message.position = positionTo;
 	addMessage(message);
 }
@@ -112,6 +111,18 @@ void Vehicle::setWaypointManager(WaypointManager* wpm)
 }
 
 
+#pragma region SteeringBehaviours
+
+void Vehicle::Wander()
+{
+	applyForceToPosition(m_waypointManager->getRandomWaypoint()->getPosition(), WANDER_MESSAGE);  //Get a random waypoint and set the car to seek to that position.
+}
+
+#pragma endregion
+
+
+
+
 // -------------------------------------------------------------------------------
 // a really rubbish messaging system.. there is clearly a better way to do this...
 
@@ -129,20 +140,40 @@ void Vehicle::updateMessages(const float deltaTime)
 	// loop while the iterator is not at the end
 	while (messageIterator != m_vecMessages.end())
 	{
-		MessagePosition msg = *messageIterator;
-		if (msg.name.compare(SEEK_MESSAGE) == 0)
+		MessagePosition message = *messageIterator;
+		switch (message.type)
 		{
-			Vector2D differenceVector = getPosition() - msg.position;
+		case MessageType::SEEK_MESSAGE:
+		{
+			Vector2D differenceVector = getPosition() - message.position;
 			brake(differenceVector);
 			// WARNING - when testing distances, make sure they are large enough to be detected. Ask a lecturer if you don't understand why. 10 *should* be about right
 			if (differenceVector.Length() < SEEK_RADIUS)
 			{
-				messageReceived(msg);
+				messageReceived(message);
 
 				// delete the message. This will also assign(increment) the iterator to be the next item in the list
 				messageIterator = m_vecMessages.erase(messageIterator);
 				continue; // continue the next loop (we don't want to increment below as this will skip an item)
 			}
+			break;
+		}
+		case MessageType::WANDER_MESSAGE:
+		{
+			Vector2D differenceVector = getPosition() - message.position;
+			// WARNING - when testing distances, make sure they are large enough to be detected. Ask a lecturer if you don't understand why. 10 *should* be about right
+			if (differenceVector.Length() < SEEK_RADIUS)
+			{
+				messageReceived(message);
+
+				// delete the message. This will also assign(increment) the iterator to be the next item in the list
+				messageIterator = m_vecMessages.erase(messageIterator);
+				continue; // continue the next loop (we don't want to increment below as this will skip an item)
+			}
+			break;
+		}
+		default:
+			break;
 		}
 		messageIterator++; // incremenet the iterator
 	}
@@ -153,10 +184,22 @@ void Vehicle::updateMessages(const float deltaTime)
 void Vehicle::messageReceived(MessagePosition message)
 {
 	//If the vehicle has recieved a seek message, the vehicle has reached it's destination.
-	if (message.name.compare(SEEK_MESSAGE) == 0)
+	switch (message.type)
+	{
+	case MessageType::SEEK_MESSAGE:
 	{
 		//At the destination, so stop moving
 		m_forceMotion.clearForce();
+		break; 
+	}
+	case MessageType::WANDER_MESSAGE:
+	{
+		//At the destination, so don't stop moving and find a new destination to move to.
+		Wander();
+		break;
+	}
+	default:
+		break;
 	}
 }
 
