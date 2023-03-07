@@ -1,54 +1,89 @@
 #pragma once
+
 #include <functional>
 #include <list>
 
 struct Task
 {
 private:
-	/// <summary>The task to perform.</summary>
-	std::function<void()> task;
+	/// <summary>The task to perform when the task is instanciated. The equivalent of battlecry.</summary>
+	std::function<void()> execute;
+	/// <summary>The task to perform each frame. The equivalent of at start of turn.</summary>
+	std::function<void(float dt)> maintain;
+	/// <summary>The task to perform upon completion. The equivalent of deathrattle.</summary>
+	std::function<void()> complete;
 	/// <summary>The end condition for the task. Set to true for the task to only complete once</summary>
-	std::function<bool()> end;
-	/// <summary>How many times the task has been executed within this instance.</summary>
-	int executions;
+	std::function<bool()> check;
 
 public:
-	Task(std::function<void()> task, std::function<bool()> endCondition)
+	/// <summary>A task is a collection of functions that conclude, check and clear themsleves.</summary>
+	/// <param name="execute">Battlecry:</param>
+	/// <param name="maintain">At the start of each turn:</param>
+	/// <param name="complete">Deathrattle:</param>
+	/// <param name="check">The check to see if the task has completed itself.</param>
+	Task(
+		std::function<void()> execute,
+		std::function<void(float dt)> maintain,
+		std::function<void()> complete,
+		std::function<bool()> check
+	)
 	{
-		this->task = task;
-		this->end = endCondition;
-		this->executions = 0;
+		this->execute = execute;
+		this->maintain = maintain;
+		this->complete = complete;
+		this->check = check;
+
+		Execute();
 	}
+	/// <summary>A task is a collection of functions that conclude, check and clear themsleves.</summary>
 	Task()
 	{
 		Clear();
+
+		Execute();
 	}
+
+	~Task()
+	{
+		Clear();
+	}
+	/// <summary>Called automatically when the task comes into existence. Will perform a check to see if it's complete, and will complete then clear itself if so.</summary>
 	void Execute()
 	{
-		task();
-		executions++;
-		if (end())
+		execute();
+		check();
+	}
+	/// <summary>Should be called each turn by the task manager. Will perform a check to see if it's complete, and will complete then clear itself if so.</summary>
+	void Maintain(float dt)
+	{
+		maintain(dt);
+		check();
+	}
+	/// <summary>Called automatically when the end condition is true, or can be called manually to end the task. Will clear the task, rendering it blank and ready to delete.</summary>
+	void Complete()
+	{
+		complete();
+		Clear();
+	}
+
+	/// <returns>Called automatically through execution and maintainance. Can be called externally, where it will return whether or not the task is complete. When it is, it will call complete, then clear itself.</returns>
+	bool Check()
+	{
+		bool check = this->check();
+		if (check)
 		{
-			Clear();
+			Complete();
 		}
+		return check;
 	}
-	/// <returns>Whether or not the task has ended. The same as calling task.end().</returns>
-	bool IsComplete()
-	{
-		return end();
-	}
-	/// <summary>Forces the task's end condition to be true, ending the task.</summary>
-	void Cease()
-	{
-		this->end = [] { return true; };
-	}
-	/// <summary>
-	/// 
-	/// </summary>
+
+	/// <summary>Sets execute, maintain and complete to blank, empty lambdas. Check will return true, as the task will be complete. Can be used to cancel a task early.</summary>
 	void Clear()
 	{
-		this->task = [] {; };	//Set task to a blank, empty lambda
-		this->end = [] { return true; };	//Set end condition to be always true as there is no task to complete
+		this->execute = [] {; };			//Set task to a blank, empty lambda
+		this->maintain = [](float dt) {; };	//Set task to a blank, empty lambda
+		this->complete = [] {; };			//Set task to a blank, empty lambda
+		this->check = [] { return true; };	//Set end condition to be always true as there are no tasks left to complete
 	}
 };
 
@@ -58,7 +93,7 @@ public:
 	TaskManager();
 	~TaskManager();
 	void AddTask(Task task);
-	void ExecuteTasks(const float deltaTime);
+	void MaintainTasks(const float deltaTime);
 	void Clear();
 	void Break();
 private:

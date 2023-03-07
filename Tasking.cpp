@@ -15,15 +15,15 @@ void TaskManager::AddTask(Task task)
 	m_tasks.push_back(new Task(task));
 }
 
-void TaskManager::ExecuteTasks(const float deltaTime)
+void TaskManager::MaintainTasks(const float deltaTime)
 {
 	std::list<Task*>::iterator it = m_tasks.begin();
 	// loop while the iterator is not at the end
 	while (it != m_tasks.end())
 	{
 		Task* task = (*it);
-		//task.Execute();
-		if (task->IsComplete())
+		task->Maintain(deltaTime);
+		if (task->Check())
 		{
 			// delete the task. This will also assign(increment) the iterator to be the next item in the list
 			it = m_tasks.erase(it);
@@ -35,11 +35,14 @@ void TaskManager::ExecuteTasks(const float deltaTime)
 
 void TaskManager::Clear()
 {
-	for (Task* task : m_tasks)		//For each task...
+	std::list<Task*>::iterator it = m_tasks.begin();
+	// loop while the iterator is not at the end
+	while (it != m_tasks.end())
 	{
-		task->Clear();				//Execute that task
-		m_tasks.remove(task);	//Remove it from the list of tasks
-		delete task;
+		// delete the task. This will also assign(increment) the iterator to be the next item in the list
+		it = m_tasks.erase(it);
+		continue; // continue the next loop (we don't want to increment below as this will skip an item)
+		it++; // increment the iterator
 	}
 }
 

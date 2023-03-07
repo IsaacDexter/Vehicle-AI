@@ -1,4 +1,6 @@
 #include "Vehicle.h"
+#include "Tasking.h"
+#include <functional>
 
 #define VEHICLE_MASS 0.00005f
 #define BRAKE_DISTANCE 100.0f	//The distance required to slow to a stop
@@ -74,8 +76,17 @@ void Vehicle::applyForceToPosition(const Vector2D& positionTo)
 	// Tutorial todo
 	// create a message called 'SEEK' which detects when the car has reached a certain point
 	// note: this has been done for you in the updateMessages function. 
-	Task task = Task([this] { this->Wander(); }, [this, positionTo] { return this->isArrived(positionTo); });
-	m_pTaskManager->AddTask(task);
+	
+
+	std::function<void()> execute = [this] { ; };
+	std::function<void(float dt)> maintain = [this](float dt) { ; };
+	std::function<void()> complete = [this] { this->Wander(); };
+	std::function<bool()> check = [this, positionTo] { return this->isArrived(positionTo); };
+
+
+
+	//Task task = Task([this] { this->Wander(); }, [this](float dt) { ; }, [this] { this->Wander(); }, [this, positionTo] { return this->isArrived(positionTo); });
+	//m_pTaskManager->AddTask(task);
 }
 
 /// <summary>calculates a precentage depending on how far from the destination we are, and applies that to a normalised force that would cancel out the cars current velocity</summary>

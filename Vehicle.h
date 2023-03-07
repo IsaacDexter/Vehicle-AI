@@ -7,11 +7,12 @@
 #include "Collidable.h"
 #include "ForceMotion.h"
 #include <string>
-#include "Tasking.h"
 
 
 #define VEHICLE_MASS 0.00005f
 #define SEEK_RADIUS 10
+
+class TaskManager;
 
 enum class carColour
 {
