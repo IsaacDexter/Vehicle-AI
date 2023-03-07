@@ -78,11 +78,12 @@ void Vehicle::applyForceToPosition(const Vector2D& positionTo)
 	// note: this has been done for you in the updateMessages function. 
 	
 
-	std::function<void()> execute = [this] { ; };
-	std::function<void(float dt)> maintain = [this](float dt) { ; };
-	std::function<void()> complete = [this] { this->Wander(); };
-	std::function<bool()> check = [this, positionTo] { return this->isArrived(positionTo); };
-
+	executeFunc execute = [this] { ; };
+	maintainFunc maintain = [this](float dt) { ; };
+	completeFunc complete = [this] { this->Wander(); };
+	checkFunc check = [this, positionTo] { return this->isArrived(positionTo); };
+	
+	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
 
 
 	//Task task = Task([this] { this->Wander(); }, [this](float dt) { ; }, [this] { this->Wander(); }, [this, positionTo] { return this->isArrived(positionTo); });

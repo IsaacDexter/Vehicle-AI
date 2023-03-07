@@ -10,9 +10,9 @@ TaskManager::~TaskManager()
 	Clear();
 }
 
-void TaskManager::AddTask(Task task)
+void TaskManager::AddTask(Task* task)
 {
-	m_tasks.push_back(new Task(task));
+	m_tasks.push_back(task);
 }
 
 void TaskManager::MaintainTasks(const float deltaTime)
@@ -44,9 +44,4 @@ void TaskManager::Clear()
 		continue; // continue the next loop (we don't want to increment below as this will skip an item)
 		it++; // increment the iterator
 	}
-}
-
-void TaskManager::Break()
-{
-	bool broken = true;
 }

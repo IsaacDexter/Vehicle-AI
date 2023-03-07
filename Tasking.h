@@ -3,17 +3,22 @@
 #include <functional>
 #include <list>
 
+typedef std::function<void()> executeFunc;
+typedef std::function<void(float dt)> maintainFunc;
+typedef std::function<void()> completeFunc;
+typedef std::function<bool()> checkFunc;
+
 struct Task
 {
 private:
 	/// <summary>The task to perform when the task is instanciated. The equivalent of battlecry.</summary>
-	std::function<void()> execute;
+	executeFunc execute;
 	/// <summary>The task to perform each frame. The equivalent of at start of turn.</summary>
-	std::function<void(float dt)> maintain;
+	maintainFunc maintain;
 	/// <summary>The task to perform upon completion. The equivalent of deathrattle.</summary>
-	std::function<void()> complete;
+	completeFunc complete;
 	/// <summary>The end condition for the task. Set to true for the task to only complete once</summary>
-	std::function<bool()> check;
+	checkFunc check;
 
 public:
 	/// <summary>A task is a collection of functions that conclude, check and clear themsleves.</summary>
@@ -22,10 +27,10 @@ public:
 	/// <param name="complete">Deathrattle:</param>
 	/// <param name="check">The check to see if the task has completed itself.</param>
 	Task(
-		std::function<void()> execute,
-		std::function<void(float dt)> maintain,
-		std::function<void()> complete,
-		std::function<bool()> check
+		executeFunc execute, 
+		maintainFunc maintain, 
+		completeFunc complete, 
+		checkFunc check
 	)
 	{
 		this->execute = execute;
@@ -92,10 +97,9 @@ class TaskManager
 public:
 	TaskManager();
 	~TaskManager();
-	void AddTask(Task task);
+	void AddTask(Task* task);
 	void MaintainTasks(const float deltaTime);
 	void Clear();
-	void Break();
 private:
 	/// <summary>A queue containing paramaterless lambdas that contain the function calls with parameters in them.
 	/// <para>Essentially allows the class to queue tasks to be called at another time, in this case in the update function.</para>

@@ -212,7 +212,7 @@ void AIManager::keyDown(WPARAM param)
     }
     case key_space:
     {
-        m_pTaskManager->Break();
+        m_pTaskManager->Clear();
         break;
     }
     // etc
