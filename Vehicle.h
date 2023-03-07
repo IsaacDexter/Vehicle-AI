@@ -7,6 +7,8 @@
 #include "Collidable.h"
 #include "ForceMotion.h"
 #include <string>
+#include <queue>
+#include <functional>
 
 #define VEHICLE_MASS 0.00005f
 #define SEEK_RADIUS 10
@@ -15,13 +17,24 @@ enum MessageType
 {
 	NONE_MESSAGE = 0,
 	SEEK_MESSAGE,
+	ARRIVE_MESSAGE,
 	WANDER_MESSAGE
 };
 
-typedef struct MessagePosition
+typedef struct Message
 {
-	Vector2D position;
 	MessageType type;
+	Vector2D position;
+	Message(MessageType type, Vector2D position)
+	{
+		this->position = position;
+		this->type = type;
+	}
+	Message()
+	{
+		this->type = MessageType::NONE_MESSAGE;
+		this->position = Vector2D();
+	}
 };
 
 
@@ -43,6 +56,8 @@ public:
 	virtual void update(const float deltaTime);
 
 	void setPosition(Vector2D position); // the current position
+	Vector2D* getPositionAddress() { return &m_currentPosition; }
+
 	void setWaypointManager(WaypointManager* wpm);
 	void hasCollided() {}
 
@@ -56,16 +71,24 @@ public:
 
 	void Wander();
 
+	/// <summary>The Seek steering behavior returns a force that directs an agent toward a target game object's position.
+	///<para>We calculate the vector to the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
+	/// <param name="soughtObject">The game object whose position will be continually sought.</param>
+	void Seek(DrawableGameObject* soughtObject);
+
+	/// <summary>The Seek steering behavior returns a force that directs an agent toward a target position.
+	///<para>We calculate the vector to the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
+	/// <param name="position">The position to be sought.</param>
+	void Seek(Vector2D position);
+
 #pragma endregion
 
 
 protected: // protected methods
-	Vector2D* getPositionAddress() { return &m_currentPosition; }
 
-	
 	void updateMessages(const float deltaTime);
-	void messageReceived(MessagePosition message);
-	void addMessage(MessagePosition message);
+	void messageReceived(Message message);
+	void addMessage(Message message);
 
 
 protected: // protected properties
@@ -77,7 +100,14 @@ protected: // protected properties
 	WaypointManager* m_waypointManager;
 	ForceMotion m_forceMotion;
 
-	list<MessagePosition> m_vecMessages;
+	list<Message> m_messages;
+	/// <summary>A queue containing paramaterless lambdas that contain the function calls with parameters in them.
+	/// <para>Essentially allows the class to queue tasks to be called at another time, in this case in the update function.</para>
+	/// <para>Definitely an unconventional way of doing this, but this is the most versatile and reusable way I could think of:</para>
+	/// <para>I want these classes to see more life as more than just cars. It also saves having to do a check each frame to see if we are seeking something.</para></summary>
+	std::deque<std::function<void()>> m_tasks;
+	//I want to thank fredoverflow's answer( https://stackoverflow.com/a/22109991 ) for helping me understand the concept of a queue of function pointers.
+	//I want to thank Johannes Schaub - litb's answer ( https://stackoverflow.com/a/2402607 ) for helping me undestand function pointers to member functions.
 
 };
 

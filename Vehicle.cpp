@@ -10,6 +10,7 @@ Vehicle::Vehicle() : m_forceMotion(VEHICLE_MASS, getPositionAddress())
 	m_currentPosition = Vector2D(0,0);
 	m_lastPosition = Vector2D(0, 0);
 	m_waypointManager = nullptr;
+	m_tasks = std::deque<std::function<void()>>();
 
 }
 
@@ -38,6 +39,12 @@ HRESULT	Vehicle::initMesh(ID3D11Device* pd3dDevice, carColour colour)
 void Vehicle::update(const float deltaTime)
 {
 	updateMessages(deltaTime);
+
+	if (!m_tasks.empty())
+	{
+		m_tasks.front()();
+		m_tasks.pop_front();
+	}
 
 	m_forceMotion.update(deltaTime);
 
@@ -78,7 +85,7 @@ void Vehicle::applyForceToPosition(const Vector2D& positionTo, MessageType type)
 	// create a message called 'SEEK' which detects when the car has reached a certain point
 	// note: this has been done for you in the updateMessages function. 
 
-	MessagePosition message;
+	Message message;
 	message.type = type;
 	message.position = positionTo;
 	addMessage(message);
@@ -118,6 +125,27 @@ void Vehicle::Wander()
 	applyForceToPosition(m_waypointManager->getRandomWaypoint()->getPosition(), WANDER_MESSAGE);  //Get a random waypoint and set the car to seek to that position.
 }
 
+void Vehicle::Seek(DrawableGameObject* soughtObject)
+{
+	Seek(soughtObject->getPosition());
+}
+
+void Vehicle::Seek(Vector2D position)
+{
+	//Vector2D desiredVelocity = position - m_currentPosition;	//Calculates a vector towards the target position
+	//desiredVelocity.Normalize();								//Calculates the unit equivalent
+	//															//Scales it to the maximum speed of the agent
+	//Vector2D currentVelocity = m_forceMotion.getVelocity();		//Subtracts current velocity... 
+	//Vector2D seekForce = desiredVelocity - currentVelocity;		//...from desired velocity to get the seek force, which in turn allows the agent to turn
+	//m_forceMotion.accummulateForce(seekForce);					//Apply said force
+
+	//addMessage(Message(MessageType::SEEK_MESSAGE, position));
+
+	applyForceToPosition(position, SEEK_MESSAGE);
+}
+
+
+
 #pragma endregion
 
 
@@ -127,23 +155,23 @@ void Vehicle::Wander()
 // a really rubbish messaging system.. there is clearly a better way to do this...
 
 
-void Vehicle::addMessage(MessagePosition message)
+void Vehicle::addMessage(Message message)
 {
-	m_vecMessages.push_back(message);
+	m_messages.push_back(message);
 }
 
 void Vehicle::updateMessages(const float deltaTime)
 {
 	// create an iterator to iterate the message list
-	list<MessagePosition>::iterator messageIterator = m_vecMessages.begin();
+	list<Message>::iterator messageIterator = m_messages.begin();
 
 	// loop while the iterator is not at the end
-	while (messageIterator != m_vecMessages.end())
+	while (messageIterator != m_messages.end())
 	{
-		MessagePosition message = *messageIterator;
+		Message message = *messageIterator;
 		switch (message.type)
 		{
-		case MessageType::SEEK_MESSAGE:
+		case MessageType::ARRIVE_MESSAGE:
 		{
 			Vector2D differenceVector = getPosition() - message.position;
 			brake(differenceVector);
@@ -153,7 +181,7 @@ void Vehicle::updateMessages(const float deltaTime)
 				messageReceived(message);
 
 				// delete the message. This will also assign(increment) the iterator to be the next item in the list
-				messageIterator = m_vecMessages.erase(messageIterator);
+				messageIterator = m_messages.erase(messageIterator);
 				continue; // continue the next loop (we don't want to increment below as this will skip an item)
 			}
 			break;
@@ -164,12 +192,19 @@ void Vehicle::updateMessages(const float deltaTime)
 			// WARNING - when testing distances, make sure they are large enough to be detected. Ask a lecturer if you don't understand why. 10 *should* be about right
 			if (differenceVector.Length() < SEEK_RADIUS)
 			{
-				messageReceived(message);
-
-				// delete the message. This will also assign(increment) the iterator to be the next item in the list
-				messageIterator = m_vecMessages.erase(messageIterator);
-				continue; // continue the next loop (we don't want to increment below as this will skip an item)
+				
 			}
+			break;
+		}
+		case MessageType::SEEK_MESSAGE:
+		{
+			//Receiving a seek message could mean we're heading towards a position, or we could be seeking an specific moving game object
+			//Either way, we need to seek again to update our velocity to provide a proper turn, as set out in the lecture.
+			messageReceived(message);
+
+			// delete the message. This will also assign(increment) the iterator to be the next item in the list
+			messageIterator = m_messages.erase(messageIterator);
+			continue; // continue the next loop (we don't want to increment below as this will skip an item)
 			break;
 		}
 		default:
@@ -181,12 +216,12 @@ void Vehicle::updateMessages(const float deltaTime)
 	
 }
 
-void Vehicle::messageReceived(MessagePosition message)
+void Vehicle::messageReceived(Message message)
 {
 	//If the vehicle has recieved a seek message, the vehicle has reached it's destination.
 	switch (message.type)
 	{
-	case MessageType::SEEK_MESSAGE:
+	case MessageType::ARRIVE_MESSAGE:
 	{
 		//At the destination, so stop moving
 		m_forceMotion.clearForce();
@@ -196,6 +231,20 @@ void Vehicle::messageReceived(MessagePosition message)
 	{
 		//At the destination, so don't stop moving and find a new destination to move to.
 		Wander();
+		break;
+	}
+	case MessageType::SEEK_MESSAGE:
+	{
+		void (Vehicle:: * task)(Vector2D);	//Declare function pointer to a vehicle method that takes a Vector2D as a parameter. 
+											//Note the Vehicle:: to denote that this is a member function pointer.
+		task = &Vehicle::Seek;				// use the :: syntax
+
+		Vehicle* v = this;
+		//(this->*task)(message.position);	//Call the seek behaviour with the correct syntax
+
+		//std::function<void()> lambda = [](const std::string& s) { return std::stoi(s); };
+		m_tasks.push_back([this] { this->Seek(Vector2D(100, 0)); OutputDebugStringA("Popped and called task!");  });	//Call the seek behaviour with the correct syntax
+
 		break;
 	}
 	default:

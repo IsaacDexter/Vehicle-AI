@@ -73,6 +73,9 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     // (needs to be done after waypoint setup)
     setRandomPickupPosition(pPickupPassenger);
 
+    //Set the blue car to start wandering aimlessly
+    m_pBlueCar->Wander();
+
     return hr;
 }
 
@@ -140,7 +143,8 @@ void AIManager::mouseUp(int x, int y)
 	//	return;
 
     // Applies a directional force to the car from its current position to (x,y). SEEK_MESSAGE is used to determine when the car is at it's destination.
-    m_pRedCar->applyForceToPosition(Vector2D(x, y), SEEK_MESSAGE);
+    //m_pRedCar->applyForceToPosition(Vector2D(x, y), ARRIVE_MESSAGE);
+    m_pRedCar->Seek(Vector2D(x, y));
 }
 
 void AIManager::keyUp(WPARAM param)
@@ -201,7 +205,6 @@ void AIManager::keyDown(WPARAM param)
     case key_space:
     {
         OutputDebugStringA("Spacebar pressed.\n");
-        m_pBlueCar->Wander();
         break;
     }
     // etc
