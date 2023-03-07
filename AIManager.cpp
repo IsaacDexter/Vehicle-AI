@@ -6,6 +6,7 @@
 #include "main.h"
 #include "constants.h"
 #include "ForceHelper.h"
+#include "Tasking.h"
 
 // AI Manager
 
@@ -13,6 +14,7 @@ AIManager::AIManager()
 {
     m_pRedCar = nullptr;
     m_pBlueCar = nullptr;
+    m_pTaskManager = nullptr;
 }
 
 AIManager::~AIManager()
@@ -62,6 +64,11 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     m_waypointManager.createWaypoints(pd3dDevice);
     m_pRedCar->setWaypointManager(&m_waypointManager);
     m_pBlueCar->setWaypointManager(&m_waypointManager);
+
+    //Set up the task manager
+    m_pTaskManager = new TaskManager();
+    m_pRedCar->setTaskManager(m_pTaskManager);
+    m_pBlueCar->setTaskManager(m_pTaskManager);
 
     // create a passenger pickup item
     PickupItem* pPickupPassenger = new PickupItem();

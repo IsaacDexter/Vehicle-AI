@@ -7,6 +7,7 @@ using namespace std;
 class Vehicle;
 class PickupItem;
 typedef vector<PickupItem*> vecPickups;
+class TaskManager;
 
 class AIManager
 {
@@ -29,6 +30,7 @@ private:
 	Vehicle*				m_pRedCar = nullptr;
 	Vehicle*				m_pBlueCar = nullptr;
 	WaypointManager			m_waypointManager;
+	TaskManager*			m_pTaskManager = nullptr;
 
 };
 

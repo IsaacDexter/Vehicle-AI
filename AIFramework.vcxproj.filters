@@ -21,6 +21,7 @@
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="CollisionHelper.cpp" />
     <ClCompile Include="ForceMotion.cpp" />
+    <ClCompile Include="Tasking.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -55,6 +56,7 @@
     </ClInclude>
     <ClInclude Include="CollisionHelper.h" />
     <ClInclude Include="ForceMotion.h" />
+    <ClInclude Include="Tasking.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\blue.dds">

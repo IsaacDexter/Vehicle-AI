@@ -370,6 +370,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="PickupItem.cpp" />
+    <ClCompile Include="Tasking.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Waypoint.cpp" />
     <ClCompile Include="WaypointManager.cpp" />
@@ -389,6 +390,7 @@
     <ClInclude Include="PickupItem.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="structures.h" />
+    <ClInclude Include="Tasking.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Vehicle.h" />
     <ClInclude Include="Waypoint.h" />
