@@ -60,6 +60,7 @@ public:
 	void AddTask(Task task);
 	void ExecuteTasks(const float deltaTime);
 	void Clear();
+	void Break();
 private:
 	/// <summary>A queue containing paramaterless lambdas that contain the function calls with parameters in them.
 	/// <para>Essentially allows the class to queue tasks to be called at another time, in this case in the update function.</para>

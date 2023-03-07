@@ -19,10 +19,10 @@ void TaskManager::ExecuteTasks(const float deltaTime)
 {
 	for (Task* task : m_tasks)		//For each task...
 	{
-		task->Execute();				//Execute that task
+//		task->Execute();				//Execute that task
 		if (task->IsComplete())		//If that task is finished,
 		{
-			m_tasks.remove(task);	//Remove it from the list of tasks
+			//m_tasks.remove(task);	//Remove it from the list of tasks
 		}
 	}
 }
@@ -35,4 +35,9 @@ void TaskManager::Clear()
 		m_tasks.remove(task);	//Remove it from the list of tasks
 		delete task;
 	}
+}
+
+void TaskManager::Break()
+{
+	bool broken = true;
 }

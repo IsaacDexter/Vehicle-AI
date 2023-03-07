@@ -1,4 +1,4 @@
-﻿  AIManager.cpp
-  main.cpp
-  Generating Code...
+﻿  Tasking.cpp
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.cpp(18,44): warning C4100: 'deltaTime': unreferenced formal parameter
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.cpp(42,7): warning C4189: 'broken': local variable is initialized but not referenced
   AIFramework.vcxproj -> C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\x64\Debug\AIFramework.exe

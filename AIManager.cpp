@@ -119,6 +119,7 @@ void AIManager::update(const float fDeltaTime)
 		}
 	}*/
     
+    m_pTaskManager->ExecuteTasks(fDeltaTime);
 
     // update and draw the red car (and check for pickup collisions)
 	if (m_pRedCar != nullptr)
@@ -211,7 +212,7 @@ void AIManager::keyDown(WPARAM param)
     }
     case key_space:
     {
-        OutputDebugStringA("Spacebar pressed.\n");
+        m_pTaskManager->Break();
         break;
     }
     // etc

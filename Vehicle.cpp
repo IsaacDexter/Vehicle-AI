@@ -115,7 +115,12 @@ void Vehicle::Wander()
 bool Vehicle::isArrived(Vector2D destination)
 {
 	Vector2D differenceVector = getPosition() - destination; 
-	return differenceVector.Length() < SEEK_RADIUS;
+	bool arrived = differenceVector.Length() < SEEK_RADIUS;
+	if (arrived)
+	{
+		m_forceMotion.clearForce();
+	}
+	return arrived;
 }
 
 void Vehicle::Seek(DrawableGameObject* soughtObject)
