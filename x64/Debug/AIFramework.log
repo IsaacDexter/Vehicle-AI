@@ -1,17 +1,2 @@
-﻿  AIManager.cpp
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(77,1): warning C4458: declaration of 'check' hides class member
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(21,12): message : see declaration of 'Task::check'
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(89,29): warning C4100: 'dt': unreferenced formal parameter
-  Tasking.cpp
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(77,1): warning C4458: declaration of 'check' hides class member
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(21,12): message : see declaration of 'Task::check'
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(89,29): warning C4100: 'dt': unreferenced formal parameter
-  Vehicle.cpp
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(77,1): warning C4458: declaration of 'check' hides class member
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(21,12): message : see declaration of 'Task::check'
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(89,29): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(82,39): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(97,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.cpp(45): warning C4702: unreachable code
+﻿  LINK : C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\x64\Debug\AIFramework.exe not found or not built by the last incremental link; performing full link
   AIFramework.vcxproj -> C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\x64\Debug\AIFramework.exe
