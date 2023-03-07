@@ -105,7 +105,7 @@ protected: // protected properties
 	/// <para>Essentially allows the class to queue tasks to be called at another time, in this case in the update function.</para>
 	/// <para>Definitely an unconventional way of doing this, but this is the most versatile and reusable way I could think of:</para>
 	/// <para>I want these classes to see more life as more than just cars. It also saves having to do a check each frame to see if we are seeking something.</para></summary>
-	std::deque<std::function<void()>> m_tasks;
+	std::queue<std::function<void()>> m_tasks;
 	//I want to thank fredoverflow's answer( https://stackoverflow.com/a/22109991 ) for helping me understand the concept of a queue of function pointers.
 	//I want to thank Johannes Schaub - litb's answer ( https://stackoverflow.com/a/2402607 ) for helping me undestand function pointers to member functions.
 

@@ -10,7 +10,7 @@ Vehicle::Vehicle() : m_forceMotion(VEHICLE_MASS, getPositionAddress())
 	m_currentPosition = Vector2D(0,0);
 	m_lastPosition = Vector2D(0, 0);
 	m_waypointManager = nullptr;
-	m_tasks = std::deque<std::function<void()>>();
+	m_tasks = std::queue<std::function<void()>>();
 
 }
 
@@ -43,7 +43,7 @@ void Vehicle::update(const float deltaTime)
 	if (!m_tasks.empty())
 	{
 		m_tasks.front()();
-		m_tasks.pop_front();
+		m_tasks.pop();
 	}
 
 	m_forceMotion.update(deltaTime);
@@ -192,7 +192,14 @@ void Vehicle::updateMessages(const float deltaTime)
 			// WARNING - when testing distances, make sure they are large enough to be detected. Ask a lecturer if you don't understand why. 10 *should* be about right
 			if (differenceVector.Length() < SEEK_RADIUS)
 			{
-				
+				//Receiving a seek message could mean we're heading towards a position, or we could be seeking an specific moving game object
+			//Either way, we need to seek again to update our velocity to provide a proper turn, as set out in the lecture.
+				messageReceived(message);
+
+				// delete the message. This will also assign(increment) the iterator to be the next item in the list
+				messageIterator = m_messages.erase(messageIterator);
+				continue; // continue the next loop (we don't want to increment below as this will skip an item)
+				break;
 			}
 			break;
 		}
@@ -216,6 +223,8 @@ void Vehicle::updateMessages(const float deltaTime)
 	
 }
 
+
+
 void Vehicle::messageReceived(Message message)
 {
 	//If the vehicle has recieved a seek message, the vehicle has reached it's destination.
@@ -230,20 +239,19 @@ void Vehicle::messageReceived(Message message)
 	case MessageType::WANDER_MESSAGE:
 	{
 		//At the destination, so don't stop moving and find a new destination to move to.
-		Wander();
+		m_tasks.push([this] { this->Wander(); });	//Add the wander stack to the todo list. This will cause it to start wandering again next update.
 		break;
 	}
 	case MessageType::SEEK_MESSAGE:
 	{
-		void (Vehicle:: * task)(Vector2D);	//Declare function pointer to a vehicle method that takes a Vector2D as a parameter. 
-											//Note the Vehicle:: to denote that this is a member function pointer.
-		task = &Vehicle::Seek;				// use the :: syntax
+		//void (Vehicle:: * task)(Vector2D);	//Declare function pointer to a vehicle method that takes a Vector2D as a parameter. 
+		//									//Note the Vehicle:: to denote that this is a member function pointer.
+		//task = &Vehicle::Seek;				// use the :: syntax
 
-		Vehicle* v = this;
 		//(this->*task)(message.position);	//Call the seek behaviour with the correct syntax
 
 		//std::function<void()> lambda = [](const std::string& s) { return std::stoi(s); };
-		m_tasks.push_back([this] { this->Seek(Vector2D(100, 0)); OutputDebugStringA("Popped and called task!");  });	//Call the seek behaviour with the correct syntax
+		m_tasks.push([this, message] { this->Seek(message.position); });	//Call the seek behaviour with the correct syntax.
 
 		break;
 	}
