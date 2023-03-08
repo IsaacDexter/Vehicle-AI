@@ -76,7 +76,7 @@ public:
     // method to update object's velocity
     void updateVelocity(double dt) {
         Vector2D acceleration = m_force / m_mass;
-        m_velocity += acceleration * dt;
+        m_velocity = acceleration * dt;
     }
 
     // method to update object's position

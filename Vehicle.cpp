@@ -75,7 +75,7 @@ void Vehicle::applyForceToPosition(const Vector2D& destination)
 
 	Vector2D force = desiredForce - currentForce;
 
-	getForceMotion()->accumulateForce(desiredForce);
+	getForceMotion()->accumulateForce(force);
 }
 
 void Vehicle::setWaypointManager(WaypointManager* wpm)
