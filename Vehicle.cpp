@@ -173,7 +173,7 @@ void Vehicle::Wander()
 	completeFunc complete = [this] { this->Wander(); };									//Once we're there, wander again, queueing up a new task at a new position
 	checkFunc check = [this, destination] { return this->isPassed(destination); };		//Each frame this task is active, check if we've passed the position
 
-	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
+ 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
 }
 
 void Vehicle::Seek(DrawableGameObject* soughtObject)
@@ -181,12 +181,32 @@ void Vehicle::Seek(DrawableGameObject* soughtObject)
 	executeFunc execute = [this] { ; };
 	maintainFunc maintain = [this, soughtObject](float dt) { Vector2D destination = soughtObject->getPosition(); applyForceToPosition(destination); };	//each frame, get it's current position once more and seek to it.
 	completeFunc complete = [this] {; };													
-	checkFunc check = [this, soughtObject] { this->isArrived(soughtObject->getPosition()); return false; };			//Each frame this task is active, check if we've passed the position
+	checkFunc check = [this, soughtObject] { this->isPassed(soughtObject->getPosition()); return false; };			//Each frame this task is active, check if we've passed the position
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
 }
 
 void Vehicle::Seek(Vector2D destination)
+{
+	executeFunc execute = [this] {; };	//Head towards that position
+	maintainFunc maintain = [this, destination](float dt) { applyForceToPosition(destination); };
+	completeFunc complete = [this] { ; };												//Once we're there, wander again, queueing up a new task at a new position
+	checkFunc check = [this, destination] { return this->isPassed(destination); };		//Each frame this task is active, check if we've passed the position
+
+	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
+}
+
+void Vehicle::Arrive(DrawableGameObject* soughtObject)
+{
+	executeFunc execute = [this] { ; };
+	maintainFunc maintain = [this, soughtObject](float dt) { Vector2D destination = soughtObject->getPosition(); applyForceToPosition(destination); };	//each frame, get it's current position once more and seek to it.
+	completeFunc complete = [this] {; };													
+	checkFunc check = [this, soughtObject] { return this->isArrived(soughtObject->getPosition()); };			//Each frame this task is active, check if we've passed the position
+
+	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
+}
+
+void Vehicle::Arrive(Vector2D destination)
 {
 	executeFunc execute = [this] {; };	//Head towards that position
 	maintainFunc maintain = [this, destination](float dt) { applyForceToPosition(destination); };
@@ -201,7 +221,7 @@ void Vehicle::Flee(DrawableGameObject* soughtObject)
 	executeFunc execute = [this] { ; };
 	maintainFunc maintain = [this, soughtObject](float dt) { Vector2D destination = soughtObject->getPosition(); applyForceFromPosition(destination); };	//each frame, get it's current position once more and seek to it.
 	completeFunc complete = [this] {; };													
-	checkFunc check = [this, soughtObject] { return !this->isPassed(soughtObject->getPosition(), 100000.0f); };	//Each frame this task is active, check if we're not within range
+	checkFunc check = [this, soughtObject] { return !this->isPassed(soughtObject->getPosition(), 500000.0f); };	//Each frame this task is active, check if we're not within range
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
 }
@@ -211,7 +231,27 @@ void Vehicle::Flee(Vector2D destination)
 	executeFunc execute = [this] {; };	//Head towards that position
 	maintainFunc maintain = [this, destination](float dt) { applyForceFromPosition(destination); };
 	completeFunc complete = [this] { ; };												//Once we're there, wander again, queueing up a new task at a new position
-	checkFunc check = [this, destination] { return !this->isPassed(destination, 100000.0f); };	//Each frame this task is active, check if we're not within range
+	checkFunc check = [this, destination] { return !this->isPassed(destination, 500000.0f); };	//Each frame this task is active, check if we're not within range
+
+	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
+}
+
+void Vehicle::Evade(Vehicle* soughtObject)
+{
+	executeFunc execute = [this] { ; };
+	maintainFunc maintain = [this, soughtObject](float dt) { Vector2D predictedPosition = soughtObject->getPosition() + soughtObject->getVelocity(); applyForceFromPosition(predictedPosition); };	//each frame, get it's current position once more and seek to it.
+	completeFunc complete = [this] {; };													
+	checkFunc check = [this, soughtObject] { return !this->isPassed(soughtObject->getPosition(), 500000.0f); };	//Each frame this task is active, check if we're not within range
+
+	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
+}
+
+void Vehicle::Intercept(Vehicle* soughtObject)
+{
+	executeFunc execute = [this] { ; };
+	maintainFunc maintain = [this, soughtObject](float dt) { Vector2D predictedPosition = soughtObject->getPosition() + soughtObject->getVelocity(); applyForceToPosition(predictedPosition); };	//each frame, get it's current position once more and seek to it.
+	completeFunc complete = [this] {; };													
+	checkFunc check = [this, soughtObject] { this->isArrived(soughtObject->getPosition()); return false; };	//Each frame this task is active, check if we're not within range
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
 }

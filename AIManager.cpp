@@ -49,6 +49,7 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     m_pRedCar->setPosition(Vector2D(xPos, yPos));
     if (FAILED(hr))
         return hr;
+    m_pCurrentCar = m_pRedCar;
 
     // create the blue vehicle 
     xPos = 500;
@@ -59,6 +60,7 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     m_pBlueCar->setPosition(Vector2D(xPos, yPos));
     if (FAILED(hr))
         return hr;
+    m_pOtherCar = m_pBlueCar;
 
     // setup the waypoints
     m_waypointManager.createWaypoints(pd3dDevice);
@@ -80,8 +82,7 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     // (needs to be done after waypoint setup)
     setRandomPickupPosition(pPickupPassenger);
 
-    //Set the blue car to start wandering aimlessly
-    m_pBlueCar->Wander();
+    //m_pBlueCar->Wander();
 
     return hr;
 }
@@ -156,19 +157,73 @@ void AIManager::mouseUp(int x, int y)
 
     // Applies a directional force to the car from its current position to (x,y). SEEK_MESSAGE is used to determine when the car is at it's destination.
     //m_pRedCar->applyForceToPosition(Vector2D(x, y), ARRIVE_MESSAGE);
-    m_pRedCar->Seek(Vector2D(x, y));
+    m_pickups[0]->setPosition(Vector2D(x, y));
 }
 
 void AIManager::keyUp(WPARAM param)
 {
+    // hint 65-90 are a-z
     const WPARAM key_a = 65;
+    const WPARAM key_e = 69;
+    const WPARAM key_f = 70;
+    const WPARAM key_i = 73;
+    const WPARAM key_s = 83;
+    const WPARAM key_w = 87;
+    const WPARAM key_space = 32;
+
     switch (param)
     {
-    case key_a:
+    case VK_NUMPAD1:
     {
-        OutputDebugStringA("a Up \n");
+        OutputDebugStringA("Currently controlling Red.\n");
+        m_pCurrentCar = m_pRedCar;
+        m_pOtherCar = m_pBlueCar;
         break;
     }
+    case VK_NUMPAD2:
+    {
+        OutputDebugStringA("Currently controlling Blue.\n");
+        m_pCurrentCar = m_pBlueCar;
+        m_pOtherCar = m_pRedCar;
+        break;
+    }
+    case key_a:
+    {
+        m_pCurrentCar->Arrive(m_pickups[0]->getPosition());
+        break;
+    }
+    case key_s:
+    {
+        m_pCurrentCar->Seek(m_pOtherCar);
+        break;
+    }
+    case key_e:
+    {
+        m_pCurrentCar->Evade(m_pOtherCar);
+        break;
+    }
+    case key_f:
+    {
+        m_pCurrentCar->Flee(m_pOtherCar);
+        break;
+    }
+    case key_i:
+    {
+        m_pCurrentCar->Intercept(m_pOtherCar);
+        break;
+    }
+    case key_w:
+    {
+        m_pCurrentCar->Wander();
+        break;
+    }
+    case key_space:
+    {
+        m_pTaskManager->Clear();
+        break;
+    }
+    default:
+        break;
     }
 }
 
@@ -178,58 +233,7 @@ void AIManager::keyUp(WPARAM param)
 /// <param name="param"></param>
 void AIManager::keyDown(WPARAM param)
 {
-    // hint 65-90 are a-z
-    const WPARAM key_a = 65;
-    const WPARAM key_f = 70;
-    const WPARAM key_s = 83;
-    const WPARAM key_t = 84;
-    const WPARAM key_space = 32;
-
-    switch (param)
-    {
-    case VK_NUMPAD0:
-    {
-        OutputDebugStringA("0 pressed \n");
-        break;
-    }
-    case VK_NUMPAD1:
-    {
-        OutputDebugStringA("1 pressed \n");
-        break;
-    }
-    case VK_NUMPAD2:
-    {
-        OutputDebugStringA("2 pressed \n");
-        break;
-    }
-    case key_a:
-    {
-        OutputDebugStringA("a Down \n");
-        break;
-    }
-    case key_s:
-    {
-        m_pRedCar->Seek(m_pBlueCar);
-        break;
-    }
-    case key_f:
-    {
-        m_pRedCar->Flee(m_pBlueCar);
-        break;
-    }
-    case key_t:
-    {
-        break;
-    }
-    case key_space:
-    {
-        m_pTaskManager->Clear();
-        break;
-    }
-    // etc
-    default:
-        break;
-    }
+    
 }
 
 void AIManager::setRandomPickupPosition(PickupItem* pickup)

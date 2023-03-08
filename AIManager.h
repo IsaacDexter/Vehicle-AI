@@ -29,6 +29,8 @@ private:
 	vecPickups              m_pickups;
 	Vehicle*				m_pRedCar = nullptr;
 	Vehicle*				m_pBlueCar = nullptr;
+	Vehicle*				m_pCurrentCar = nullptr;
+	Vehicle*				m_pOtherCar = nullptr;
 	WaypointManager			m_waypointManager;
 	TaskManager*			m_pTaskManager = nullptr;
 
