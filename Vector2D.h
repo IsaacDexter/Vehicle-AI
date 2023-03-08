@@ -293,7 +293,6 @@ inline Vector2D Vec2DNormalize(const Vector2D& v)
     return vec;
 }
 
-
 inline double Vec2DDistance(const Vector2D& v1, const Vector2D& v2)
 {
 
@@ -310,6 +309,32 @@ inline double Vec2DDistanceSq(const Vector2D& v1, const Vector2D& v2)
     double xSeparation = v2.x - v1.x;
 
     return ySeparation * ySeparation + xSeparation * xSeparation;
+}
+
+inline Vector2D& Vec2DMin(Vector2D& v1, Vector2D& v2)
+{
+
+    if (v1.LengthSq() < v2.LengthSq())
+    {
+        return v1;
+    }
+    else
+    {
+        return v2;
+    }
+}
+
+inline Vector2D& Vec2DMax(Vector2D& v1, Vector2D& v2)
+{
+
+    if (v1.LengthSq() > v2.LengthSq())
+    {
+        return v1;
+    }
+    else
+    {
+        return v2;
+    }
 }
 
 inline double Vec2DLength(const Vector2D& v)

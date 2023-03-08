@@ -1,2 +1,15 @@
-﻿  LINK : C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\x64\Debug\AIFramework.exe not found or not built by the last incremental link; performing full link
-  AIFramework.vcxproj -> C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\x64\Debug\AIFramework.exe
+﻿  Vehicle.cpp
+C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\ForceMotion.h(32,22): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\ForceMotion.h(51,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(77,1): warning C4458: declaration of 'check' hides class member
+C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(21,12): message : see declaration of 'Task::check'
+C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(89,29): warning C4100: 'dt': unreferenced formal parameter
+C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(6,1): warning C4005: 'VEHICLE_MASS': macro redefinition
+C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.h(12): message : see previous definition of 'VEHICLE_MASS'
+C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(92,52): warning C4100: 'dt': unreferenced formal parameter
+C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(101,24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(117,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(141,24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(158,53): warning C4100: 'dt': unreferenced formal parameter
+C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(168,52): warning C4100: 'dt': unreferenced formal parameter
+  AIFramework.vcxproj -> C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\x64\Debug\AIFramework.exe

@@ -127,7 +127,10 @@ void AIManager::update(const float fDeltaTime)
         m_pRedCar->update(fDeltaTime);
 		checkForCollisions();
 		AddItemToDrawList(m_pRedCar);
-	}
+        OutputDebugStringA(("FPS: " + std::to_string( 1000.0f / fDeltaTime) + ", ").c_str());
+        OutputDebugStringA(("Red Car: Velocity:" + std::to_string(m_pRedCar->getForceMotion()->getVelocity().Length()) + " m/s, Force:" + std::to_string(m_pRedCar->getForceMotion()->getForce().Length()) + " N\n").c_str());
+	
+    }
 
     // update and draw the blue car (and check for pickup collisions)
     if (m_pBlueCar != nullptr)
@@ -135,6 +138,7 @@ void AIManager::update(const float fDeltaTime)
         m_pBlueCar->update(fDeltaTime);
         checkForCollisions();
         AddItemToDrawList(m_pBlueCar);
+        //OutputDebugStringA(("Blue Car:\nVelocity:" + std::to_string(m_pBlueCar->getForceMotion()->getVelocity().Length()/fDeltaTime) + " m/s\nForce:" + std::to_string(m_pBlueCar->getForceMotion()->getForce().Length()) + " N\n").c_str());
     }
 }
 
@@ -204,6 +208,7 @@ void AIManager::keyDown(WPARAM param)
     }
     case key_s:
     {
+        m_pRedCar->Seek(m_pBlueCar);
         break;
     }
     case key_t:
@@ -302,8 +307,3 @@ bool AIManager::checkForCollisions()
 
     return false;
 }
-
-
-
-
-
