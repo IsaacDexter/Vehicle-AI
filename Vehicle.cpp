@@ -65,6 +65,15 @@ void Vehicle::setPosition(Vector2D position)
 	DrawableGameObject::setPosition(position);
 }
 
+void Vehicle::setWaypointManager(WaypointManager* wpm)
+{
+	m_waypointManager = wpm;
+}
+
+#pragma region Tasks
+
+#pragma region Actions
+
 void Vehicle::applyForceToPosition(const Vector2D& destination)
 {
 	Vector2D toDestination = destination - getPosition();
@@ -78,25 +87,22 @@ void Vehicle::applyForceToPosition(const Vector2D& destination)
 	getForceMotion()->accumulateForce(force);
 }
 
-void Vehicle::setWaypointManager(WaypointManager* wpm)
+void Vehicle::applyForceFromPosition(const Vector2D& destination)
 {
-	m_waypointManager = wpm;
+	Vector2D fromDestination = getPosition() - destination;
+	fromDestination.Normalize();		//Get the direction to the destination
+	Vector2D desiredForce = fromDestination;	//Multiply it by the vehicle's speed
+
+	Vector2D currentForce = m_forceMotion.getForce();
+
+	Vector2D force = desiredForce - currentForce;
+
+	getForceMotion()->accumulateForce(force);
 }
 
+#pragma endregion
 
-#pragma region SteeringBehaviours
-
-void Vehicle::Wander()
-{
-	Vector2D destination = m_waypointManager->getRandomWaypoint()->getPosition();		//Get a random waypoint's position
-
-	executeFunc execute = [this] {; };	//Head towards that position
-	maintainFunc maintain = [this, destination](float dt) { applyForceToPosition(destination); };
-	completeFunc complete = [this] { this->Wander(); };									//Once we're there, wander again, queueing up a new task at a new position
-	checkFunc check = [this, destination] { return this->isPassed(destination); };		//Each frame this task is active, check if we''re they're've passed the position
-
-	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
-}
+#pragma region Checks
 
 bool Vehicle::isArrived(Vector2D destination, float destinationRadiusSquared, float brakingRadiusSquared)
 {
@@ -154,6 +160,22 @@ bool Vehicle::brake(Vector2D destination, float brakingRadiusSquared)
 	return inRange;
 }
 
+#pragma endregion
+
+#pragma region SteeringBehaviours
+
+void Vehicle::Wander()
+{
+	Vector2D destination = m_waypointManager->getRandomWaypoint()->getPosition();		//Get a random waypoint's position
+
+	executeFunc execute = [this] {; };	//Head towards that position
+	maintainFunc maintain = [this, destination](float dt) { applyForceToPosition(destination); };
+	completeFunc complete = [this] { this->Wander(); };									//Once we're there, wander again, queueing up a new task at a new position
+	checkFunc check = [this, destination] { return this->isPassed(destination); };		//Each frame this task is active, check if we've passed the position
+
+	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
+}
+
 void Vehicle::Seek(DrawableGameObject* soughtObject)
 {
 	executeFunc execute = [this] { ; };
@@ -173,5 +195,27 @@ void Vehicle::Seek(Vector2D destination)
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
 }
+
+void Vehicle::Flee(DrawableGameObject* soughtObject)
+{
+	executeFunc execute = [this] { ; };
+	maintainFunc maintain = [this, soughtObject](float dt) { Vector2D destination = soughtObject->getPosition(); applyForceFromPosition(destination); };	//each frame, get it's current position once more and seek to it.
+	completeFunc complete = [this] {; };													
+	checkFunc check = [this, soughtObject] { return !this->isPassed(soughtObject->getPosition(), 100000.0f); };	//Each frame this task is active, check if we're not within range
+
+	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
+}
+
+void Vehicle::Flee(Vector2D destination)
+{
+	executeFunc execute = [this] {; };	//Head towards that position
+	maintainFunc maintain = [this, destination](float dt) { applyForceFromPosition(destination); };
+	completeFunc complete = [this] { ; };												//Once we're there, wander again, queueing up a new task at a new position
+	checkFunc check = [this, destination] { return !this->isPassed(destination, 100000.0f); };	//Each frame this task is active, check if we're not within range
+
+	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
+}
+
+#pragma endregion
 
 #pragma endregion

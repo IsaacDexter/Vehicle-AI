@@ -180,6 +180,7 @@ void AIManager::keyDown(WPARAM param)
 {
     // hint 65-90 are a-z
     const WPARAM key_a = 65;
+    const WPARAM key_f = 70;
     const WPARAM key_s = 83;
     const WPARAM key_t = 84;
     const WPARAM key_space = 32;
@@ -209,6 +210,11 @@ void AIManager::keyDown(WPARAM param)
     case key_s:
     {
         m_pRedCar->Seek(m_pBlueCar);
+        break;
+    }
+    case key_f:
+    {
+        m_pRedCar->Flee(m_pBlueCar);
         break;
     }
     case key_t:

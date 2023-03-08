@@ -37,12 +37,19 @@ public:
 
 	ForceMotion* getForceMotion() { return &m_forceMotion; }
 
+
+#pragma region Tasks
+
+#pragma region Actions
+
 	void applyForceToPosition(const Vector2D& positionTo);
 
-#pragma region SteeringBehaviours
+	void applyForceFromPosition(const Vector2D& positionTo);
 
-	void Wander();
-	
+#pragma endregion
+
+#pragma region Checks
+
 	/// <summary>Checks to see if we're within braking distance of a destination. If we are, start slowing as we reach the destination, and come to a stop.</summary>
 	/// <param name="destination">The Vector2D of the position we wish to come to a stop at.</param>
 	/// <param name="destinationRadiusSquared">The radius, squared, of the zone we consider part of the destination. Somewhat like a margin of error.</param>
@@ -65,6 +72,13 @@ public:
 	/// <returns>Whether or not we are within braking distance or a destination, not if we've come to a stop.</returns>
 	bool brake(Vector2D destination, float brakingRadiusSquared = 1000.0f);
 
+#pragma endregion
+
+#pragma region SteeringBehaviours
+
+	/// <summary>Get's a random waypoint in the area and adds a task that will apply force towards that position each frame, and on completion will call Wander again.</summary>
+	void Wander();
+
 	/// <summary>The Seek steering behavior returns a force that directs an agent toward a target game object's position.
 	///<para>We calculate the vector to the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
 	/// <param name="soughtObject">The game object whose position will be continually sought.</param>
@@ -74,6 +88,18 @@ public:
 	///<para>We calculate the vector to the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
 	/// <param name="position">The position to be sought.</param>
 	void Seek(Vector2D position);
+
+	/// <summary>The Flee steering behavior returns a force that directs an agent away from a target game object's position.
+	///<para>We calculate the vector from the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
+	/// <param name="soughtObject">The game object whose position will be continually fleed.</param>
+	void Flee(DrawableGameObject* soughtObject);
+
+	/// <summary>The Seek steering behavior returns a force that directs an agent away from a target position.
+	///<para>We calculate the vector from the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
+	/// <param name="position">The position to be fleed.</param>
+	void Flee(Vector2D position);
+
+#pragma endregion
 
 #pragma endregion
 
