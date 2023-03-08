@@ -1,13 +1,2 @@
-﻿  Vehicle.cpp
-C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\ForceMotion.h(32,22): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\ForceMotion.h(51,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(77,1): warning C4458: declaration of 'check' hides class member
-C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(21,12): message : see declaration of 'Task::check'
-C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(89,29): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(94,52): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(103,24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(119,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(143,24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(160,53): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(170,52): warning C4100: 'dt': unreferenced formal parameter
+﻿  LINK : C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\x64\Debug\AIFramework.exe not found or not built by the last incremental link; performing full link
   AIFramework.vcxproj -> C:\Users\Isaac\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\x64\Debug\AIFramework.exe
