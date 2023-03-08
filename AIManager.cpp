@@ -127,8 +127,8 @@ void AIManager::update(const float fDeltaTime)
         m_pRedCar->update(fDeltaTime);
 		checkForCollisions();
 		AddItemToDrawList(m_pRedCar);
-        OutputDebugStringA(("FPS: " + std::to_string( 1000.0f / fDeltaTime) + ", ").c_str());
-        OutputDebugStringA(("Red Car: Velocity:" + std::to_string(m_pRedCar->getForceMotion()->getVelocity().Length()) + " m/s, Force:" + std::to_string(m_pRedCar->getForceMotion()->getForce().Length()) + " N\n").c_str());
+        //OutputDebugStringA(("FPS: " + std::to_string( 1000.0f / fDeltaTime) + ", ").c_str());
+        //OutputDebugStringA(("Red Car: Velocity:" + std::to_string(m_pRedCar->getForceMotion()->getVelocity().Length()) + " m/s, Force:" + std::to_string(m_pRedCar->getForceMotion()->getForce().Length()) + " N\n").c_str());
 	
     }
 

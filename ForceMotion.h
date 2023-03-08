@@ -75,7 +75,6 @@ public:
 
     // method to update object's velocity
     void updateVelocity(double dt) {
-        applyAirResistance();
         Vector2D acceleration = m_force / m_mass;
         m_velocity += acceleration * dt;
     }

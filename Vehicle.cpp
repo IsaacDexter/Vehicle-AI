@@ -3,7 +3,7 @@
 #include <functional>
 
 //https://www.cars-data.com/en/ford-fiesta/curb-weight
-#define VEHICLE_MASS 1010.0f
+#define VEHICLE_MASS 0.00005f
 #define ENGINE_FORCE 108.0f
 //https://www.rac.co.uk/drive/advice/learning-to-drive/stopping-distances/
 //https://calculator.academy/braking-force-calculator/
@@ -54,6 +54,8 @@ void Vehicle::update(const float deltaTime)
 	setPosition(m_currentPosition);
 
 	DrawableGameObject::update(deltaTime);
+
+	m_forceMotion.clearForce();
 }
 
 // set the current position
@@ -73,7 +75,7 @@ void Vehicle::applyForceToPosition(const Vector2D& destination)
 
 	Vector2D force = desiredForce - currentForce;
 
-	getForceMotion()->accumulateForce(desiredForce * ENGINE_FORCE);
+	getForceMotion()->accumulateForce(desiredForce);
 }
 
 void Vehicle::setWaypointManager(WaypointManager* wpm)
@@ -130,7 +132,7 @@ bool Vehicle::brake(float distanceSquared, float brakingRadiusSquared)
 		force *= -1;	//Get the inverse direction of the force
 		float brakePercentage = max(0.0f, ((brakingRadiusSquared) - distanceSquared) / (brakingRadiusSquared));	//Calculate a percentage of how much of the brake area has been covered
 		Vector2D brakeForce = force * (brakePercentage / 2) ;	//Apply a brake force according to how close the car is to the location													
-		m_forceMotion.accumulateForce(brakeForce * BRAKE_FORCE);
+		m_forceMotion.accumulateForce(brakeForce);
 	}
 	return inRange;
 }
@@ -147,7 +149,7 @@ bool Vehicle::brake(Vector2D destination, float brakingRadiusSquared)
 
 		float brakePercentage = max(0.0f, ((brakingRadiusSquared)-distanceSquared) / (brakingRadiusSquared));	//Calculate a percentage of how much of the brake area has been covered
 		Vector2D brakeForce = toDestination * (brakePercentage / 2);	//Apply a brake force in the opposite direction  to the destination according to how close the car is to the location													
-		m_forceMotion.accumulateForce(brakeForce * BRAKE_FORCE);
+		m_forceMotion.accumulateForce(brakeForce);
 	}
 	return inRange;
 }

@@ -9,7 +9,7 @@
 #include <string>
 
 
-#define VEHICLE_MASS 1200.0f
+#define VEHICLE_MASS 0.00005f
 
 class TaskManager;
 
