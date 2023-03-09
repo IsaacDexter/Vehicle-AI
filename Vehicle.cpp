@@ -11,7 +11,7 @@
 
 Vehicle::Vehicle() : m_forceMotion(VEHICLE_MASS, getPositionAddress())
 {
-	m_currentPosition = Vector2D(0,0);
+	m_currentPosition = Vector2D(0, 0);
 	m_lastPosition = Vector2D(0, 0);
 	m_waypointManager = nullptr;
 }
@@ -65,6 +65,22 @@ void Vehicle::setPosition(Vector2D position)
 	DrawableGameObject::setPosition(position);
 }
 
+Vector2D Vehicle::getPredictedPosition(const float interval)
+{
+	Vector2D expectedDisplacement = (getVelocity() * interval);	//gets the speed in m/s, and finds it in m/"when", based of this frame time
+	return expectedDisplacement + m_currentPosition;
+}
+
+Vector2D Vehicle::getRandomDirection()
+{
+	float randomFloat = -1.0f + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1.0f - -1.0f)));
+	float theta = std::acos(randomFloat);	//Get a random angle by generating a random float between -1 and 1, and finding the arccos of it.
+	Vector2D direction = Vector2D();						//Calculate a unit direction from this angle
+	direction.x = std::cos(theta) - std::sin(theta);
+	direction.y = std::cos(theta) + std::sin(theta);
+	return direction;
+}
+
 void Vehicle::setWaypointManager(WaypointManager* wpm)
 {
 	m_waypointManager = wpm;
@@ -98,6 +114,14 @@ void Vehicle::applyForceFromPosition(const Vector2D& destination)
 	Vector2D force = desiredForce - currentForce;
 
 	getForceMotion()->accumulateForce(force);
+}
+
+Vector2D Vehicle::getWanderPosition(float interval, float radius)
+{
+	Vector2D wanderDirection = getRandomDirection();	//Get a random direction
+	wanderDirection *= radius;	//Scale it by the wander radius
+	Vector2D wanderPosition = getPredictedPosition(1.0f) + wanderDirection;
+	return wanderPosition;
 }
 
 #pragma endregion
@@ -136,8 +160,8 @@ bool Vehicle::brake(float distanceSquared, float brakingRadiusSquared)
 		force.Normalize();
 
 		force *= -1;	//Get the inverse direction of the force
-		float brakePercentage = max(0.0f, ((brakingRadiusSquared) - distanceSquared) / (brakingRadiusSquared));	//Calculate a percentage of how much of the brake area has been covered
-		Vector2D brakeForce = force * (brakePercentage / 2) ;	//Apply a brake force according to how close the car is to the location													
+		float brakePercentage = max(0.0f, ((brakingRadiusSquared)-distanceSquared) / (brakingRadiusSquared));	//Calculate a percentage of how much of the brake area has been covered
+		Vector2D brakeForce = force * (brakePercentage / 2);	//Apply a brake force according to how close the car is to the location													
 		m_forceMotion.accumulateForce(brakeForce);
 	}
 	return inRange;
@@ -166,21 +190,33 @@ bool Vehicle::brake(Vector2D destination, float brakingRadiusSquared)
 
 void Vehicle::Wander()
 {
-	Vector2D destination = m_waypointManager->getRandomWaypoint()->getPosition();		//Get a random waypoint's position
+	Vector2D destination = getWanderPosition();	//get a random wander position;
 
 	executeFunc execute = [this] {; };	//Head towards that position
 	maintainFunc maintain = [this, destination](float dt) { applyForceToPosition(destination); };
 	completeFunc complete = [this] { this->Wander(); };									//Once we're there, wander again, queueing up a new task at a new position
 	checkFunc check = [this, destination] { return this->isPassed(destination); };		//Each frame this task is active, check if we've passed the position
 
- 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
+	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
+}
+
+void Vehicle::Ramble()
+{
+	Vector2D destination = m_waypointManager->getRandomWaypoint()->getPosition();		//Get a random waypoint's position
+
+	executeFunc execute = [this] {; };	//Head towards that position
+	maintainFunc maintain = [this, destination](float dt) { applyForceToPosition(destination); };
+	completeFunc complete = [this] { this->Ramble(); };									//Once we're there, wander again, queueing up a new task at a new position
+	checkFunc check = [this, destination] { return this->isPassed(destination); };		//Each frame this task is active, check if we've passed the position
+
+	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
 }
 
 void Vehicle::Seek(DrawableGameObject* soughtObject)
 {
-	executeFunc execute = [this] { ; };
+	executeFunc execute = [this] {; };
 	maintainFunc maintain = [this, soughtObject](float dt) { Vector2D destination = soughtObject->getPosition(); applyForceToPosition(destination); };	//each frame, get it's current position once more and seek to it.
-	completeFunc complete = [this] {; };													
+	completeFunc complete = [this] {; };
 	checkFunc check = [this, soughtObject] { this->isPassed(soughtObject->getPosition()); return false; };			//Each frame this task is active, check if we've passed the position
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
@@ -190,7 +226,7 @@ void Vehicle::Seek(Vector2D destination)
 {
 	executeFunc execute = [this] {; };	//Head towards that position
 	maintainFunc maintain = [this, destination](float dt) { applyForceToPosition(destination); };
-	completeFunc complete = [this] { ; };												//Once we're there, wander again, queueing up a new task at a new position
+	completeFunc complete = [this] {; };												//Once we're there, wander again, queueing up a new task at a new position
 	checkFunc check = [this, destination] { return this->isPassed(destination); };		//Each frame this task is active, check if we've passed the position
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
@@ -198,9 +234,9 @@ void Vehicle::Seek(Vector2D destination)
 
 void Vehicle::Arrive(DrawableGameObject* soughtObject)
 {
-	executeFunc execute = [this] { ; };
+	executeFunc execute = [this] {; };
 	maintainFunc maintain = [this, soughtObject](float dt) { Vector2D destination = soughtObject->getPosition(); applyForceToPosition(destination); };	//each frame, get it's current position once more and seek to it.
-	completeFunc complete = [this] {; };													
+	completeFunc complete = [this] {; };
 	checkFunc check = [this, soughtObject] { return this->isArrived(soughtObject->getPosition()); };			//Each frame this task is active, check if we've passed the position
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
@@ -210,7 +246,7 @@ void Vehicle::Arrive(Vector2D destination)
 {
 	executeFunc execute = [this] {; };	//Head towards that position
 	maintainFunc maintain = [this, destination](float dt) { applyForceToPosition(destination); };
-	completeFunc complete = [this] { ; };												//Once we're there, wander again, queueing up a new task at a new position
+	completeFunc complete = [this] {; };												//Once we're there, wander again, queueing up a new task at a new position
 	checkFunc check = [this, destination] { return this->isArrived(destination); };		//Each frame this task is active, check if we've passed the position
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
@@ -218,9 +254,9 @@ void Vehicle::Arrive(Vector2D destination)
 
 void Vehicle::Flee(DrawableGameObject* soughtObject)
 {
-	executeFunc execute = [this] { ; };
+	executeFunc execute = [this] {; };
 	maintainFunc maintain = [this, soughtObject](float dt) { Vector2D destination = soughtObject->getPosition(); applyForceFromPosition(destination); };	//each frame, get it's current position once more and seek to it.
-	completeFunc complete = [this] {; };													
+	completeFunc complete = [this] {; };
 	checkFunc check = [this, soughtObject] { return !this->isPassed(soughtObject->getPosition(), 500000.0f); };	//Each frame this task is active, check if we're not within range
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
@@ -230,7 +266,7 @@ void Vehicle::Flee(Vector2D destination)
 {
 	executeFunc execute = [this] {; };	//Head towards that position
 	maintainFunc maintain = [this, destination](float dt) { applyForceFromPosition(destination); };
-	completeFunc complete = [this] { ; };												//Once we're there, wander again, queueing up a new task at a new position
+	completeFunc complete = [this] {; };												//Once we're there, wander again, queueing up a new task at a new position
 	checkFunc check = [this, destination] { return !this->isPassed(destination, 500000.0f); };	//Each frame this task is active, check if we're not within range
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
@@ -238,9 +274,9 @@ void Vehicle::Flee(Vector2D destination)
 
 void Vehicle::Evade(Vehicle* soughtObject)
 {
-	executeFunc execute = [this] { ; };
-	maintainFunc maintain = [this, soughtObject](float dt) { Vector2D predictedPosition = soughtObject->getPosition() + soughtObject->getVelocity(); applyForceFromPosition(predictedPosition); };	//each frame, get it's current position once more and seek to it.
-	completeFunc complete = [this] {; };													
+	executeFunc execute = [this] {; };
+	maintainFunc maintain = [this, soughtObject](float dt) { applyForceFromPosition(soughtObject->getPredictedPosition(1.0f)); };
+	completeFunc complete = [this] {; };
 	checkFunc check = [this, soughtObject] { return !this->isPassed(soughtObject->getPosition(), 500000.0f); };	//Each frame this task is active, check if we're not within range
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
@@ -248,9 +284,9 @@ void Vehicle::Evade(Vehicle* soughtObject)
 
 void Vehicle::Intercept(Vehicle* soughtObject)
 {
-	executeFunc execute = [this] { ; };
-	maintainFunc maintain = [this, soughtObject](float dt) { Vector2D predictedPosition = soughtObject->getPosition() + soughtObject->getVelocity(); applyForceToPosition(predictedPosition); };	//each frame, get it's current position once more and seek to it.
-	completeFunc complete = [this] {; };													
+	executeFunc execute = [this] {; };
+	maintainFunc maintain = [this, soughtObject](float dt) { applyForceToPosition(soughtObject->getPredictedPosition(0.25f)); };	//Seek to where it'll be in a quarter second
+	completeFunc complete = [this] {; };
 	checkFunc check = [this, soughtObject] { this->isArrived(soughtObject->getPosition()); return false; };	//Each frame this task is active, check if we're not within range
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));

@@ -19,20 +19,20 @@ AIManager::AIManager()
 
 AIManager::~AIManager()
 {
-	release();
+    release();
 }
 
 void AIManager::release()
 {
-	clearDrawList();
+    clearDrawList();
 
-	for (PickupItem* pu : m_pickups)
-	{
-		delete pu;
-	}
-	m_pickups.clear();
+    for (PickupItem* pu : m_pickups)
+    {
+        delete pu;
+    }
+    m_pickups.clear();
 
-	delete m_pRedCar;
+    delete m_pRedCar;
     m_pRedCar = nullptr;
     delete m_pBlueCar;
     m_pBlueCar = nullptr;
@@ -40,6 +40,8 @@ void AIManager::release()
 
 HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
 {
+    srand(static_cast <unsigned> (time(0)));
+
     // create the red vehicle 
     float xPos = -500;
     float yPos = 300;
@@ -108,29 +110,29 @@ void AIManager::update(const float fDeltaTime)
         AddItemToDrawList(m_pickups[i]);
     }
 
-	// draw the waypoints nearest to the red car
-	
+    // draw the waypoints nearest to the red car
+
     /*Waypoint* wp = m_waypointManager.getNearestWaypoint(m_pRedCar->getPosition());
-	if (wp != nullptr)
-	{
-		vecWaypoints vwps = m_waypointManager.getNeighbouringWaypoints(wp);
-		for (Waypoint* wp : vwps)
-		{
-			AddItemToDrawList(wp);
-		}
-	}*/
-    
+    if (wp != nullptr)
+    {
+        vecWaypoints vwps = m_waypointManager.getNeighbouringWaypoints(wp);
+        for (Waypoint* wp : vwps)
+        {
+            AddItemToDrawList(wp);
+        }
+    }*/
+
     m_pTaskManager->MaintainTasks(fDeltaTime);
 
     // update and draw the red car (and check for pickup collisions)
-	if (m_pRedCar != nullptr)
-	{
+    if (m_pRedCar != nullptr)
+    {
         m_pRedCar->update(fDeltaTime);
-		checkForCollisions();
-		AddItemToDrawList(m_pRedCar);
+        checkForCollisions();
+        AddItemToDrawList(m_pRedCar);
         //OutputDebugStringA(("FPS: " + std::to_string( 1000.0f / fDeltaTime) + ", ").c_str());
         //OutputDebugStringA(("Red Car: Velocity:" + std::to_string(m_pRedCar->getForceMotion()->getVelocity().Length()) + " m/s, Force:" + std::to_string(m_pRedCar->getForceMotion()->getForce().Length()) + " N\n").c_str());
-	
+
     }
 
     // update and draw the blue car (and check for pickup collisions)
@@ -151,9 +153,9 @@ void AIManager::update(const float fDeltaTime)
 void AIManager::mouseUp(int x, int y)
 {
     // HINT you will find this useful later on...
-	//Waypoint* wp = m_waypointManager.getNearestWaypoint(Vector2D(x, y));
-	//if (wp == nullptr)
-	//	return;
+    //Waypoint* wp = m_waypointManager.getNearestWaypoint(Vector2D(x, y));
+    //if (wp == nullptr)
+    //	return;
 
     // Applies a directional force to the car from its current position to (x,y). SEEK_MESSAGE is used to determine when the car is at it's destination.
     //m_pRedCar->applyForceToPosition(Vector2D(x, y), ARRIVE_MESSAGE);
@@ -167,6 +169,7 @@ void AIManager::keyUp(WPARAM param)
     const WPARAM key_e = 69;
     const WPARAM key_f = 70;
     const WPARAM key_i = 73;
+    const WPARAM key_r = 82;
     const WPARAM key_s = 83;
     const WPARAM key_w = 87;
     const WPARAM key_space = 32;
@@ -192,11 +195,6 @@ void AIManager::keyUp(WPARAM param)
         m_pCurrentCar->Arrive(m_pickups[0]->getPosition());
         break;
     }
-    case key_s:
-    {
-        m_pCurrentCar->Seek(m_pOtherCar);
-        break;
-    }
     case key_e:
     {
         m_pCurrentCar->Evade(m_pOtherCar);
@@ -210,6 +208,16 @@ void AIManager::keyUp(WPARAM param)
     case key_i:
     {
         m_pCurrentCar->Intercept(m_pOtherCar);
+        break;
+    }
+    case key_r:
+    {
+        m_pCurrentCar->Ramble();
+        break;
+    }
+    case key_s:
+    {
+        m_pCurrentCar->Seek(m_pOtherCar);
         break;
     }
     case key_w:
@@ -233,7 +241,7 @@ void AIManager::keyUp(WPARAM param)
 /// <param name="param"></param>
 void AIManager::keyDown(WPARAM param)
 {
-    
+
 }
 
 void AIManager::setRandomPickupPosition(PickupItem* pickup)
@@ -251,13 +259,13 @@ void AIManager::setRandomPickupPosition(PickupItem* pickup)
 }
 
 /*
-// hello. This is hopefully the only time you may need to use and alter directx code 
-// the relevant #includes are already in place, but if you create your own collision class (or use this code anywhere else) 
+// hello. This is hopefully the only time you may need to use and alter directx code
+// the relevant #includes are already in place, but if you create your own collision class (or use this code anywhere else)
 // make sure you have the following:
 
 #include <d3d11_1.h> // this has the appropriate directx structures / objects
 #include <DirectXCollision.h> // this is the dx collision class helper
-using namespace DirectX; // this means you don't need to put DirectX:: in front of objects like XMVECTOR and so on. 
+using namespace DirectX; // this means you don't need to put DirectX:: in front of objects like XMVECTOR and so on.
 */
 
 bool AIManager::checkForCollisions()

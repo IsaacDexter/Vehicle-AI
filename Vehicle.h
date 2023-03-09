@@ -32,6 +32,13 @@ public:
 	Vector2D* getPositionAddress() { return &m_currentPosition; }
 	Vector2D getVelocity() { return m_forceMotion.getVelocity(); }
 
+	/// <param name="interval">How far ahead, in seconds, to predict the objects position. Passing in delta will get the objects expected position in 1 frame's time, for example</param>
+	/// <returns>The expected position that the object will be in "interval" seconds time.</returns>
+	Vector2D getPredictedPosition(const float interval);
+	/// <returns>A random unit vector.</returns>
+	Vector2D getRandomDirection();
+
+
 	void setWaypointManager(WaypointManager* wpm);
 	void setTaskManager(TaskManager* taskManager) { m_pTaskManager = taskManager; };
 	void hasCollided() {}
@@ -46,6 +53,11 @@ public:
 	void applyForceToPosition(const Vector2D& positionTo);
 
 	void applyForceFromPosition(const Vector2D& positionTo);
+
+	/// <param name="radius">The radius around the predicted position where the random position can be generated</param>
+	/// <param name="interval">How many seconds ahead of time to predict the position.</param>
+	/// <returns>a random position within a radius of the predicted position</returns>
+	Vector2D getWanderPosition(float interval = 0.1f, float radius = 100.0f);
 
 #pragma endregion
 
@@ -77,8 +89,11 @@ public:
 
 #pragma region SteeringBehaviours
 
-	/// <summary>Get's a random waypoint in the area and adds a task that will apply force towards that position each frame, and on completion will call Wander again.</summary>
+	/// <summary>Get's a random position nearby the predicted position and adds a task that will apply force towards that position each frame, and on completion will call Wander again.</summary>
 	void Wander();
+
+	/// <summary>Get's a random waypoint in the area and adds a task that will apply force towards that position each frame, and on completion will call Wander again.</summary>
+	void Ramble();
 
 	/// <summary>The Seek steering behavior returns a force that directs an agent toward a target game object's position.
 	///<para>We calculate the vector to the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
@@ -89,17 +104,17 @@ public:
 	///<para>We calculate the vector to the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
 	/// <param name="position">The position to be sought.</param>
 	void Seek(Vector2D position);
-	
+
 	/// <summary>The Seek steering behavior returns a force that directs an agent toward a target position, and stops when it reaches that position.
 	///<para>We calculate the vector to the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
 	/// <param name="position">The position to be sought.</param>
 	void Arrive(Vector2D position);
-	
+
 	/// <summary>The Seek steering behavior returns a force that directs an agent toward a target game object's position, and stops when it reaches that position.
 	///<para>We calculate the vector to the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
 	/// <param name="soughtObject">The game object whose position will be continually sought.</param>
 	void Arrive(DrawableGameObject* soughtObject);
-	
+
 	/// <summary>The Flee steering behavior returns a force that directs an agent away from a target game object's position.
 	///<para>We calculate the vector from the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
 	/// <param name="soughtObject">The game object whose position will be continually fled, while in range.</param>
