@@ -57,7 +57,7 @@ public:
 	/// <param name="radius">The radius around the predicted position where the random position can be generated</param>
 	/// <param name="interval">How many seconds ahead of time to predict the position.</param>
 	/// <returns>a random position within a radius of the predicted position</returns>
-	Vector2D getWanderPosition(float interval = 0.1f, float radius = 100.0f);
+	Vector2D getWanderPosition(float interval = 0.25f, float radius = 25.0f);
 
 #pragma endregion
 
