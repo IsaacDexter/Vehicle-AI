@@ -6,6 +6,7 @@
 #include <sstream>
 #include <d3d11_1.h>
 #include "CollisionHelper.h"
+#include <array>
 
 
 
@@ -173,6 +174,94 @@ const BoundingBox* WaypointManager::doesLineCrossBuilding(Line line)
 	return nullptr;
 }
 
+Line WaypointManager::getNearestEdge(BoundingBox* bb, Vector2D position)
+{
+	const unsigned int corners3DCount = 8;
+	XMFLOAT3 corners3D[corners3DCount];
+	bb->GetCorners(corners3D);
+
+	std::array<Vector2D, 4> corners2D = std::array<Vector2D, 4>();
+	std::array<Vector2D, 4>::iterator corners2Diterator = corners2D.begin();
+
+	for (XMFLOAT3 corner3D : corners3D)	//For each of the 8 corners
+	{
+		Vector2D corner = Vector2D(corner3D.x, corner3D.y);	//Convert the corner to a 2D variant
+		
+		bool present = false;	//Check if we already have that corner
+		for (Vector2D corner2D : corners2D)
+		{
+			if (corner2D == corner)
+			{
+				present = true;
+				break;
+			}
+		}
+
+		if (!present)	//If we don't, add it in.
+		{
+			*corners2Diterator = corner;
+			corners2Diterator++;
+		}
+	}
+
+	Line edges[4];
+
+}
+
+float WaypointManager::getDistanceBetweenLineAndPoint(Line line, Vector2D point)
+{
+	Vector2D AB = line.second - line.first;
+	Vector2D BP = point - line.second;
+	Vector2D AP = point - line.first;
+
+	Vector2D toPoint;
+	//if the dot product of (LineA to LineB) and (point) > 0, the point must be b itself
+	if (AB.Dot(BP) > 0)
+	{
+		return line.second.Distance(toPoint);
+	}
+	//if the dot product of (LineA to LineB) and (point) < 0, the point must be A itself
+	else if(AB.Dot(AP) < 0)
+	{
+		return line.first.Distance(toPoint);
+	}
+	//if the dot product of (LineA to LineB) and (point) == 0, the point is perpendicular to  the line segement, and the distance can be calculated with:
+	//line to point = (lineA to LineB) * (LineA to point) / Length(LineA to LineB)
+	else 
+	{
+		//Find perpendicular distance
+		return abs(AB.x * AP.y - AB.y * AP.x) / AB.Length();
+	}
+}
+
+float WaypointManager::getSquaredDistanceBetweenLineAndPoint(Line line, Vector2D point)
+{
+	Vector2D AB = line.second - line.first;
+	Vector2D BP = point - line.second;
+	Vector2D AP = point - line.first;
+
+	Vector2D toPoint;
+	//if the dot product of (LineA to LineB) and (point) > 0, the point must be b itself
+	if (AB.Dot(BP) > 0)
+	{
+		return line.second.DistanceSq(toPoint);
+	}
+	//if the dot product of (LineA to LineB) and (point) < 0, the point must be A itself
+	else if(AB.Dot(AP) < 0)
+	{
+		return line.first.DistanceSq(toPoint);
+	}
+	//if the dot product of (LineA to LineB) and (point) == 0, the point is perpendicular to  the line segement, and the distance can be calculated with:
+	//line to point = (lineA to LineB) * (LineA to point) / Length(LineA to LineB)
+	else 
+	{
+		//Find perpendicular distance
+		return abs(AB.x * AP.y - AB.y * AP.x) / AB.LengthSq();
+	}
+}
+
+
+
 
 
 
@@ -203,9 +292,9 @@ bool WaypointManager::doWaypointsCrossBuilding(Waypoint* wp1, Waypoint* wp2)
 		return false; 
 
 	bool collision = false;
-	for (const BoundingBox& bb : m_boundingBoxes)
+	for (const BoundingBox* bb : m_boundingBoxes)
 	{
-		collision = CollisionHelper::doesLineIntersectBoundingBox(bb, wp1->getPosition(), wp2->getPosition());
+		collision = CollisionHelper::doesLineIntersectBoundingBox(*bb, wp1->getPosition(), wp2->getPosition());
 		if (collision == true)
 		{
 			return true;
