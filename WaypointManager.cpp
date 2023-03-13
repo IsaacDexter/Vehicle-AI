@@ -87,7 +87,7 @@ HRESULT WaypointManager::createWaypoints(ID3D11Device* pd3dDevice)
 			m_quadpoints[i+2]->getPosition(), 
 			m_quadpoints[i+3]->getPosition());
 
-		m_boundingBoxes.push_back(bb);
+		m_boundingBoxes.push_back(new BoundingBox(bb));
 	}
 
 
@@ -154,6 +154,27 @@ Waypoint* WaypointManager::getNearestWaypoint(Vector2D position)
 
 	return nearestWP;
 }
+
+const BoundingBox* WaypointManager::doesLineCrossBuilding(Line line)
+{
+	if (line.first == line.second)
+		return nullptr;
+
+	bool collision = false;
+	for (const BoundingBox* bb : m_boundingBoxes)
+	{
+		collision = CollisionHelper::doesLineIntersectBoundingBox(*bb, line.first, line.second);
+		if (collision == true)
+		{
+			return bb;
+		}
+	}
+
+	return nullptr;
+}
+
+
+
 
 vecWaypoints WaypointManager::getNeighbouringWaypoints(Waypoint* waypoint)
 {

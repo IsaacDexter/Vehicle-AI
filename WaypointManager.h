@@ -17,7 +17,8 @@ class Waypoint;
 #define WAYPOINT_RESOLUTION 20
 
 typedef vector<Waypoint*> vecWaypoints;
-typedef vector <BoundingBox> vecBoundingBox;
+typedef vector <BoundingBox*> vecBoundingBox;
+typedef std::pair<Vector2D, Vector2D> Line;
 
 class WaypointManager
 {
@@ -35,7 +36,11 @@ public:
 	// get the points which make a building on the map
 	Waypoint* getQuadpoint(const unsigned int index);
 	size_t getQuadpointCount() { return m_quadpoints.size(); }
-
+	
+	const BoundingBox* doesLineCrossBuilding(Line line);
+	 
+	
+	
 	vecWaypoints getNeighbouringWaypoints(Waypoint* waypoint);
 	Waypoint* getNearestWaypoint(Vector2D position);
 

@@ -1,6 +1,7 @@
 #include "Vehicle.h"
 #include "Tasking.h"
 #include <functional>
+#include "CollisionHelper.h"
 
 //https://www.cars-data.com/en/ford-fiesta/curb-weight
 #define VEHICLE_MASS 0.00005f
@@ -13,7 +14,9 @@ Vehicle::Vehicle() : m_forceMotion(VEHICLE_MASS, getPositionAddress())
 {
 	m_currentPosition = Vector2D(0, 0);
 	m_lastPosition = Vector2D(0, 0);
+	m_direction = Vector2D(0, 0);
 	m_waypointManager = nullptr;
+	m_pTaskManager = nullptr;
 }
 
 HRESULT	Vehicle::initMesh(ID3D11Device* pd3dDevice, carColour colour)
@@ -49,6 +52,11 @@ void Vehicle::update(const float deltaTime)
 		m_radianRotation = atan2f((float)diff.y, (float)diff.x); // this is used by DrawableGameObject to set the rotation
 	}
 	m_lastPosition = m_currentPosition;
+	m_direction = diff;
+	if (projectWhisker())
+	{
+		OutputDebugStringA("Collision!\n");
+	}
 
 	// set the current poistion for the drawablegameobject
 	setPosition(m_currentPosition);
@@ -75,9 +83,7 @@ Vector2D Vehicle::getRandomDirection()
 {
 	float randomFloat = -1.0f + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1.0f - -1.0f)));
 	float theta = std::acos(randomFloat);	//Get a random angle by generating a random float between -1 and 1, and finding the arccos of it.
-	Vector2D direction = Vector2D();						//Calculate a unit direction from this angle
-	direction.x = std::cos(theta) - std::sin(theta);
-	direction.y = std::cos(theta) + std::sin(theta);
+	Vector2D direction = Vec2DfromAngle(theta);
 	return direction;
 }
 
@@ -182,6 +188,35 @@ bool Vehicle::brake(Vector2D destination, float brakingRadiusSquared)
 		m_forceMotion.accumulateForce(brakeForce);
 	}
 	return inRange;
+}
+
+bool Vehicle::projectWhisker()
+{
+	Vector2D direction = getForceMotion()->getVelocity();	//get the vehicles direction from velocity
+	Vector2D position = getPosition() + direction;			//Find the position the whisker ends at
+															//Check to see if a line between the car and that position would intersect
+	return m_waypointManager->doesLineCrossBuilding(Line(getPosition(), position)) != nullptr;
+}
+
+bool Vehicle::projectWhisker(float theta)
+{
+	Vector2D direction = getForceMotion()->getVelocity();	//get the vehicles direction from velocity
+	Vector2D angleDirection = Vec2DfromAngle(theta);		//Get the direction of the angle
+	direction *= angleDirection;							//Combine with with the vehicles current angle to project the angle from the vehicles direction
+	Vector2D position = getPosition() + direction;			//Find the position the whisker ends at
+															//Check to see if a line between the car and that position would intersect
+	return m_waypointManager->doesLineCrossBuilding(Line(getPosition(), position)) != nullptr;
+}
+
+bool Vehicle::projectWhisker(float theta, float distance)
+{
+	Vector2D direction = getDirection();					//get the vehicles direction from velocity
+	direction *= distance;									//Multiply it by the distance to scale it 
+	Vector2D angleDirection = Vec2DfromAngle(theta);		//Get the direction of the angle
+	direction *= angleDirection;							//Combine with with the vehicles current angle to project the angle from the vehicles direction
+	Vector2D position = getPosition() + direction;			//Find the position the whisker ends at
+															//Check to see if a line between the car and that position would intersect
+	return m_waypointManager->doesLineCrossBuilding(Line(getPosition(), position)) != nullptr;
 }
 
 #pragma endregion

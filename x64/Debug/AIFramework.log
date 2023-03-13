@@ -11,20 +11,21 @@ C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-Is
 C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(77,1): warning C4458: declaration of 'check' hides class member
 C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(21,12): message : see declaration of 'Task::check'
 C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Tasking.h(89,29): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(119,43): warning C4100: 'interval': unreferenced formal parameter
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(133,24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(149,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(173,24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(196,52): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(208,52): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(218,53): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(228,52): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(238,53): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(248,52): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(258,53): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(268,52): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(278,53): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(288,53): warning C4100: 'dt': unreferenced formal parameter
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(127,43): warning C4100: 'interval': unreferenced formal parameter
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(141,24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(157,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(181,24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(221,52): warning C4100: 'dt': unreferenced formal parameter
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(233,52): warning C4100: 'dt': unreferenced formal parameter
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(243,53): warning C4100: 'dt': unreferenced formal parameter
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(253,52): warning C4100: 'dt': unreferenced formal parameter
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(263,53): warning C4100: 'dt': unreferenced formal parameter
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(273,52): warning C4100: 'dt': unreferenced formal parameter
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(283,53): warning C4100: 'dt': unreferenced formal parameter
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(293,52): warning C4100: 'dt': unreferenced formal parameter
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(303,53): warning C4100: 'dt': unreferenced formal parameter
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(313,53): warning C4100: 'dt': unreferenced formal parameter
+  WaypointManager.cpp
   main.cpp
 C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\ForceMotion.h(32,22): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\ForceMotion.h(51,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data

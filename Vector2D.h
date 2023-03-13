@@ -347,11 +347,22 @@ inline double Vec2DLengthSq(const Vector2D& v)
     return (v.x * v.x + v.y * v.y);
 }
 
+inline Vector2D Vec2DfromAngle(const double theta)
+{
+    Vector2D d = Vector2D(1, 0);
+    if (theta != 0)							
+    {
+        d.x = std::cos(theta) - std::sin(theta);
+        d.y = std::cos(theta) + std::sin(theta);
+    }
+    return d;
+}
 
 inline Vector2D POINTStoVector(const POINTS& p)
 {
     return Vector2D(p.x, p.y);
 }
+
 
 inline Vector2D POINTtoVector(const POINT& p)
 {
