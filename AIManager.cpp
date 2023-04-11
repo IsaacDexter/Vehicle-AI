@@ -176,14 +176,14 @@ void AIManager::keyUp(WPARAM param)
 
     switch (param)
     {
-    case VK_NUMPAD1:
+    case VK_LEFT:
     {
         OutputDebugStringA("Currently controlling Red.\n");
         m_pCurrentCar = m_pRedCar;
         m_pOtherCar = m_pBlueCar;
         break;
     }
-    case VK_NUMPAD2:
+    case VK_RIGHT:
     {
         OutputDebugStringA("Currently controlling Blue.\n");
         m_pCurrentCar = m_pBlueCar;

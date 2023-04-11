@@ -174,39 +174,40 @@ const BoundingBox* WaypointManager::doesLineCrossBuilding(Line line)
 	return nullptr;
 }
 
-Line WaypointManager::getNearestEdge(BoundingBox* bb, Vector2D position)
-{
-	const unsigned int corners3DCount = 8;
-	XMFLOAT3 corners3D[corners3DCount];
-	bb->GetCorners(corners3D);
-
-	std::array<Vector2D, 4> corners2D = std::array<Vector2D, 4>();
-	std::array<Vector2D, 4>::iterator corners2Diterator = corners2D.begin();
-
-	for (XMFLOAT3 corner3D : corners3D)	//For each of the 8 corners
-	{
-		Vector2D corner = Vector2D(corner3D.x, corner3D.y);	//Convert the corner to a 2D variant
-		
-		bool present = false;	//Check if we already have that corner
-		for (Vector2D corner2D : corners2D)
-		{
-			if (corner2D == corner)
-			{
-				present = true;
-				break;
-			}
-		}
-
-		if (!present)	//If we don't, add it in.
-		{
-			*corners2Diterator = corner;
-			corners2Diterator++;
-		}
-	}
-
-	Line edges[4];
-
-}
+//Line WaypointManager::getNearestEdge(BoundingBox* bb, Vector2D position)
+//{
+//	const unsigned int corners3DCount = 8;
+//	XMFLOAT3 corners3D[corners3DCount];
+//	bb->GetCorners(corners3D);
+//
+//	std::array<Vector2D, 4> corners2D = std::array<Vector2D, 4>();
+//	std::array<Vector2D, 4>::iterator corners2Diterator = corners2D.begin();
+//
+//	for (XMFLOAT3 corner3D : corners3D)	//For each of the 8 corners
+//	{
+//		Vector2D corner = Vector2D(corner3D.x, corner3D.y);	//Convert the corner to a 2D variant
+//		
+//		bool present = false;	//Check if we already have that corner
+//		for (Vector2D corner2D : corners2D)
+//		{
+//			if (corner2D == corner)
+//			{
+//				present = true;
+//				break;
+//			}
+//		}
+//
+//		if (!present)	//If we don't, add it in.
+//		{
+//			*corners2Diterator = corner;
+//			corners2Diterator++;
+//		}
+//	}
+//
+//	Line edges[4];	//pair up the corners into edges
+//	
+//
+//}
 
 float WaypointManager::getDistanceBetweenLineAndPoint(Line line, Vector2D point)
 {
