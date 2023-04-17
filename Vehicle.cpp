@@ -53,11 +53,12 @@ void Vehicle::update(const float deltaTime)
 	}
 	m_lastPosition = m_currentPosition;
 	m_direction = diff;
-	if (projectWhisker().intersectsBuilding())
+	Whisker whisker = projectWhisker();
+	if (whisker.intersectsBuilding(m_waypointManager))
 	{
 		OutputDebugStringA("Whisker collision with building!\n");
 	}
-	if (projectWhisker().intersectsVehicle())
+	if (whisker.intersectsVehicle(m_waypointManager))
 	{
 		OutputDebugStringA("Whisker collision with Vehicle!\n");
 	}
@@ -199,7 +200,7 @@ Whisker Vehicle::projectWhisker()
 	Vector2D direction = getForceMotion()->getVelocity();	//get the vehicles direction from velocity
 	Vector2D position = getPosition() + direction;			//Find the position the whisker ends at
 															//Check to see if a line between the car and that position would intersect
-	return Whisker(m_waypointManager, getPosition(), position);
+	return Whisker(getPosition(), position);
 }
 
 Whisker Vehicle::projectWhisker(float theta)
@@ -209,7 +210,7 @@ Whisker Vehicle::projectWhisker(float theta)
 	direction *= angleDirection;							//Combine with with the vehicles current angle to project the angle from the vehicles direction
 	Vector2D position = getPosition() + direction;			//Find the position the whisker ends at
 															//Check to see if a line between the car and that position would intersect
-	return Whisker(m_waypointManager, getPosition(), position);
+	return Whisker(getPosition(), position);
 }
 
 Whisker Vehicle::projectWhisker(float theta, float distance)
@@ -220,7 +221,7 @@ Whisker Vehicle::projectWhisker(float theta, float distance)
 	direction *= angleDirection;							//Combine with with the vehicles current angle to project the angle from the vehicles direction
 	Vector2D position = getPosition() + direction;			//Find the position the whisker ends at
 															//Check to see if a line between the car and that position would intersect
-	return Whisker(m_waypointManager, getPosition(), position);
+	return Whisker(getPosition(), position);
 }
 
 #pragma endregion

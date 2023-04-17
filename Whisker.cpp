@@ -1,23 +1,26 @@
 #include "Whisker.h"
 
-Whisker::Whisker(WaypointManager* waypointManager, Line line)
+Whisker::Whisker()
+{
+	m_line = Line(Vector2D(), Vector2D());
+}
+
+Whisker::Whisker(Line line)
 {
 	m_line = line;
-	m_waypointManager = waypointManager;
 }
 
-Whisker::Whisker(WaypointManager* waypointManager, Vector2D start, Vector2D end)
+Whisker::Whisker(Vector2D start, Vector2D end)
 {
 	m_line = Line(start, end);
-	m_waypointManager = waypointManager;
 }
 
-bool Whisker::intersectsBuilding()
+bool Whisker::intersectsBuilding(WaypointManager* waypointManager)
 {
-	return m_waypointManager->doesLineCrossBuilding(m_line) != nullptr;
+	return waypointManager->doesLineCrossBuilding(m_line) != nullptr;
 }
 
-bool Whisker::intersectsVehicle()
+bool Whisker::intersectsVehicle(WaypointManager* waypointManager)
 {
-	return m_waypointManager->doesLineCrossVehicle(m_line) != nullptr;
+	return waypointManager->doesLineCrossVehicle(m_line) != nullptr;
 }

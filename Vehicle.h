@@ -8,6 +8,7 @@
 #include "ForceMotion.h"
 #include <string>
 #include "Whisker.h"
+#include <array>
 
 
 #define VEHICLE_MASS 0.00005f
