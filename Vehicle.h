@@ -8,7 +8,6 @@
 #include "ForceMotion.h"
 #include <string>
 #include "Whisker.h"
-#include <array>
 
 
 #define VEHICLE_MASS 0.00005f
@@ -88,22 +87,18 @@ public:
 	/// <param name="brakingRadiusSquared">The radius, squared, of the zone in which we want to start braking.</param>
 	/// <returns>Whether or not we are within braking distance or a destination, not if we've come to a stop.</returns>
 	bool brake(Vector2D destination, float brakingRadiusSquared = 1000.0f);
-	/// <summary>Projects a whisker ahead in the direction of the vehicle, proportional to the current velocity, and returns whether or not it collided with an object.</summary>
-	/// <returns>Whether or not the whisker hit an object</returns>
-	Whisker projectWhisker();
-	///// <summary>Projects a whisker x distance in the direction of the vehicle, and returns whether or not it collided with an object.</summary>
-	///// <param name="distance">The distance to project the whisker forward. Bear in mind the car is 30*20 units</param>
-	///// <returns>Whether or not the whisker hit an object</returns>
-	//bool projectWhisker(float distance);
-	/// <summary>Projects a whisker at an angle, theta, from the direction of the vehicle, proportional to the current velocity, and returns whether or not it collided with an object.</summary>
+	/// <summary>Projects a whisker ahead in the direction of the vehicle, proportional to the current velocity</summary>
+	/// <param name="outWhisker">The whisker to modify</param>
+	void projectWhisker(Whisker* outWhisker);;
+	/// <summary>Projects a whisker at an angle, theta, from the direction of the vehicle, proportional to the current velocity</summary>
 	/// <param name="theta">The angle from the vehicle's forward to project the whisker</param>
-	/// <returns>Whether or not the whisker hit an object</returns>
-	Whisker projectWhisker(float theta);
-	/// <summary>Projects a whisker x distance at an angle, theta, from direction of the vehicle, and returns whether or not it collided with an object.</summary>
+	/// <param name="outWhisker">The whisker to modify</param>
+	void projectWhisker(Whisker* outWhisker, float theta);
+	/// <summary>Projects a whisker x distance at an angle, theta, from direction of the vehicle</summary>
 	/// <param name="theta">The angle from the vehicle's forward to project the whisker</param>
 	/// <param name="distance">The distance to project the whisker forward. Bear in mind the car is 30*20 units</param>
-	/// <returns>Whether or not the whisker hit an object</returns>
-	Whisker projectWhisker(float theta, float distance);
+	/// <param name="outWhisker">The whisker to modify</param>
+	void projectWhisker(Whisker* outWhisker, float theta, float distance);
 	
 
 #pragma endregion

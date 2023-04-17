@@ -1,18 +1,18 @@
 #include "Whisker.h"
 
-Whisker::Whisker()
+HRESULT	Whisker::init(ID3D11Device* pd3dDevice)
 {
-	m_line = Line(Vector2D(), Vector2D());
-}
+	m_visible = true;
 
-Whisker::Whisker(Line line)
-{
-	m_line = line;
-}
+	float s = 10;
+	m_scale = XMFLOAT3(s, s, s);
 
-Whisker::Whisker(Vector2D start, Vector2D end)
-{
-	m_line = Line(start, end);
+	setTextureName(L"Resources\\green.dds");
+
+	// create the visible mesh to draw
+	HRESULT hr = DrawableGameObject::initMesh(pd3dDevice);
+
+	return hr;
 }
 
 bool Whisker::intersectsBuilding(WaypointManager* waypointManager)

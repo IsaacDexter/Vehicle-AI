@@ -53,15 +53,17 @@ void Vehicle::update(const float deltaTime)
 	}
 	m_lastPosition = m_currentPosition;
 	m_direction = diff;
-	Whisker whisker = projectWhisker();
-	if (whisker.intersectsBuilding(m_waypointManager))
+	Whisker* whisker = new Whisker();
+	projectWhisker(whisker);
+	if (whisker->intersectsBuilding(m_waypointManager))
 	{
 		OutputDebugStringA("Whisker collision with building!\n");
 	}
-	if (whisker.intersectsVehicle(m_waypointManager))
+	if (whisker->intersectsVehicle(m_waypointManager))
 	{
 		OutputDebugStringA("Whisker collision with Vehicle!\n");
 	}
+	delete whisker;
 
 	// set the current poistion for the drawablegameobject
 	setPosition(m_currentPosition);
@@ -195,25 +197,25 @@ bool Vehicle::brake(Vector2D destination, float brakingRadiusSquared)
 	return inRange;
 }
 
-Whisker Vehicle::projectWhisker()
+void Vehicle::projectWhisker(Whisker* outWhisker)
 {
 	Vector2D direction = getForceMotion()->getVelocity();	//get the vehicles direction from velocity
 	Vector2D position = getPosition() + direction;			//Find the position the whisker ends at
 															//Check to see if a line between the car and that position would intersect
-	return Whisker(getPosition(), position);
+	outWhisker->SetLine(getPosition(), position);
 }
 
-Whisker Vehicle::projectWhisker(float theta)
+void Vehicle::projectWhisker(Whisker* outWhisker, float theta)
 {
 	Vector2D direction = getForceMotion()->getVelocity();	//get the vehicles direction from velocity
 	Vector2D angleDirection = Vec2DfromAngle(theta);		//Get the direction of the angle
 	direction *= angleDirection;							//Combine with with the vehicles current angle to project the angle from the vehicles direction
 	Vector2D position = getPosition() + direction;			//Find the position the whisker ends at
 															//Check to see if a line between the car and that position would intersect
-	return Whisker(getPosition(), position);
+	outWhisker->SetLine(getPosition(), position);
 }
 
-Whisker Vehicle::projectWhisker(float theta, float distance)
+void Vehicle::projectWhisker(Whisker* outWhisker, float theta, float distance)
 {
 	Vector2D direction = getDirection();					//get the vehicles direction from velocity
 	direction *= distance;									//Multiply it by the distance to scale it 
@@ -221,7 +223,7 @@ Whisker Vehicle::projectWhisker(float theta, float distance)
 	direction *= angleDirection;							//Combine with with the vehicles current angle to project the angle from the vehicles direction
 	Vector2D position = getPosition() + direction;			//Find the position the whisker ends at
 															//Check to see if a line between the car and that position would intersect
-	return Whisker(getPosition(), position);
+	outWhisker->SetLine(getPosition(), position);
 }
 
 #pragma endregion
