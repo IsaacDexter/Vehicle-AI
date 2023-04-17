@@ -293,6 +293,8 @@ void DrawableGameObject::draw(ID3D11DeviceContext* pContext)
 	// Set primitive topology
 	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+	pContext->PSSetShaderResources(0, 1, &m_pTextureResourceView);
+
 	pContext->DrawIndexed(NUM_VERTICES, 0, 0);
 }
 

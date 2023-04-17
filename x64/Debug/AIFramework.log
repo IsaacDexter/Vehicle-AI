@@ -1,2 +1,4 @@
-﻿  Whisker.cpp
+﻿  DrawableGameObject.cpp
+C:\Users\d015349l\source\repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\DrawableGameObject.cpp(214,39): warning C4100: 'deltaTime': unreferenced formal parameter
+  LINK : C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\x64\Debug\AIFramework.exe not found or not built by the last incremental link; performing full link
   AIFramework.vcxproj -> C:\Users\d015349l\Source\Repos\AI-For-Games-Level-5\ai-coding-assignment-2023-IsaacDexter\x64\Debug\AIFramework.exe
