@@ -48,10 +48,10 @@ bool Whisker::intersectsVehicle(WaypointManager* waypointManager)
 
 void Whisker::setTexture(std::wstring texture)
 {
-	if (m_pTextureResourceViews.at(m_redTexture) == m_pTextureResourceViews.at(m_greenTexture))
-	{
-		OutputDebugStringA("The two textures are identical!\n");
-	}
+	//if (m_pTextureResourceViews.at(m_redTexture) == m_pTextureResourceViews.at(m_greenTexture))
+	//{
+	//	OutputDebugStringA("The two textures are identical!\n");
+	//}
 	if (texture != m_currentTexture)
 	{
 		m_currentTexture = texture;
