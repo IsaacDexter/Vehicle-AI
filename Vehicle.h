@@ -48,6 +48,8 @@ public:
 
 	ForceMotion* getForceMotion() { return &m_forceMotion; }
 
+	std::vector<Whisker*> getWhiskers() { return m_whiskers; };
+
 
 #pragma region Tasks
 
@@ -167,5 +169,7 @@ protected: // protected properties
 	WaypointManager* m_waypointManager;
 	TaskManager* m_pTaskManager;
 	ForceMotion m_forceMotion;
+
+	std::vector<Whisker*> m_whiskers;
 };
 

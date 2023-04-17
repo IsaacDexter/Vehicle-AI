@@ -17,6 +17,7 @@ Vehicle::Vehicle() : m_forceMotion(VEHICLE_MASS, getPositionAddress())
 	m_direction = Vector2D(0, 0);
 	m_waypointManager = nullptr;
 	m_pTaskManager = nullptr;
+	m_whiskers.push_back(new Whisker());
 }
 
 HRESULT	Vehicle::initMesh(ID3D11Device* pd3dDevice, carColour colour)
@@ -53,17 +54,18 @@ void Vehicle::update(const float deltaTime)
 	}
 	m_lastPosition = m_currentPosition;
 	m_direction = diff;
-	Whisker* whisker = new Whisker();
-	projectWhisker(whisker);
-	if (whisker->intersectsBuilding(m_waypointManager))
+	for (Whisker* whisker : m_whiskers)
 	{
-		OutputDebugStringA("Whisker collision with building!\n");
+		projectWhisker(whisker);
+		if (whisker->intersectsBuilding(m_waypointManager))
+		{
+			OutputDebugStringA("Whisker collision with building!\n");
+		}
+		if (whisker->intersectsVehicle(m_waypointManager))
+		{
+			OutputDebugStringA("Whisker collision with Vehicle!\n");
+		}
 	}
-	if (whisker->intersectsVehicle(m_waypointManager))
-	{
-		OutputDebugStringA("Whisker collision with Vehicle!\n");
-	}
-	delete whisker;
 
 	// set the current poistion for the drawablegameobject
 	setPosition(m_currentPosition);
