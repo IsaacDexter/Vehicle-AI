@@ -374,6 +374,7 @@
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Waypoint.cpp" />
     <ClCompile Include="WaypointManager.cpp" />
+    <ClCompile Include="Whisker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -395,6 +396,7 @@
     <ClInclude Include="Vehicle.h" />
     <ClInclude Include="Waypoint.h" />
     <ClInclude Include="WaypointManager.h" />
+    <ClInclude Include="Whisker.h" />
     <ResourceCompile Include="AIFramework.rc" />
   </ItemGroup>
   <ItemGroup>

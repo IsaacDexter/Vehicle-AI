@@ -38,6 +38,7 @@ public:
 	size_t getQuadpointCount() { return m_quadpoints.size(); }
 	
 	const BoundingBox* doesLineCrossBuilding(Line line);
+	const BoundingBox* doesLineCrossVehicle(Line line);
 	//Line getNearestEdge(BoundingBox* bb, Vector2D position);
 	float getDistanceBetweenLineAndPoint(Line line, Vector2D point);
 	float getSquaredDistanceBetweenLineAndPoint(Line line, Vector2D point);

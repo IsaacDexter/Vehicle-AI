@@ -174,6 +174,11 @@ const BoundingBox* WaypointManager::doesLineCrossBuilding(Line line)
 	return nullptr;
 }
 
+const BoundingBox* WaypointManager::doesLineCrossVehicle(Line line)
+{
+	return nullptr;
+}
+
 //Line WaypointManager::getNearestEdge(BoundingBox* bb, Vector2D position)
 //{
 //	const unsigned int corners3DCount = 8;
