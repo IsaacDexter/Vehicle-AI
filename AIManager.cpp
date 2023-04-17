@@ -112,7 +112,7 @@ void AIManager::update(const float fDeltaTime)
 
     // draw the waypoints nearest to the red car
 
-    /*Waypoint* wp = m_waypointManager.getNearestWaypoint(m_pRedCar->getPosition());
+    Waypoint* wp = m_waypointManager.getNearestWaypoint(m_pCurrentCar->getPosition());
     if (wp != nullptr)
     {
         vecWaypoints vwps = m_waypointManager.getNeighbouringWaypoints(wp);
@@ -120,7 +120,7 @@ void AIManager::update(const float fDeltaTime)
         {
             AddItemToDrawList(wp);
         }
-    }*/
+    }
 
     m_pTaskManager->MaintainTasks(fDeltaTime);
 
@@ -142,6 +142,15 @@ void AIManager::update(const float fDeltaTime)
         checkForCollisions();
         AddItemToDrawList(m_pBlueCar);
         //OutputDebugStringA(("Blue Car:\nVelocity:" + std::to_string(m_pBlueCar->getForceMotion()->getVelocity().Length()/fDeltaTime) + " m/s\nForce:" + std::to_string(m_pBlueCar->getForceMotion()->getForce().Length()) + " N\n").c_str());
+    }
+
+    if (m_pCurrentCar != nullptr)
+    {
+        for (Whisker* whisker : m_pCurrentCar->getWhiskers())
+        {
+            whisker->update(fDeltaTime);
+            AddItemToDrawList(whisker);
+        }
     }
 }
 

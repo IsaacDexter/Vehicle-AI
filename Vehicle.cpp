@@ -39,6 +39,11 @@ HRESULT	Vehicle::initMesh(ID3D11Device* pd3dDevice, carColour colour)
 
 	m_lastPosition = Vector2D(0, 0);
 
+	for (Whisker* whisker : m_whiskers)
+	{
+		hr = whisker->init(pd3dDevice);
+	}
+
 	return hr;
 }
 
@@ -202,9 +207,10 @@ bool Vehicle::brake(Vector2D destination, float brakingRadiusSquared)
 void Vehicle::projectWhisker(Whisker* outWhisker)
 {
 	Vector2D direction = getForceMotion()->getVelocity();	//get the vehicles direction from velocity
-	Vector2D position = getPosition() + direction;			//Find the position the whisker ends at
+	Vector2D position = getPosition() + direction/2;			//Find the position the whisker ends at
 															//Check to see if a line between the car and that position would intersect
 	outWhisker->SetLine(getPosition(), position);
+	outWhisker->setPosition(position);
 }
 
 void Vehicle::projectWhisker(Whisker* outWhisker, float theta)
@@ -215,6 +221,7 @@ void Vehicle::projectWhisker(Whisker* outWhisker, float theta)
 	Vector2D position = getPosition() + direction;			//Find the position the whisker ends at
 															//Check to see if a line between the car and that position would intersect
 	outWhisker->SetLine(getPosition(), position);
+	outWhisker->setPosition(position);
 }
 
 void Vehicle::projectWhisker(Whisker* outWhisker, float theta, float distance)
@@ -226,6 +233,7 @@ void Vehicle::projectWhisker(Whisker* outWhisker, float theta, float distance)
 	Vector2D position = getPosition() + direction;			//Find the position the whisker ends at
 															//Check to see if a line between the car and that position would intersect
 	outWhisker->SetLine(getPosition(), position);
+	outWhisker->setPosition(position);
 }
 
 #pragma endregion
