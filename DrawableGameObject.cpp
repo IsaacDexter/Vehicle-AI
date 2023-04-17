@@ -30,6 +30,46 @@ void DrawableGameObject::setDirection(XMFLOAT3 direction)
 	XMStoreFloat3(&m_direction, v);
 }
 
+bool DrawableGameObject::loadTexture(ID3D11Device* pd3dDevice, wstring textureName)
+{
+	// load and setup textures
+	// if this texture isn't already loaded
+	if (m_pTextureResourceViews.find(textureName) == m_pTextureResourceViews.end())
+	{
+		//pair an identifier (the path) with the textureresourceview
+		pair<wstring, ID3D11ShaderResourceView*> texture;
+		texture.first = textureName;
+
+		//create the texture from the given path
+		HRESULT hr = CreateDDSTextureFromFile(pd3dDevice, textureName.c_str(), nullptr, &texture.second);
+		if (FAILED(hr))
+			return false;
+
+		//place it into the dictionary
+		m_pTextureResourceViews.emplace(texture);
+		//if there is no currently set texture, set this one
+		if (m_pTextureResourceView == nullptr)
+		{
+			m_pTextureResourceView = texture.second;
+		}
+		return true;
+	}
+	return false;
+}
+
+bool DrawableGameObject::switchTexture(wstring textureName)
+{
+	//If the texture has been loaded
+	if (m_pTextureResourceViews.find(textureName) != m_pTextureResourceViews.end())
+	{
+		//set the srv to be that texture
+		m_pTextureResourceView = m_pTextureResourceViews.at(textureName);
+		return true;
+	}
+	//otherwise, do nothing.
+	return false;
+}
+
 DrawableGameObject::~DrawableGameObject()
 {
 	release();
@@ -48,6 +88,11 @@ void DrawableGameObject::release()
 	if (m_pTextureResourceView)
 		m_pTextureResourceView->Release();
 	m_pTextureResourceView = nullptr;
+
+	if (!m_pTextureResourceViews.empty())
+	{
+		m_pTextureResourceViews.clear();
+	}
 
 	if (m_pSamplerLinear)
 		m_pSamplerLinear->Release();
@@ -134,10 +179,7 @@ HRESULT DrawableGameObject::initMesh(ID3D11Device* pd3dDevice)
 		return hr;
 
 	
-	// load and setup textures
-	hr = CreateDDSTextureFromFile(pd3dDevice, m_textureName.c_str(), nullptr, &m_pTextureResourceView);
-	if (FAILED(hr))
-		return hr;
+	loadTexture(pd3dDevice, m_textureName);
 
 	D3D11_SAMPLER_DESC sampDesc;
 	ZeroMemory(&sampDesc, sizeof(sampDesc));

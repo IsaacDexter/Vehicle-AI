@@ -209,7 +209,7 @@ void Vehicle::projectWhisker(Whisker* outWhisker)
 	Vector2D direction = getForceMotion()->getVelocity();	//get the vehicles direction from velocity
 	Vector2D position = getPosition() + direction/2;			//Find the position the whisker ends at
 															//Check to see if a line between the car and that position would intersect
-	outWhisker->SetLine(getPosition(), position);
+	outWhisker->setLine(getPosition(), position);
 	outWhisker->setPosition(position);
 }
 
@@ -220,7 +220,7 @@ void Vehicle::projectWhisker(Whisker* outWhisker, float theta)
 	direction *= angleDirection;							//Combine with with the vehicles current angle to project the angle from the vehicles direction
 	Vector2D position = getPosition() + direction;			//Find the position the whisker ends at
 															//Check to see if a line between the car and that position would intersect
-	outWhisker->SetLine(getPosition(), position);
+	outWhisker->setLine(getPosition(), position);
 	outWhisker->setPosition(position);
 }
 
@@ -232,7 +232,7 @@ void Vehicle::projectWhisker(Whisker* outWhisker, float theta, float distance)
 	direction *= angleDirection;							//Combine with with the vehicles current angle to project the angle from the vehicles direction
 	Vector2D position = getPosition() + direction;			//Find the position the whisker ends at
 															//Check to see if a line between the car and that position would intersect
-	outWhisker->SetLine(getPosition(), position);
+	outWhisker->setLine(getPosition(), position);
 	outWhisker->setPosition(position);
 }
 

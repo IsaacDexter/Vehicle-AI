@@ -9,6 +9,7 @@
 #include <iostream>
 #include "structures.h"
 #include "Vector2D.h"
+#include <map>
 
 using namespace DirectX;
 
@@ -38,6 +39,8 @@ protected:
 
 	void								setDirection(DirectX::XMFLOAT3 direction);
 	void								setTextureName(wstring texName) { m_textureName = texName; }
+	bool								loadTexture(ID3D11Device* pd3dDevice, wstring texName);
+	bool								switchTexture(wstring textureName);
 
 	// helper functions
 	DirectX::XMFLOAT3							addFloat3(DirectX::XMFLOAT3& f1, DirectX::XMFLOAT3& f2);
@@ -50,6 +53,8 @@ protected:
 protected: // protected variables
 	XMFLOAT3							m_scale;
 	float								m_radianRotation;
+	/// <summary>A map pairing paths with textures, useful as basic identifiers for textures and to prevent duplicate loading.</summary>
+	map<std::wstring, ID3D11ShaderResourceView*>	m_pTextureResourceViews;
 
 private: // private variables
 	

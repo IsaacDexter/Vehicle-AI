@@ -102,7 +102,6 @@ public:
 	/// <param name="outWhisker">The whisker to modify</param>
 	void projectWhisker(Whisker* outWhisker, float theta, float distance);
 	
-
 #pragma endregion
 
 #pragma region SteeringBehaviours
