@@ -11,6 +11,9 @@ public:
 	bool intersectsBuilding();
 	bool intersectsVehicle();
 
+	void SetLine(Vector2D start, Vector2D end) { m_line.first = start, m_line.second = end; };
+	void SetLine(Line line) { m_line = line; };
+
 private:
 	Line m_line;
 	WaypointManager* m_waypointManager;
