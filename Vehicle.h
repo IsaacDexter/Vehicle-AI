@@ -43,6 +43,7 @@ public:
 
 
 	void setWaypointManager(WaypointManager* wpm);
+	WaypointManager* getWaypointManager() const { return m_waypointManager; };
 	void setTaskManager(TaskManager* taskManager) { m_pTaskManager = taskManager; };
 	void hasCollided() {}
 

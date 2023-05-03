@@ -7,6 +7,7 @@
 #include "constants.h"
 #include "ForceHelper.h"
 #include "Tasking.h"
+#include "Controls.h"
 
 // AI Manager
 
@@ -15,6 +16,7 @@ AIManager::AIManager()
     m_pRedCar = nullptr;
     m_pBlueCar = nullptr;
     m_pTaskManager = nullptr;
+    m_currentMode = Controls::KEY_MOVEMENT;
 }
 
 AIManager::~AIManager()
@@ -173,70 +175,126 @@ void AIManager::mouseUp(int x, int y)
 
 void AIManager::keyUp(WPARAM param)
 {
-    // hint 65-90 are a-z
-    const WPARAM key_a = 65;
-    const WPARAM key_e = 69;
-    const WPARAM key_f = 70;
-    const WPARAM key_i = 73;
-    const WPARAM key_r = 82;
-    const WPARAM key_s = 83;
-    const WPARAM key_w = 87;
-    const WPARAM key_space = 32;
 
-    switch (param)
+
+    switch (m_currentMode)
     {
-    case VK_LEFT:
+    case Controls::KEY_MOVEMENT:
     {
-        OutputDebugStringA("Currently controlling Red.\n");
-        m_pCurrentCar = m_pRedCar;
-        m_pOtherCar = m_pBlueCar;
+        //Handle the specified movement system controls
+        switch (param)
+        {
+        case Controls::KEY_SEEK:
+        {
+            break;
+        }
+        case Controls::KEY_ARRIVE:
+        {
+            break;
+        }
+        case Controls::KEY_WANDER:
+        {
+            break;
+        }
+        case Controls::KEY_PURSUIT:
+        {
+            break;
+        }
+        case Controls::KEY_FLEE:
+        {
+            break;
+        }
+        case Controls::KEY_OBSTACLE_AVOIDANCE:
+        {
+            break;
+        }
+        case Controls::KEY_MOVEMENT:
+        {
+            m_currentMode = Controls::KEY_MOVEMENT;
+            break;
+        }
+        case Controls::KEY_TASKING:
+        {
+            m_currentMode = Controls::KEY_TASKING;
+            break;
+        }
+        default:
+            break;
+        }
         break;
     }
-    case VK_RIGHT:
+    case Controls::KEY_TASKING:
     {
-        OutputDebugStringA("Currently controlling Blue.\n");
-        m_pCurrentCar = m_pBlueCar;
-        m_pOtherCar = m_pRedCar;
-        break;
-    }
-    case key_a:
-    {
-        m_pCurrentCar->Arrive(m_pickups[0]->getPosition());
-        break;
-    }
-    case key_e:
-    {
-        m_pCurrentCar->Evade(m_pOtherCar);
-        break;
-    }
-    case key_f:
-    {
-        m_pCurrentCar->Flee(m_pOtherCar);
-        break;
-    }
-    case key_i:
-    {
-        m_pCurrentCar->Intercept(m_pOtherCar);
-        break;
-    }
-    case key_r:
-    {
-        m_pCurrentCar->Ramble();
-        break;
-    }
-    case key_s:
-    {
-        m_pCurrentCar->Seek(m_pOtherCar);
-        break;
-    }
-    case key_w:
-    {
-        m_pCurrentCar->Wander();
-        break;
-    }
-    case key_space:
-    {
-        m_pTaskManager->Clear();
+        //handle the original tasking system mode
+        switch (param)
+        {
+        case VK_LEFT:
+        {
+            OutputDebugStringA("Currently controlling Red.\n");
+            m_pCurrentCar = m_pRedCar;
+            m_pOtherCar = m_pBlueCar;
+            break;
+        }
+        case VK_RIGHT:
+        {
+            OutputDebugStringA("Currently controlling Blue.\n");
+            m_pCurrentCar = m_pBlueCar;
+            m_pOtherCar = m_pRedCar;
+            break;
+        }
+        case Controls::KEY_ARRIVE:
+        {
+            m_pCurrentCar->Arrive(m_pickups[0]->getPosition());
+            break;
+        }
+        case Controls::KEY_EVADE:
+        {
+            m_pCurrentCar->Evade(m_pOtherCar);
+            break;
+        }
+        case Controls::KEY_FLEE:
+        {
+            m_pCurrentCar->Flee(m_pOtherCar);
+            break;
+        }
+        case Controls::KEY_INTERCEPT:
+        {
+            m_pCurrentCar->Intercept(m_pOtherCar);
+            break;
+        }
+        case Controls::KEY_RAMBLE:
+        {
+            m_pCurrentCar->Ramble();
+            break;
+        }
+        case Controls::KEY_SEEK:
+        {
+            m_pCurrentCar->Seek(m_pOtherCar);
+            break;
+        }
+        case Controls::KEY_WANDER:
+        {
+            m_pCurrentCar->Wander();
+            break;
+        }
+        case Controls::KEY_CLEAR:
+        {
+            m_pTaskManager->Clear();
+            break;
+        }
+        case Controls::KEY_MOVEMENT:
+        {
+            m_currentMode = Controls::KEY_MOVEMENT;
+            break;
+        }
+        case Controls::KEY_TASKING:
+        {
+            m_currentMode = Controls::KEY_TASKING;
+            break;
+        }
+        default:
+            break;
+        }
         break;
     }
     default:

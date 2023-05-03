@@ -23,6 +23,16 @@
     <ClCompile Include="ForceMotion.cpp" />
     <ClCompile Include="Tasking.cpp" />
     <ClCompile Include="Whisker.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="StateManager.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="SeekState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="ArriveState.cpp">
+      <Filter>Targets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -59,6 +69,26 @@
     <ClInclude Include="ForceMotion.h" />
     <ClInclude Include="Tasking.h" />
     <ClInclude Include="Whisker.h" />
+    <ClInclude Include="StateManager.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="SeekState.h" />
+    <ClInclude Include="Target.h">
+      <Filter>Targets</Filter>
+    </ClInclude>
+    <ClInclude Include="AttachedTarget.h">
+      <Filter>Targets</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticTarget.h">
+      <Filter>Targets</Filter>
+    </ClInclude>
+    <ClInclude Include="ArriveState.h">
+      <Filter>Targets</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\blue.dds">
@@ -107,6 +137,12 @@
     </Filter>
     <Filter Include="Core %28do not edit%29">
       <UniqueIdentifier>{c721d74b-61d3-4ae0-9d17-be739d070a1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{3987d604-49d2-41a6-8326-435eb4bb862f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Targets">
+      <UniqueIdentifier>{b5f4f8cd-ab6f-4a2c-99d1-227d8d6f8910}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

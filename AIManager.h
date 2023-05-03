@@ -34,5 +34,6 @@ private:
 	WaypointManager			m_waypointManager;
 	TaskManager*			m_pTaskManager = nullptr;
 
+	WPARAM					m_currentMode = NULL;
 };
 
