@@ -14,7 +14,7 @@ void ArriveState::Enter(Vehicle* agent)
 {
 	HierarchicalState::Enter(agent);	//Call the parent's enter to set up the  
 	m_destination = new StaticTarget(agent->getWaypointManager()->getRandomWaypoint()->getPosition());	//Set the destination
-	m_pStateManager->SetState(new ArriveState_Moving(m_destination));	//Set the initial substate
+	m_pStateManager->SetState(new MoveState(m_destination));	//Set the initial substate
 }
 
 void ArriveState::Exit()
@@ -48,29 +48,29 @@ State* ArriveState::Check(Vehicle* agent)
 
 
 
-ArriveState_Moving::ArriveState_Moving(Target* destination) : State()
+ArriveState::MoveState::MoveState(Target* destination) : State()
 {
 	m_destination = destination;
 }
 
-void ArriveState_Moving::Enter(Vehicle* agent)
+void ArriveState::MoveState::Enter(Vehicle* agent)
 {
 }
 
-void ArriveState_Moving::Exit()
+void ArriveState::MoveState::Exit()
 {
 	//Don't delete the destination as its common with the other state
 	m_destination = nullptr;
 }
 
-void ArriveState_Moving::Update(Vehicle* agent, float deltaTime)
+void ArriveState::MoveState::Update(Vehicle* agent, float deltaTime)
 {
 	Vector2D toDestination = m_destination->GetPosition() - agent->getPosition();
 	toDestination.Normalize();	//Find the direction toward the destination
 	agent->applyForceInDirection(toDestination);	//Apply force in direction if the destination.
 }
 
-State* ArriveState_Moving::Check(Vehicle* agent)
+State* ArriveState::MoveState::Check(Vehicle* agent)
 {
 	//Get the distance squared between this and the destination and compare it with the distance squared to change state at.
 	float distanceSq = m_destination->GetPosition().DistanceSq(agent->getPosition());
@@ -78,7 +78,7 @@ State* ArriveState_Moving::Check(Vehicle* agent)
 	//If we're within braking distance, switch to the braking substate
 	if (arrived)
 	{
-		return new ArriveState_Braking(m_destination);
+		return new BrakeState(m_destination);
 		//return nullptr;
 	}
 	else
@@ -87,12 +87,12 @@ State* ArriveState_Moving::Check(Vehicle* agent)
 	}
 }
 
-ArriveState_Braking::ArriveState_Braking(Target* destination) : ArriveState_Moving(destination)
+ArriveState::BrakeState::BrakeState(Target* destination) : MoveState(destination)
 {
 	
 }
 
-void ArriveState_Braking::Update(Vehicle* agent, float deltaTime)
+void ArriveState::BrakeState::Update(Vehicle* agent, float deltaTime)
 {
 	Vector2D toDestination = m_destination->GetPosition() - agent->getPosition();
 	float distanceSq = toDestination.LengthSq();
@@ -105,7 +105,7 @@ void ArriveState_Braking::Update(Vehicle* agent, float deltaTime)
 	agent->getForceMotion()->accumulateForce(brakeForce);
 }
 
-State* ArriveState_Braking::Check(Vehicle* agent)
+State* ArriveState::BrakeState::Check(Vehicle* agent)
 {
 	//Get the distance squared between this and the destination and compare it with the distance squared to change state at.
 	float distanceSq = m_destination->GetPosition().DistanceSq(agent->getPosition());

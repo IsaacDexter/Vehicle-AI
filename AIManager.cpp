@@ -78,8 +78,8 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     m_pRedCar->setTaskManager(m_pTaskManager);
     m_pBlueCar->setTaskManager(m_pTaskManager);
 
-    m_pRedCar->setStateManager(new StateManager(m_pRedCar));
-    m_pBlueCar->setStateManager(new StateManager(m_pBlueCar));
+    m_pRedCar->setStateManager(new FSM(m_pRedCar));
+    m_pBlueCar->setStateManager(new FSM(m_pBlueCar));
 
     // create a passenger pickup item
     PickupItem* pPickupPassenger = new PickupItem();

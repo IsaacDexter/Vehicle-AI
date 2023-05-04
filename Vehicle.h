@@ -8,7 +8,7 @@
 #include "ForceMotion.h"
 #include <string>
 #include "Whisker.h"
-#include "StateManager.h"
+#include "FSM.h"
 
 
 #define VEHICLE_MASS 0.00005f
@@ -47,7 +47,7 @@ public:
 	void setWaypointManager(WaypointManager* wpm);
 	WaypointManager* getWaypointManager() const { return m_waypointManager; };
 	void setTaskManager(TaskManager* taskManager) { m_pTaskManager = taskManager; };
-	void setStateManager(StateManager* stateManager) { m_pStateManager = stateManager; };
+	void setStateManager(FSM* stateManager) { m_pStateManager = stateManager; };
 	void setState(State* state) { if (m_pStateManager != nullptr) m_pStateManager->SetState(state); };
 	void hasCollided() {}
 
@@ -176,7 +176,7 @@ protected: // protected properties
 
 	WaypointManager* m_waypointManager;
 	TaskManager* m_pTaskManager;
-	StateManager* m_pStateManager;
+	FSM* m_pStateManager;
 	ForceMotion m_forceMotion;
 
 	/// <summary>How much to multiply forces that affect vehicles by. represents an engines bhp</summary>

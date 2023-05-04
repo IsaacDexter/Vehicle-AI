@@ -374,7 +374,7 @@
     <ClCompile Include="PickupItem.cpp" />
     <ClCompile Include="SeekState.cpp" />
     <ClCompile Include="State.cpp" />
-    <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="FSM.cpp" />
     <ClCompile Include="Tasking.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Waypoint.cpp" />
@@ -401,7 +401,7 @@
     <CLInclude Include="resource.h" />
     <ClInclude Include="SeekState.h" />
     <ClInclude Include="State.h" />
-    <ClInclude Include="StateManager.h" />
+    <ClInclude Include="FSM.h" />
     <ClInclude Include="StaticTarget.h" />
     <ClInclude Include="structures.h" />
     <ClInclude Include="Target.h" />

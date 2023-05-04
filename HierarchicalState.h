@@ -1,7 +1,7 @@
 #pragma once
 #include "State.h"
 
-class StateManager;
+class FSM;
 
 class HierarchicalState abstract : 
 	public State
@@ -16,5 +16,5 @@ public:
 
 protected:
 	//Used to handle this state's child states
-	StateManager* m_pStateManager;
+	FSM* m_pStateManager;
 };

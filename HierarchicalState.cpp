@@ -1,5 +1,5 @@
 #include "HierarchicalState.h"
-#include "StateManager.h"
+#include "FSM.h"
 
 HierarchicalState::HierarchicalState()
 {
@@ -8,7 +8,7 @@ HierarchicalState::HierarchicalState()
 
 void HierarchicalState::Enter(Vehicle* agent)
 {
-	m_pStateManager = new StateManager(agent);
+	m_pStateManager = new FSM(agent);
 }
 
 void HierarchicalState::Exit()

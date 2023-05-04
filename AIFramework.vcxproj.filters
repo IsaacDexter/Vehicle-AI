@@ -23,7 +23,7 @@
     <ClCompile Include="ForceMotion.cpp" />
     <ClCompile Include="Tasking.cpp" />
     <ClCompile Include="Whisker.cpp" />
-    <ClCompile Include="StateManager.cpp">
+    <ClCompile Include="FSM.cpp">
       <Filter>States</Filter>
     </ClCompile>
     <ClCompile Include="SeekState.cpp">
@@ -74,7 +74,7 @@
     <ClInclude Include="ForceMotion.h" />
     <ClInclude Include="Tasking.h" />
     <ClInclude Include="Whisker.h" />
-    <ClInclude Include="StateManager.h">
+    <ClInclude Include="FSM.h">
       <Filter>States</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
