@@ -176,6 +176,5 @@ protected: // protected properties
 	ForceMotion m_forceMotion;
 
 	std::vector<Whisker*> m_whiskers;
-
 };
 

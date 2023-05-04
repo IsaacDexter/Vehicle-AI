@@ -71,7 +71,7 @@ State* ArriveState_Moving::Check(Vehicle* agent)
 {
 	//Get the distance squared between this and the destination and compare it with the distance squared to change state at.
 	float distanceSq = m_destination->GetPosition().DistanceSq(agent->getPosition());
-	bool arrived = arrived = distanceSq < brakeRadiusSq;
+	bool arrived = arrived = distanceSq < m_brakeRadiusSq;
 	//If we're within braking distance, switch to the braking substate
 	if (arrived)
 	{
@@ -84,26 +84,23 @@ State* ArriveState_Moving::Check(Vehicle* agent)
 	}
 }
 
-ArriveState_Braking::ArriveState_Braking(Target* destination) : State()
+ArriveState_Braking::ArriveState_Braking(Target* destination) : ArriveState_Moving(destination)
 {
-	m_destination = destination;
-}
-
-void ArriveState_Braking::Enter(Vehicle* agent)
-{
-
-}
-
-void ArriveState_Braking::Exit()
-{
-	//Don't delete the destination as its common with the other state
-	m_destination = nullptr;
+	
 }
 
 void ArriveState_Braking::Update(Vehicle* agent, float deltaTime)
 {
 	agent->applyForceToPosition(m_destination->GetPosition());
-	agent->brake(m_destination->GetPosition());
+
+	Vector2D toDestination = m_destination->GetPosition() - agent->getPosition();
+	float distanceSq = toDestination.LengthSq();
+	toDestination.Normalize();	//Find the direction away from the destination
+	toDestination *= -1;
+
+	float brakePercentage = max(0.0f, ((m_brakeRadiusSq)-distanceSq) / (m_brakeRadiusSq));	//Calculate a percentage of how much of the brake area has been covered
+	Vector2D brakeForce = toDestination * (brakePercentage / 2);	//Apply a brake force in the opposite direction  to the destination according to how close the car is to the location													
+	agent->getForceMotion()->accumulateForce(brakeForce);
 }
 
 State* ArriveState_Braking::Check(Vehicle* agent)
