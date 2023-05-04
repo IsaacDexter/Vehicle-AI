@@ -373,6 +373,7 @@
     </ClCompile>
     <ClCompile Include="PickupItem.cpp" />
     <ClCompile Include="SeekState.cpp" />
+    <ClCompile Include="SFSM.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="FSM.cpp" />
     <ClCompile Include="Tasking.cpp" />
@@ -400,6 +401,8 @@
     <ClInclude Include="PickupItem.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="SeekState.h" />
+    <ClInclude Include="SM.h" />
+    <ClInclude Include="SFSM.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="FSM.h" />
     <ClInclude Include="StaticTarget.h" />

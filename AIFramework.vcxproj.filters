@@ -38,6 +38,9 @@
     <ClCompile Include="HierarchicalState.cpp">
       <Filter>States</Filter>
     </ClCompile>
+    <ClCompile Include="SFSM.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -97,6 +100,12 @@
       <Filter>States</Filter>
     </ClInclude>
     <ClInclude Include="HierarchicalState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="SM.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="SFSM.h">
       <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>
