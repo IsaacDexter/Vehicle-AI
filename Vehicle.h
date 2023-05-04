@@ -64,6 +64,10 @@ public:
 	/// <param name="direction">The direction, normalized, to apply the force in.</param>
 	void applyForceInDirection(const Vector2D& direction);
 
+	/// <summary>Applies the force regardless of scale</summary>
+	/// <param name="force">The force, unnormalised, to apply</param>
+	void applyForce(const Vector2D& force);
+
 	void applyForceToPosition(const Vector2D& positionTo);
 
 	void applyForceFromPosition(const Vector2D& positionTo);

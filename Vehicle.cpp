@@ -122,6 +122,11 @@ void Vehicle::setWaypointManager(WaypointManager* wpm)
 void Vehicle::applyForceInDirection(const Vector2D& direction)
 {
 	Vector2D force = direction * m_forceMultiplier;
+	applyForce(force);
+}
+
+void Vehicle::applyForce(const Vector2D& force)
+{
 	getForceMotion()->accumulateForce(force);
 }
 

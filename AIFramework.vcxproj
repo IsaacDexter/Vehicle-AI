@@ -378,6 +378,7 @@
     <ClCompile Include="FSM.cpp" />
     <ClCompile Include="Tasking.cpp" />
     <ClCompile Include="Vehicle.cpp" />
+    <ClCompile Include="WanderState.cpp" />
     <ClCompile Include="Waypoint.cpp" />
     <ClCompile Include="WaypointManager.cpp" />
     <ClCompile Include="Whisker.cpp" />
@@ -411,6 +412,7 @@
     <ClInclude Include="Tasking.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Vehicle.h" />
+    <ClInclude Include="WanderState.h" />
     <ClInclude Include="Waypoint.h" />
     <ClInclude Include="WaypointManager.h" />
     <ClInclude Include="Whisker.h" />

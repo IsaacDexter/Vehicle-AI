@@ -23,9 +23,6 @@
     <ClCompile Include="ForceMotion.cpp" />
     <ClCompile Include="Tasking.cpp" />
     <ClCompile Include="Whisker.cpp" />
-    <ClCompile Include="FSM.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
     <ClCompile Include="SeekState.cpp">
       <Filter>States</Filter>
     </ClCompile>
@@ -35,12 +32,16 @@
     <ClCompile Include="ArriveState.cpp">
       <Filter>States</Filter>
     </ClCompile>
+    <ClCompile Include="FSM.cpp">
+      <Filter>States\Machines</Filter>
+    </ClCompile>
+    <ClCompile Include="SFSM.cpp">
+      <Filter>States\Machines</Filter>
+    </ClCompile>
     <ClCompile Include="HierarchicalState.cpp">
       <Filter>States</Filter>
     </ClCompile>
-    <ClCompile Include="SFSM.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
+    <ClCompile Include="WanderState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -77,9 +78,6 @@
     <ClInclude Include="ForceMotion.h" />
     <ClInclude Include="Tasking.h" />
     <ClInclude Include="Whisker.h" />
-    <ClInclude Include="FSM.h">
-      <Filter>States</Filter>
-    </ClInclude>
     <ClInclude Include="State.h">
       <Filter>States</Filter>
     </ClInclude>
@@ -99,15 +97,19 @@
     <ClInclude Include="ArriveState.h">
       <Filter>States</Filter>
     </ClInclude>
+    <ClInclude Include="FSM.h">
+      <Filter>States\Machines</Filter>
+    </ClInclude>
+    <ClInclude Include="SFSM.h">
+      <Filter>States\Machines</Filter>
+    </ClInclude>
+    <ClInclude Include="SM.h">
+      <Filter>States\Machines</Filter>
+    </ClInclude>
     <ClInclude Include="HierarchicalState.h">
       <Filter>States</Filter>
     </ClInclude>
-    <ClInclude Include="SM.h">
-      <Filter>States</Filter>
-    </ClInclude>
-    <ClInclude Include="SFSM.h">
-      <Filter>States</Filter>
-    </ClInclude>
+    <ClInclude Include="WanderState.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\blue.dds">
@@ -162,6 +164,9 @@
     </Filter>
     <Filter Include="Targets">
       <UniqueIdentifier>{b5f4f8cd-ab6f-4a2c-99d1-227d8d6f8910}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States\Machines">
+      <UniqueIdentifier>{6f8f2cb1-9f84-419d-ae26-f6cb0469c5c1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
