@@ -18,5 +18,7 @@ public:
 protected:
 	Vehicle* m_agent;
 	std::stack<State*> m_states;
+	virtual void ExitState();
+	virtual void EnterState(State* state);
 };
 

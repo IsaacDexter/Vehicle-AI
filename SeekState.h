@@ -19,5 +19,6 @@ public:
 
 protected:
 	Target* m_destination;
+	const float m_arriveRadiusSq = 8.0f;
 };
 

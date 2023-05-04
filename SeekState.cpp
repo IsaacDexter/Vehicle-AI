@@ -23,17 +23,20 @@ void SeekState::Exit()
 
 void SeekState::Update(Vehicle* agent, float deltaTime)
 {
-	//Move the target if needs be.
-	m_destination->Update();
-	agent->applyForceToPosition(m_destination->GetPosition());
+	Vector2D toDestination = m_destination->GetPosition() - agent->getPosition();
+	toDestination.Normalize();	//Find the direction toward the destination
+	agent->applyForceInDirection(toDestination);	//Apply force in direction if the destination.
 }
 
 State* SeekState::Check(Vehicle* agent)
 {
-	//if we've found our destination, hand in a new state with a new random position
-	if (agent->isPassed(m_destination->GetPosition()))
+	//Get the distance squared between this and the destination and compare it with the distance squared to change state at.
+	float distanceSq = m_destination->GetPosition().DistanceSq(agent->getPosition());
+	bool arrived = arrived = distanceSq < m_arriveRadiusSq;
+	//if we've found our destination, hand in a nullptr to clear the state
+	if (arrived)
 	{
-		return new SeekState();
+		return nullptr;
 	}
 	else
 	{

@@ -21,29 +21,48 @@ void SFSM::Update(float dt)
 
 void SFSM::SetState(State* state)
 {
-	//exiting:
-	//If there are states in the stack
+	//If we're trying to exit a state by entering no state
+	if (state == nullptr)
+	{
+		//Pop from the stack if we can
+		ExitState();
+	}
+	//Otherwise, if we're trying to enter a state
+	else
+	{
+		//Push it to the stack if it isn't a state we're in already
+		EnterState(state);
+	}
+}
+
+void SFSM::ExitState()
+{
+	//If there is anything on the top of the stack
 	if (!m_states.empty())
 	{
-		//And the state trying to be set isnt the one at the top of the state
-		if (state != m_states.top())
-		{
-			//Exit current state to allow it to clean itself up
-			m_states.top()->Exit();
-		}
-		//remove up memory bound to top state itself.
+		//exit the top state
+		m_states.top()->Exit();
+		//delete it then pop it.
 		delete m_states.top();
-		//pop the top
 		m_states.pop();
 	}
+}
 
-	//entering:
-	//if the user is trying to set no state, leave the stack empty
-	if (state != nullptr)
+void SFSM::EnterState(State* state)
+{
+	//If we are currently in a state
+	if (!m_states.empty())
 	{
-		//otherwise if the user is trying to set a state, push it to the stack 
-		//Enter and push the new state
-		m_states.push(state);
-		state->Enter(m_agent);
+		//And its this state
+		if (state == m_states.top())
+		{
+			//Do nothing
+			return;
+		}
 	}
+
+	//Otherwise, as the state is not nullptr, push it to the top of the stack
+	m_states.push(state);
+	//And enter it
+	state->Enter(m_agent);
 }

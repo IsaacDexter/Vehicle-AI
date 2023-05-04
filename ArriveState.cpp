@@ -4,6 +4,7 @@
 #include "StaticTarget.h"
 #include "AttachedTarget.h"
 #include "Vehicle.h"
+#include "FSM.h"
 
 ArriveState::ArriveState() : HierarchicalState()
 {
