@@ -1,21 +1,15 @@
-﻿  Vehicle.cpp
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\ForceMotion.h(32,22): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\ForceMotion.h(51,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Tasking.h(77,8): warning C4458: declaration of 'check' hides class member
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Tasking.h(21,12): message : see declaration of 'Task::check'
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Tasking.h(89,29): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(146,43): warning C4100: 'interval': unreferenced formal parameter
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(160,24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(176,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(200,24): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(255,52): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(267,52): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(277,53): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(287,52): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(297,53): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(307,52): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(317,53): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(327,52): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(337,53): warning C4100: 'dt': unreferenced formal parameter
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.cpp(347,53): warning C4100: 'dt': unreferenced formal parameter
-  AIFramework.vcxproj -> C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\x64\Debug\AIFramework.exe
+﻿  ArriveState.cpp
+C:\Users\d015349l\Documents\GitHub\ai-coding-assignment-2023-IsaacDexter\Vector2D.h(29,1): warning C4099: 'Vector2D': type name first seen using 'class' now seen using 'struct'
+C:\Users\d015349l\Documents\GitHub\ai-coding-assignment-2023-IsaacDexter\Vector2D.h(28): message : see declaration of 'Vector2D'
+C:\Users\d015349l\Documents\GitHub\ai-coding-assignment-2023-IsaacDexter\ForceMotion.h(32,22): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\d015349l\Documents\GitHub\ai-coding-assignment-2023-IsaacDexter\ForceMotion.h(51,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\d015349l\Documents\GitHub\ai-coding-assignment-2023-IsaacDexter\ArriveState.cpp(23,2): warning C5205: delete of an abstract class 'Target' that has a non-virtual destructor results in undefined behavior
+C:\Users\d015349l\Documents\GitHub\ai-coding-assignment-2023-IsaacDexter\Target.h(5): message : see declaration of 'Target'
+C:\Users\d015349l\Documents\GitHub\ai-coding-assignment-2023-IsaacDexter\ArriveState.cpp(35,36): warning C4100: 'agent': unreferenced formal parameter
+C:\Users\d015349l\Documents\GitHub\ai-coding-assignment-2023-IsaacDexter\ArriveState.cpp(56,41): warning C4100: 'agent': unreferenced formal parameter
+C:\Users\d015349l\Documents\GitHub\ai-coding-assignment-2023-IsaacDexter\ArriveState.cpp(66,55): warning C4100: 'deltaTime': unreferenced formal parameter
+C:\Users\d015349l\Documents\GitHub\ai-coding-assignment-2023-IsaacDexter\ArriveState.cpp(76,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\d015349l\Documents\GitHub\ai-coding-assignment-2023-IsaacDexter\ArriveState.cpp(98,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\d015349l\Documents\GitHub\ai-coding-assignment-2023-IsaacDexter\ArriveState.cpp(95,56): warning C4100: 'deltaTime': unreferenced formal parameter
+C:\Users\d015349l\Documents\GitHub\ai-coding-assignment-2023-IsaacDexter\ArriveState.cpp(111,19): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  AIFramework.vcxproj -> C:\Users\d015349l\Documents\GitHub\ai-coding-assignment-2023-IsaacDexter\x64\Debug\AIFramework.exe

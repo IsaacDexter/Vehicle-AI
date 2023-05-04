@@ -117,6 +117,14 @@ void Vehicle::setWaypointManager(WaypointManager* wpm)
 
 #pragma region Actions
 
+
+
+void Vehicle::applyForceInDirection(const Vector2D& direction)
+{
+	Vector2D force = direction * m_forceMultiplier;
+	getForceMotion()->accumulateForce(force);
+}
+
 void Vehicle::applyForceToPosition(const Vector2D& destination)
 {
 	Vector2D toDestination = destination - getPosition();

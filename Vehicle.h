@@ -60,6 +60,10 @@ public:
 
 #pragma region Actions
 
+	/// <summary>Applies a force according to the engines BHP or whatever that value is. Either way, it scales.</summary>
+	/// <param name="direction">The direction, normalized, to apply the force in.</param>
+	void applyForceInDirection(const Vector2D& direction);
+
 	void applyForceToPosition(const Vector2D& positionTo);
 
 	void applyForceFromPosition(const Vector2D& positionTo);
@@ -174,6 +178,9 @@ protected: // protected properties
 	TaskManager* m_pTaskManager;
 	StateManager* m_pStateManager;
 	ForceMotion m_forceMotion;
+
+	/// <summary>How much to multiply forces that affect vehicles by. represents an engines bhp</summary>
+	const float m_forceMultiplier = 1.0f;
 
 	std::vector<Whisker*> m_whiskers;
 };

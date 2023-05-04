@@ -34,7 +34,7 @@ public:
 protected:
 	Target* m_destination;
 	/// <summary>The radius within which to switch to the braking state.</summary>
-	const float m_brakeRadiusSq = 1000.0f;
+	const float m_brakeRadiusSq = 2048.0f;
 };
 
 class ArriveState_Braking :
@@ -47,5 +47,5 @@ public:
 	virtual State* Check(Vehicle* agent) override;
 protected:
 	/// <summary>The radius to deem as having arrived at the location</summary>
-	const float arriveRadiusSq = 100.0f;
+	const float arriveRadiusSq = 8.0f;
 };

@@ -9,6 +9,7 @@ public:
 	StateManager(Vehicle* agent);
 	void Update(float dt);
 	void SetState(State* state);
+	bool HasState() { return m_state != nullptr; };
 
 private:
 	Vehicle* m_agent;
