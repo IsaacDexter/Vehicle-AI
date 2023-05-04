@@ -23,13 +23,21 @@ void StateManager::SetState(State* state)
 {
 	if (state != m_state)
 	{
-		//Exit current state to allow it to clean itself up
-		m_state->Exit();
+		//allow the user to come out of no state
+		if (m_state != nullptr)
+		{
+			//Exit current state to allow it to clean itself up
+			m_state->Exit();
+		}
 		//remove up memory bound to state itself.
 		delete m_state;
 		m_state = nullptr;
-		//Enter and store the new state
-		m_state = state;
-		state->Enter(m_agent);
+		//allow the user to set the state to nullptr
+		if (state != nullptr)
+		{
+			//Enter and store the new state
+			m_state = state;
+			state->Enter(m_agent);
+		}
 	}
 }

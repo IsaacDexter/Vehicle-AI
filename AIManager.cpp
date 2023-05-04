@@ -8,6 +8,8 @@
 #include "ForceHelper.h"
 #include "Tasking.h"
 #include "Controls.h"
+#include "SeekState.h"
+#include "ArriveState.h"
 
 // AI Manager
 
@@ -75,6 +77,9 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     m_pTaskManager = new TaskManager();
     m_pRedCar->setTaskManager(m_pTaskManager);
     m_pBlueCar->setTaskManager(m_pTaskManager);
+
+    m_pRedCar->setStateManager(new StateManager(m_pRedCar));
+    m_pBlueCar->setStateManager(new StateManager(m_pBlueCar));
 
     // create a passenger pickup item
     PickupItem* pPickupPassenger = new PickupItem();
@@ -186,10 +191,12 @@ void AIManager::keyUp(WPARAM param)
         {
         case Controls::KEY_SEEK:
         {
+            m_pBlueCar->setState(new SeekState());
             break;
         }
         case Controls::KEY_ARRIVE:
         {
+            m_pBlueCar->setState(new ArriveState());
             break;
         }
         case Controls::KEY_WANDER:
@@ -206,6 +213,12 @@ void AIManager::keyUp(WPARAM param)
         }
         case Controls::KEY_OBSTACLE_AVOIDANCE:
         {
+            break;
+        }
+        case Controls::KEY_CLEAR:
+        {
+            m_pBlueCar->setState(nullptr);
+            m_pRedCar->setState(nullptr);
             break;
         }
         case Controls::KEY_MOVEMENT:
@@ -230,14 +243,14 @@ void AIManager::keyUp(WPARAM param)
         {
         case VK_LEFT:
         {
-            OutputDebugStringA("Currently controlling Red.\n");
+            //OutputDebugStringA("Currently controlling Red.\n");
             m_pCurrentCar = m_pRedCar;
             m_pOtherCar = m_pBlueCar;
             break;
         }
         case VK_RIGHT:
         {
-            OutputDebugStringA("Currently controlling Blue.\n");
+            //OutputDebugStringA("Currently controlling Blue.\n");
             m_pCurrentCar = m_pBlueCar;
             m_pOtherCar = m_pRedCar;
             break;
@@ -380,7 +393,7 @@ bool AIManager::checkForCollisions()
     // does the car bounding sphere collide with the pickup bounding sphere?
     if (boundingSphereCar.Intersects(boundingSpherePU))
     {
-        OutputDebugStringA("Collision with pickup!\n");
+        //OutputDebugStringA("Collision with pickup!\n");
         m_pickups[0]->hasCollided();
         setRandomPickupPosition(m_pickups[0]);
 

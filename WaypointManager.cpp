@@ -20,7 +20,6 @@ struct waypointCoord {
 WaypointManager::~WaypointManager()
 {
 	destroyWaypoints();
-	printf("done");
 }
 
 // load the waypoints from a file

@@ -17,7 +17,13 @@ Vehicle::Vehicle() : m_forceMotion(VEHICLE_MASS, getPositionAddress())
 	m_direction = Vector2D(0, 0);
 	m_waypointManager = nullptr;
 	m_pTaskManager = nullptr;
+	m_pStateManager = nullptr;
 	m_whiskers.push_back(new Whisker());
+}
+
+Vehicle::~Vehicle()
+{
+	delete m_pStateManager;
 }
 
 HRESULT	Vehicle::initMesh(ID3D11Device* pd3dDevice, carColour colour)
@@ -49,6 +55,7 @@ HRESULT	Vehicle::initMesh(ID3D11Device* pd3dDevice, carColour colour)
 
 void Vehicle::update(const float deltaTime)
 {
+	m_pStateManager->Update(deltaTime);
 	m_forceMotion.update(deltaTime);
 
 	// rotate the object based on its last & current position
@@ -64,11 +71,11 @@ void Vehicle::update(const float deltaTime)
 		projectWhisker(whisker);
 		if (whisker->intersectsBuilding(m_waypointManager))
 		{
-			OutputDebugStringA("Whisker collision with building!\n");
+			//OutputDebugStringA("Whisker collision with building!\n");
 		}
 		if (whisker->intersectsVehicle(m_waypointManager))
 		{
-			OutputDebugStringA("Whisker collision with Vehicle!\n");
+			//OutputDebugStringA("Whisker collision with Vehicle!\n");
 		}
 	}
 
@@ -181,7 +188,7 @@ bool Vehicle::brake(float distanceSquared, float brakingRadiusSquared)
 
 		force *= -1;	//Get the inverse direction of the force
 		float brakePercentage = max(0.0f, ((brakingRadiusSquared)-distanceSquared) / (brakingRadiusSquared));	//Calculate a percentage of how much of the brake area has been covered
-		Vector2D brakeForce = force * (brakePercentage / 2);	//Apply a brake force according to how close the car is to the location													
+		Vector2D brakeForce = force * (brakePercentage / 1.1);	//Apply a brake force according to how close the car is to the location													
 		m_forceMotion.accumulateForce(brakeForce);
 	}
 	return inRange;

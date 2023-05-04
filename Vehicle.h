@@ -8,6 +8,7 @@
 #include "ForceMotion.h"
 #include <string>
 #include "Whisker.h"
+#include "StateManager.h"
 
 
 #define VEHICLE_MASS 0.00005f
@@ -24,6 +25,7 @@ class Vehicle : public DrawableGameObject, public Collidable
 {
 public:
 	Vehicle();
+	~Vehicle();
 
 public:
 	virtual HRESULT initMesh(ID3D11Device* pd3dDevice, carColour colour);
@@ -45,6 +47,8 @@ public:
 	void setWaypointManager(WaypointManager* wpm);
 	WaypointManager* getWaypointManager() const { return m_waypointManager; };
 	void setTaskManager(TaskManager* taskManager) { m_pTaskManager = taskManager; };
+	void setStateManager(StateManager* stateManager) { m_pStateManager = stateManager; };
+	void setState(State* state) { if (m_pStateManager != nullptr) m_pStateManager->SetState(state); };
 	void hasCollided() {}
 
 	ForceMotion* getForceMotion() { return &m_forceMotion; }
@@ -74,7 +78,7 @@ public:
 	/// <param name="destinationRadiusSquared">The radius, squared, of the zone we consider part of the destination. Somewhat like a margin of error.</param>
 	/// <param name="brakingRadiusSquared">The radius, squared, of the zone in which we want to start braking.</param>
 	/// <returns>Whether or not we have reached, and stopped at, the destination</returns>
-	bool isArrived(Vector2D destination, float destinationRadiusSquared = 100.0f, float brakingRadiusSquared = 1000.0f);
+	bool isArrived(Vector2D destination, float destinationRadiusSquared = 2.0f, float brakingRadiusSquared = 4096.0f);
 	/// <summary>Checks to see if we have reached a destination, if we have, don't stop moving, and return true.</summary>
 	/// <param name="destination">The Vector2D of the position we want to reach.</param>
 	/// <param name="destinationRadiusSquared">The radius, squared, of the zone we consider part of the destination. Somewhat like a margin of error.</param>
@@ -168,8 +172,10 @@ protected: // protected properties
 
 	WaypointManager* m_waypointManager;
 	TaskManager* m_pTaskManager;
+	StateManager* m_pStateManager;
 	ForceMotion m_forceMotion;
 
 	std::vector<Whisker*> m_whiskers;
+
 };
 
