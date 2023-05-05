@@ -115,7 +115,8 @@ void ArriveState::BrakeState::Update(Vehicle* agent, float deltaTime)
 	//Find the direction from the destination
 	toDestination *= -1;
 														
-	agent->applyForce(GetBrakeForce(distanceSq, agent, deltaTime));
+	//agent->applyForce(GetBrakeForce(distanceSq, agent, deltaTime));
+	GetBrakeForce(distanceSq, agent, deltaTime);
 }
 
 State* ArriveState::BrakeState::Check(Vehicle* agent)
@@ -144,10 +145,11 @@ Vector2D ArriveState::BrakeState::GetBrakeForce(const float& distanceSq, Vehicle
 	float distance = toDestination.Length();
 	float percentageCovered = 1 - distance / m_brakeRadius;
 	OutputDebugStringA((to_string(percentageCovered) + " = " + to_string(distance) + " / " + to_string(m_brakeRadius) + "\n").c_str());
-	percentageCovered *= percentageCovered;
+	percentageCovered;
 	
 
 	Vector2D brakeForce = currentForce * -1.0f * percentageCovered;	//Apply a brake force in the opposite direction  to the destination according to how close the car is to the location
 	OutputDebugStringA((to_string(percentageCovered) + " * (" + to_string(currentForce.x) + ", " + to_string(currentForce.y) + ") = (" +to_string(brakeForce.x) + ", " + to_string(brakeForce.y) + ")\n").c_str());
 	return brakeForce;
+
 }
