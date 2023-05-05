@@ -376,6 +376,7 @@
     <ClCompile Include="SFSM.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="FSM.cpp" />
+    <ClCompile Include="Target.cpp" />
     <ClCompile Include="Tasking.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="WanderState.cpp" />

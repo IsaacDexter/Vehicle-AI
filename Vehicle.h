@@ -184,7 +184,7 @@ protected: // protected properties
 	ForceMotion m_forceMotion;
 
 	/// <summary>How much to multiply forces that affect vehicles by. represents an engines bhp</summary>
-	const float m_forceMultiplier = 1.0f;
+	const float m_forceMultiplier = 120.0f;
 
 	std::vector<Whisker*> m_whiskers;
 };

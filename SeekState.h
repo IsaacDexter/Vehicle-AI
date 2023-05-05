@@ -32,6 +32,6 @@ protected:
 	/// <summary>The destination being navigated towards</summary>
 	Target* m_destination;
 	/// <summary>How close one has to be to the destination to be considered there</summary>
-	const float m_arriveRadiusSq = 8.0f;
+	const float m_arriveRadiusSq = 900.0f;
 };
 
