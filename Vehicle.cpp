@@ -127,6 +127,9 @@ void Vehicle::applyForceInDirection(const Vector2D& direction)
 
 void Vehicle::applyForce(const Vector2D& force)
 {
+	Vector2D direction = getPredictedPosition();
+	//Vector2D midpoint =
+
 	getForceMotion()->accumulateForce(force);
 }
 
@@ -140,7 +143,7 @@ void Vehicle::applyForceToPosition(const Vector2D& destination)
 
 	Vector2D force = desiredForce - currentForce;
 
-	getForceMotion()->accumulateForce(force);
+	applyForce(force);
 }
 
 void Vehicle::applyForceFromPosition(const Vector2D& destination)
@@ -153,7 +156,7 @@ void Vehicle::applyForceFromPosition(const Vector2D& destination)
 
 	Vector2D force = desiredForce - currentForce;
 
-	getForceMotion()->accumulateForce(force);
+	applyForce(force);
 }
 
 Vector2D Vehicle::getWanderPosition(float interval, float radius)
