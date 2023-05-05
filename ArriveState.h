@@ -46,8 +46,7 @@ protected:
 		/// <summary>The target being headed towards</summary>
 		Target* m_destination;
 		/// <summary>The radius within which to switch to the braking state.</summary>
-		const float m_brakeRadius = 120.0f;
-		const float m_brakeRadiusSq = m_brakeRadius * m_brakeRadius;
+		const float m_brakeRadiusSq = 2048.0f;
 	};
 
 	/// <summary>The brake state is the substate in use when the superstate is secondly moving to the destination and slowing down</summary>
@@ -72,9 +71,9 @@ protected:
 		/// <param name="totalDistance">Braking distance is used rather than a variable</param>
 		/// <param name="direction">The direction to apply the force in</param>
 		/// <returns>The force to be applied</returns>
-		virtual Vector2D GetBrakeForce(const float& distanceSq, Vehicle* agent, float dt);
+		virtual Vector2D GetBrakeForce(const float& distanceSq, const Vector2D& direction);
 		/// <summary>The radius to deem as having arrived at the location</summary>
-		const float arriveRadiusSq = 900.0f;
+		const float arriveRadiusSq = 8.0f;
 	};
 
 #pragma endregion

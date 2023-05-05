@@ -2,7 +2,7 @@
 
 HRESULT	Waypoint::init(ID3D11Device* pd3dDevice, bool isOnTrack, bool checkPointID)
 {
-	m_visible = false;
+	m_visible = true;
 	m_checkpointID = checkPointID;
 	m_isOnTrack = isOnTrack;
 

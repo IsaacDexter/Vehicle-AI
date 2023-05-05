@@ -23,7 +23,6 @@ void SeekState::Exit()
 
 void SeekState::Update(Vehicle* agent, float deltaTime)
 {
-	m_destination->Update();
 	Vector2D toDestination = m_destination->GetPosition() - agent->getPosition();
 	toDestination.Normalize();	//Find the direction toward the destination
 	agent->applyForceInDirection(toDestination);	//Apply force in direction if the destination.
@@ -37,10 +36,6 @@ State* SeekState::Check(Vehicle* agent)
 	//if we've found our destination, hand in a nullptr to clear the state
 	if (arrived)
 	{
-		//slow to an instant halt
-		agent->getForceMotion()->clearVelocity();
-		agent->getForceMotion()->clearAcceleration();
-		agent->getForceMotion()->clearForce();
 		return nullptr;
 	}
 	else

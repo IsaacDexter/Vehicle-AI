@@ -10,7 +10,6 @@
 #include "Controls.h"
 #include "SeekState.h"
 #include "ArriveState.h"
-#include "WanderState.h"
 #include "SFSM.h"
 
 // AI Manager
@@ -103,11 +102,7 @@ void AIManager::update(const float fDeltaTime)
 {
     for (unsigned int i = 0; i < m_waypointManager.getWaypointCount(); i++) {
         m_waypointManager.getWaypoint(i)->update(fDeltaTime);
-        if (m_waypointManager.getWaypoint(i)->isVisible())
-        {
-
-            AddItemToDrawList(m_waypointManager.getWaypoint(i)); // if you uncomment this, it will display the waypoints
-        }
+        //AddItemToDrawList(m_waypointManager.getWaypoint(i)); // if you uncomment this, it will display the waypoints
     }
 
     for (int i = 0; i < m_waypointManager.getQuadpointCount(); i++)
@@ -125,7 +120,7 @@ void AIManager::update(const float fDeltaTime)
 
     // draw the waypoints nearest to the red car
 
-    /*Waypoint* wp = m_waypointManager.getNearestWaypoint(m_pCurrentCar->getPosition());
+    Waypoint* wp = m_waypointManager.getNearestWaypoint(m_pCurrentCar->getPosition());
     if (wp != nullptr)
     {
         vecWaypoints vwps = m_waypointManager.getNeighbouringWaypoints(wp);
@@ -133,7 +128,7 @@ void AIManager::update(const float fDeltaTime)
         {
             AddItemToDrawList(wp);
         }
-    }*/
+    }
 
     m_pTaskManager->MaintainTasks(fDeltaTime);
 
@@ -207,7 +202,6 @@ void AIManager::keyUp(WPARAM param)
         }
         case Controls::KEY_WANDER:
         {
-            m_pRedCar->setState(new WanderState());
             break;
         }
         case Controls::KEY_PURSUIT:

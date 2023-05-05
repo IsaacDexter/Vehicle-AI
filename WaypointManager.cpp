@@ -125,7 +125,6 @@ Waypoint* WaypointManager::getWaypoint(const unsigned int index)
 Waypoint* WaypointManager::getRandomWaypoint()
 {
 	unsigned int index = rand() % getWaypointCount();	//Get a random int in the range 0 - size
-	getWaypoint(index)->setVisible(true);
 	return getWaypoint(index);	//Get the waypoint associated with that random index.
 }
 

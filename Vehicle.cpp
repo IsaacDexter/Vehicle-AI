@@ -4,7 +4,7 @@
 #include "CollisionHelper.h"
 
 //https://www.cars-data.com/en/ford-fiesta/curb-weight
-#define VEHICLE_MASS 1.0f
+#define VEHICLE_MASS 0.00005f
 #define ENGINE_FORCE 108.0f
 //https://www.rac.co.uk/drive/advice/learning-to-drive/stopping-distances/
 //https://calculator.academy/braking-force-calculator/
@@ -83,6 +83,8 @@ void Vehicle::update(const float deltaTime)
 	setPosition(m_currentPosition);
 
 	DrawableGameObject::update(deltaTime);
+
+	m_forceMotion.clearForce();
 }
 
 // set the current position

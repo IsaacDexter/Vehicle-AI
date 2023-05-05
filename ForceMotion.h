@@ -22,10 +22,8 @@ private:
     float       m_mass; // object's mass
     float       m_weight;   //Objects mass * g
     Vector2D    m_velocity; // object's velocity
-    Vector2D    m_acceleration; //objects acc in m/s^2
     Vector2D    m_force; // force applied to the object
     Vector2D*   m_pPosition;
-    Vector2D    m_direction;
 
 public:
     // constructor
@@ -37,26 +35,10 @@ public:
         m_pPosition = position;
     }
 
-    Vector2D getForceFromVelocity(float dt)
-    {
-        Vector2D acceleration = m_velocity / dt;
-        Vector2D force = acceleration * m_mass;
-        return force;
-    }
 
     // method to clear force - do this each frame
     void clearForce() {
         m_force = Vector2D(0,0);
-    }
-
-    void clearAcceleration()
-    {
-        m_acceleration = Vector2D(0, 0);
-    }
-    
-    void clearVelocity()
-    {
-        m_velocity = Vector2D(0, 0);
     }
 
     // method to apply force
@@ -71,9 +53,14 @@ public:
         return direction * magnitude;
     }
 
-    void applyDamping(double dt)
+    void applyAirResistance()
     {
-        m_velocity *= pow(0.9f, dt);
+        //Vector2D directionOpposingMotion = Vec2DNormalize(m_force) * -1;
+        //float frictionStrength = m_weight * ROLLING_RESISTANCE_COEFFICIENT;
+        //Vector2D frictionalForce = directionOpposingMotion * frictionStrength;
+        //m_force += frictionalForce;
+
+        m_force += calculateDrag();
     }
 
     // method to accumulate force
@@ -82,24 +69,14 @@ public:
     }
 
     void update(double dt) {
-        applyDamping(dt);
-
-        updateAcceleration();
         updateVelocity(dt);
         updatePosition(dt);
-
-        clearForce();
-        clearAcceleration();
-    }
-
-    void updateAcceleration()
-    {
-        m_acceleration += m_force / m_mass;
     }
 
     // method to update object's velocity
     void updateVelocity(double dt) {
-        m_velocity += m_acceleration * dt;
+        Vector2D acceleration = m_force / m_mass;
+        m_velocity = acceleration * dt;
     }
 
     // method to update object's position
