@@ -10,6 +10,7 @@
 
 
 
+
 #define NEAR_WAYPOINT_DISTANCE 200.0f
 
 struct waypointCoord {
@@ -94,6 +95,11 @@ HRESULT WaypointManager::createWaypoints(ID3D11Device* pd3dDevice)
 	return hr;
 }
 
+void WaypointManager::createDynamicBoundingBox(Vehicle* vehicle, Vector2D& centre, Vector2D extents)
+{
+	m_vehicleBoundingBoxes
+}
+
 void WaypointManager::destroyWaypoints()
 {
 	for (Waypoint* wp : m_waypoints)
@@ -175,6 +181,19 @@ const BoundingBox* WaypointManager::doesLineCrossBuilding(Line line)
 
 const BoundingBox* WaypointManager::doesLineCrossVehicle(Line line)
 {
+	if (line.first == line.second)
+		return nullptr;
+
+	bool collision = false;
+	for (const BoundingBox* bb : m_vehicleBoundingBoxes)
+	{
+		collision = CollisionHelper::doesLineIntersectBoundingBox(*bb, line.first, line.second);
+		if (collision == true)
+		{
+			return bb;
+		}
+	}
+
 	return nullptr;
 }
 

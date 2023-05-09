@@ -12,13 +12,45 @@ using namespace DirectX; // this means you don't need to put DirectX:: in front 
 using namespace std;
 
 class Waypoint;
+class Vehicle;
 
 #include "Vector2D.h"
 #define WAYPOINT_RESOLUTION 20
 
+struct DynamicBoundingBox
+{
+public:
+	DynamicBoundingBox()
+	{
+		centre = nullptr;
+		corners = std::array<Vector2D, 4>();
+	};
+	DynamicBoundingBox(Vector2D* centre, Vector2D halfExtents)
+	{
+		this->centre = centre;
+		corners = std::array<Vector2D, 4>();
+		corners[0] = Vector2D(+ halfExtents.x, + halfExtents.y);	//Top Right
+		corners[1] = Vector2D(- halfExtents.x, + halfExtents.y);	//Top Left
+		corners[2] = Vector2D(- halfExtents.x, - halfExtents.y);	//Bottom Left
+		corners[3] = Vector2D(+ halfExtents.x, - halfExtents.y);	//Bottom Right
+	};
+	BoundingBox GetBoundingBox()
+	{
+		BoundingBox bb = CollisionHelper::createBoundingBoxFromPoints(	corners[0] + *centre,
+																		corners[1] + *centre,
+																		corners[2] + *centre,
+																		corners[3] + *centre	);	//Create a bounding box from the corners plus the centre.
+		return bb;
+	};
+private:
+	Vector2D* centre;
+	std::array<Vector2D, 4> corners;
+};
+
 typedef vector<Waypoint*> vecWaypoints;
 typedef vector <BoundingBox*> vecBoundingBox;
 typedef std::pair<Vector2D, Vector2D> Line;
+typedef std::map<Vehicle*, DynamicBoundingBox> mapDynamicBoundingBox;
 
 class WaypointManager
 {
@@ -27,6 +59,11 @@ public:
 	~WaypointManager();
 
 	HRESULT createWaypoints(ID3D11Device* pd3dDevice);
+	/// <summary>Creates a dynamic bounding box that updates itself according to the position reference passed in</summary>
+	/// <param name="vehicle">The vehicle to use as the key in the map</param>
+	/// <param name="centre">a reference to the vehicles position to update the bounding box</param>
+	/// <param name="extents">The width and height of the vehicle, halved</param>
+	void createDynamicBoundingBox(Vehicle* vehicle, Vector2D& centre,  Vector2D extents);
 	void destroyWaypoints();
 
 	Waypoint* getWaypoint(const unsigned int index);
@@ -57,6 +94,7 @@ protected: // properties
 	vecWaypoints	m_quadpoints;
 	int				m_numCheckpoints;
 	vecBoundingBox	m_boundingBoxes;
+	mapDynamicBoundingBox	m_vehicleBoundingBoxes;
 
 };
 
