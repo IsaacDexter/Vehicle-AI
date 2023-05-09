@@ -18,10 +18,11 @@ HRESULT	Whisker::init(ID3D11Device* pd3dDevice)
 	return hr;
 }
 
-bool Whisker::intersectsBuilding(WaypointManager* waypointManager)
+BoundingBox* Whisker::intersectsBuilding(WaypointManager* waypointManager)
 {
-	bool result = waypointManager->doesLineCrossBuilding(m_line) != nullptr;
-	if (result)
+	//get the bounding box of whatever building we intersected
+	BoundingBox* intersected = waypointManager->doesLineCrossBuilding(m_line);
+	if (intersected != nullptr)
 	{
 		setTexture(m_redTexture);
 	}
@@ -29,12 +30,12 @@ bool Whisker::intersectsBuilding(WaypointManager* waypointManager)
 	{
 		setTexture(m_greenTexture);
 	}
-	return result;
+	return intersected;
 }
 
-Vehicle* Whisker::intersectsVehicle(WaypointManager* waypointManager)
+std::vector<Vehicle*>* Whisker::intersectsVehicle(WaypointManager* waypointManager)
 {
-	Vehicle* crossed = waypointManager->doesLineCrossVehicle(m_line);
+	std::vector<Vehicle*>* crossed = waypointManager->doesLineCrossVehicle(m_line);
 	return crossed;
 }
 

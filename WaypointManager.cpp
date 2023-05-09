@@ -163,13 +163,13 @@ Waypoint* WaypointManager::getNearestWaypoint(Vector2D position)
 	return nearestWP;
 }
 
-const BoundingBox* WaypointManager::doesLineCrossBuilding(Line line)
+BoundingBox* WaypointManager::doesLineCrossBuilding(Line line)
 {
 	if (line.first == line.second)
 		return nullptr;
 
 	bool collision = false;
-	for (const BoundingBox* bb : m_boundingBoxes)
+	for (BoundingBox* bb : m_boundingBoxes)
 	{
 		collision = CollisionHelper::doesLineIntersectBoundingBox(*bb, line.first, line.second);
 		if (collision == true)
@@ -181,22 +181,26 @@ const BoundingBox* WaypointManager::doesLineCrossBuilding(Line line)
 	return nullptr;
 }
 
-Vehicle* WaypointManager::doesLineCrossVehicle(Line line)
+std::vector<Vehicle*>* WaypointManager::doesLineCrossVehicle(Line line)
 {
 	if (line.first == line.second)
-		return nullptr;
+		return nullptr;	//return empty vector
 
 	bool collision = false;
+	std::vector<Vehicle*> vehicles = std::vector<Vehicle*>();
 	for (pairDynamicBoundingBox bb : m_vehicleBoundingBoxes)
 	{
 		collision = CollisionHelper::doesLineIntersectBoundingBox(bb.second->GetBoundingBox(), line.first, line.second);
 		if (collision == true)
 		{
-			return bb.first;
+			vehicles.push_back(bb.first);
 		}
 	}
-
-	return nullptr;
+	if (vehicles.empty())
+	{
+		return nullptr;
+	}
+	return new std::vector<Vehicle*>(vehicles);
 }
 
 //Line WaypointManager::getNearestEdge(BoundingBox* bb, Vector2D position)

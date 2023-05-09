@@ -69,8 +69,8 @@ public:
 	Waypoint* getQuadpoint(const unsigned int index);
 	size_t getQuadpointCount() { return m_quadpoints.size(); }
 	
-	const BoundingBox* doesLineCrossBuilding(Line line);
-	Vehicle* doesLineCrossVehicle(Line line);
+	BoundingBox* doesLineCrossBuilding(Line line);
+	std::vector<Vehicle*>* doesLineCrossVehicle(Line line);
 	//Line getNearestEdge(BoundingBox* bb, Vector2D position);
 	float getDistanceBetweenLineAndPoint(Line line, Vector2D point);
 	float getSquaredDistanceBetweenLineAndPoint(Line line, Vector2D point);

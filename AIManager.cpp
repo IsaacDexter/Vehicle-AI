@@ -128,7 +128,7 @@ void AIManager::update(const float fDeltaTime)
         vecWaypoints vwps = m_waypointManager.getNeighbouringWaypoints(wp);
         for (Waypoint* wp : vwps)
         {
-            AddItemToDrawList(wp);
+            //AddItemToDrawList(wp);
         }
     }
 
@@ -187,7 +187,7 @@ void AIManager::keyUp(WPARAM param)
 
     switch (m_currentMode)
     {
-    case Controls::KEY_MOVEMENT:
+    case Controls::KEY_STATES:
     {
         //Handle the specified movement system controls
         switch (param)
@@ -229,9 +229,9 @@ void AIManager::keyUp(WPARAM param)
             m_currentMode = Controls::KEY_MOVEMENT;
             break;
         }
-        case Controls::KEY_TASKING:
+        case Controls::KEY_STATES:
         {
-            m_currentMode = Controls::KEY_TASKING;
+            m_currentMode = Controls::KEY_STATES;
             break;
         }
         default:
@@ -239,7 +239,7 @@ void AIManager::keyUp(WPARAM param)
         }
         break;
     }
-    case Controls::KEY_TASKING:
+    case Controls::KEY_MOVEMENT:
     {
         //handle the original tasking system mode
         switch (param)
@@ -262,6 +262,10 @@ void AIManager::keyUp(WPARAM param)
         {
             m_pCurrentCar->Arrive(m_pickups[0]->getPosition());
             break;
+        }
+        case Controls::KEY_DEBUG:
+        {
+            OutputDebugStringA("DEBUG");
         }
         case Controls::KEY_EVADE:
         {
@@ -298,14 +302,29 @@ void AIManager::keyUp(WPARAM param)
             m_pTaskManager->Clear();
             break;
         }
+        case Controls::KEY_OBSTACLE_AVOIDANCE:
+        {
+            m_pCurrentCar->ObstaceAvoidance(m_pickups[0]->getPosition());
+            break;
+        }
+        case Controls::KEY_BUILDING_AVOIDANCE:
+        {
+           // m_pCurrentCar->BuildingAvoidance();
+            break;
+        }
+        case Controls::KEY_PURSUIT:
+        {
+            m_pCurrentCar->Pursuit(m_pOtherCar);
+            break;
+        }
         case Controls::KEY_MOVEMENT:
         {
             m_currentMode = Controls::KEY_MOVEMENT;
             break;
         }
-        case Controls::KEY_TASKING:
+        case Controls::KEY_STATES:
         {
-            m_currentMode = Controls::KEY_TASKING;
+            m_currentMode = Controls::KEY_STATES;
             break;
         }
         default:

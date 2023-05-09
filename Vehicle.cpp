@@ -66,19 +66,6 @@ void Vehicle::update(const float deltaTime)
 	}
 	m_lastPosition = m_currentPosition;
 	m_direction = diff;
-	for (Whisker* whisker : m_whiskers)
-	{
-		projectWhisker(whisker);
-		if (whisker->intersectsBuilding(m_waypointManager))
-		{
-			//OutputDebugStringA("Whisker collision with building!\n");
-		}
-		Vehicle* intersected = whisker->intersectsVehicle(m_waypointManager);
-		if (intersected != nullptr && intersected != this)
-		{
-			OutputDebugStringA("Whisker collision with Vehicle!\n");
-		}
-	}
 
 	// set the current poistion for the drawablegameobject
 	setPosition(m_currentPosition);
@@ -99,6 +86,11 @@ Vector2D Vehicle::getPredictedPosition(const float interval)
 {
 	Vector2D expectedDisplacement = (getVelocity() * interval);	//gets the speed in m/s, and finds it in m/"when", based of this frame time
 	return expectedDisplacement + m_currentPosition;
+}
+
+Vector2D Vehicle::getPreviousPosition(const float interval)
+{
+	return getPredictedPosition(-interval);
 }
 
 Vector2D Vehicle::getRandomDirection()
@@ -157,6 +149,57 @@ void Vehicle::applyForceFromPosition(const Vector2D& destination)
 	applyForce(force);
 }
 
+void Vehicle::avoidVehicles()
+{
+	//for each of our whiskers
+	for (Whisker* whisker : m_whiskers)
+	{
+		//check to see what we intersected, if anything
+		projectWhisker(whisker);
+		std::vector<Vehicle*>* intersected = whisker->intersectsVehicle(m_waypointManager);
+		//if it was somethings
+		if (intersected != nullptr )
+		{
+			//for each thing intersected...
+			for (Vehicle* intersect : *intersected)
+			{
+				//if that thing isnt this,
+				if (intersect != this)
+				{
+					//apply an avoiding force in the direction against it.
+					Vector2D avoidanceForce = intersect->getPosition() - getPosition();
+					avoidanceForce.Normalize();
+					avoidanceForce *= -1.5f;
+					applyForceInDirection(avoidanceForce);
+				}
+			}
+			delete intersected;
+		}
+	}
+}
+
+void Vehicle::avoidBuildings()
+{
+	//project each of our whiskers
+	for (Whisker* whisker : m_whiskers)
+	{
+		projectWhisker(whisker);
+		//if they hit a building
+		BoundingBox* building = whisker->intersectsBuilding(m_waypointManager);
+		if (building != nullptr)
+		{
+			//apply a guiding force away from that building
+			Vector2D buildingPos = Vector2D(building->Center.x, building->Center.y);
+			//apply an avoiding force in the direction against it.
+			Vector2D avoidanceForce = buildingPos - getPosition();
+			avoidanceForce.Normalize();
+			avoidanceForce *= -2.5f;
+			applyForceInDirection(avoidanceForce);
+
+		}
+	}
+}
+
 Vector2D Vehicle::getWanderPosition(float interval, float radius)
 {
 	Vector2D wanderDirection = getRandomDirection();	//Get a random direction
@@ -202,7 +245,7 @@ bool Vehicle::brake(float distanceSquared, float brakingRadiusSquared)
 
 		force *= -1;	//Get the inverse direction of the force
 		float brakePercentage = max(0.0f, ((brakingRadiusSquared)-distanceSquared) / (brakingRadiusSquared));	//Calculate a percentage of how much of the brake area has been covered
-		Vector2D brakeForce = force * (brakePercentage / 1.1);	//Apply a brake force according to how close the car is to the location													
+		Vector2D brakeForce = force * (brakePercentage / 2.0f);	//Apply a brake force according to how close the car is to the location													
 		m_forceMotion.accumulateForce(brakeForce);
 	}
 	return inRange;
@@ -212,17 +255,7 @@ bool Vehicle::brake(Vector2D destination, float brakingRadiusSquared)
 {
 	Vector2D toDestination = destination - getPosition();	//Get the vector to the destination
 	float distanceSquared = toDestination.LengthSq();		//Get the length squared of that vector to get the distance squared
-	bool inRange = distanceSquared < brakingRadiusSquared;
-	if (inRange)	//If we're within the destination area...
-	{
-		toDestination.Normalize();	//Find the direction away from the destination
-		toDestination *= -1;
-
-		float brakePercentage = max(0.0f, ((brakingRadiusSquared)-distanceSquared) / (brakingRadiusSquared));	//Calculate a percentage of how much of the brake area has been covered
-		Vector2D brakeForce = toDestination * (brakePercentage / 2);	//Apply a brake force in the opposite direction  to the destination according to how close the car is to the location													
-		m_forceMotion.accumulateForce(brakeForce);
-	}
-	return inRange;
+	return brake(distanceSquared, brakingRadiusSquared);
 }
 
 void Vehicle::projectWhisker(Whisker* outWhisker)
@@ -330,7 +363,7 @@ void Vehicle::Flee(DrawableGameObject* soughtObject)
 	executeFunc execute = [this] {; };
 	maintainFunc maintain = [this, soughtObject](float dt) { Vector2D destination = soughtObject->getPosition(); applyForceFromPosition(destination); };	//each frame, get it's current position once more and seek to it.
 	completeFunc complete = [this] {; };
-	checkFunc check = [this, soughtObject] { return !this->isPassed(soughtObject->getPosition(), 500000.0f); };	//Each frame this task is active, check if we're not within range
+	checkFunc check = [this, soughtObject] { return !this->isPassed(soughtObject->getPosition(), 262144.0f); };	//Each frame this task is active, check if we're not within range
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
 }
@@ -340,7 +373,7 @@ void Vehicle::Flee(Vector2D destination)
 	executeFunc execute = [this] {; };	//Head towards that position
 	maintainFunc maintain = [this, destination](float dt) { applyForceFromPosition(destination); };
 	completeFunc complete = [this] {; };												//Once we're there, wander again, queueing up a new task at a new position
-	checkFunc check = [this, destination] { return !this->isPassed(destination, 500000.0f); };	//Each frame this task is active, check if we're not within range
+	checkFunc check = [this, destination] { return !this->isPassed(destination, 262144.0f); };	//Each frame this task is active, check if we're not within range
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
 }
@@ -349,8 +382,8 @@ void Vehicle::Evade(Vehicle* soughtObject)
 {
 	executeFunc execute = [this] {; };
 	maintainFunc maintain = [this, soughtObject](float dt) { applyForceFromPosition(soughtObject->getPredictedPosition(1.0f)); };
-	completeFunc complete = [this] {; };
-	checkFunc check = [this, soughtObject] { return !this->isPassed(soughtObject->getPosition(), 500000.0f); };	//Each frame this task is active, check if we're not within range
+	completeFunc complete = [this, soughtObject] {; };
+	checkFunc check = [this, soughtObject] { return !this->isPassed(soughtObject->getPosition(), 262144.0f); };	//Each frame this task is active, check if we're not within range
 
 	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
 }
@@ -359,6 +392,36 @@ void Vehicle::Intercept(Vehicle* soughtObject)
 {
 	executeFunc execute = [this] {; };
 	maintainFunc maintain = [this, soughtObject](float dt) { applyForceToPosition(soughtObject->getPredictedPosition(0.25f)); };	//Seek to where it'll be in a quarter second
+	completeFunc complete = [this] {; };
+	checkFunc check = [this, soughtObject] { this->isArrived(soughtObject->getPosition()); return false; };	//Each frame this task is active, check if we're not within range
+
+	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
+}
+
+void Vehicle::ObstaceAvoidance(Vector2D destination)
+{
+	executeFunc execute = [this] {; };	//Head towards that position
+	maintainFunc maintain = [this, destination](float dt) { applyForceToPosition(destination); avoidVehicles(); };
+	completeFunc complete = [this] {; };												//Once we're there, wander again, queueing up a new task at a new position
+	checkFunc check = [this, destination] { return this->isPassed(destination); };		//Each frame this task is active, check if we've passed the position
+
+	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
+}
+
+void Vehicle::BuildingAvoidance()
+{
+	executeFunc execute = [this] {; };	//Head towards that position
+	maintainFunc maintain = [this](float dt) {  avoidBuildings(); };
+	completeFunc complete = [this] {; };												//Once we're there, wander again, queueing up a new task at a new position
+	checkFunc check = [this] { return false; };		//Each frame this task is active, check if we've passed the position
+
+	m_pTaskManager->AddTask(new Task(execute, maintain, complete, check));
+}
+
+void Vehicle::Pursuit(Vehicle* soughtObject)
+{
+	executeFunc execute = [this] {; };
+	maintainFunc maintain = [this, soughtObject](float dt) { applyForceToPosition(soughtObject->getPreviousPosition(0.36f)); };	//Seek to where it'll be in a quarter second
 	completeFunc complete = [this] {; };
 	checkFunc check = [this, soughtObject] { this->isArrived(soughtObject->getPosition()); return false; };	//Each frame this task is active, check if we're not within range
 
