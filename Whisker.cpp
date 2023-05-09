@@ -32,18 +32,10 @@ bool Whisker::intersectsBuilding(WaypointManager* waypointManager)
 	return result;
 }
 
-bool Whisker::intersectsVehicle(WaypointManager* waypointManager)
+Vehicle* Whisker::intersectsVehicle(WaypointManager* waypointManager)
 {
-	bool result = waypointManager->doesLineCrossVehicle(m_line) != nullptr;
-	if (result)
-	{
-		setTexture(m_redTexture);
-	}
-	else
-	{
-		setTexture(m_greenTexture);
-	}
-	return result;
+	Vehicle* crossed = waypointManager->doesLineCrossVehicle(m_line);
+	return crossed;
 }
 
 void Whisker::setTexture(std::wstring texture)

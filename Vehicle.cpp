@@ -73,9 +73,10 @@ void Vehicle::update(const float deltaTime)
 		{
 			//OutputDebugStringA("Whisker collision with building!\n");
 		}
-		if (whisker->intersectsVehicle(m_waypointManager))
+		Vehicle* intersected = whisker->intersectsVehicle(m_waypointManager);
+		if (intersected != nullptr && intersected != this)
 		{
-			//OutputDebugStringA("Whisker collision with Vehicle!\n");
+			OutputDebugStringA("Whisker collision with Vehicle!\n");
 		}
 	}
 
@@ -127,9 +128,6 @@ void Vehicle::applyForceInDirection(const Vector2D& direction)
 
 void Vehicle::applyForce(const Vector2D& force)
 {
-	Vector2D direction = getPredictedPosition();
-	//Vector2D midpoint =
-
 	getForceMotion()->accumulateForce(force);
 }
 

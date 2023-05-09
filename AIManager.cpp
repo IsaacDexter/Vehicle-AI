@@ -73,6 +73,8 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     m_waypointManager.createWaypoints(pd3dDevice);
     m_pRedCar->setWaypointManager(&m_waypointManager);
     m_pBlueCar->setWaypointManager(&m_waypointManager);
+    m_waypointManager.createDynamicBoundingBox(m_pRedCar, m_pRedCar->getPositionAddress(), m_pRedCar->getScale());
+    m_waypointManager.createDynamicBoundingBox(m_pBlueCar, m_pBlueCar->getPositionAddress(), m_pBlueCar->getScale());
 
     //Set up the task manager
     m_pTaskManager = new TaskManager();

@@ -95,9 +95,11 @@ HRESULT WaypointManager::createWaypoints(ID3D11Device* pd3dDevice)
 	return hr;
 }
 
-void WaypointManager::createDynamicBoundingBox(Vehicle* vehicle, Vector2D& centre, Vector2D extents)
+void WaypointManager::createDynamicBoundingBox(Vehicle* vehicle, Vector2D* centre, Vector2D extents)
 {
-	m_vehicleBoundingBoxes
+	DynamicBoundingBox* dbb = new DynamicBoundingBox(centre, extents);
+	pairDynamicBoundingBox pair = pairDynamicBoundingBox(vehicle, dbb);
+	m_vehicleBoundingBoxes.emplace(pair);
 }
 
 void WaypointManager::destroyWaypoints()
@@ -179,18 +181,18 @@ const BoundingBox* WaypointManager::doesLineCrossBuilding(Line line)
 	return nullptr;
 }
 
-const BoundingBox* WaypointManager::doesLineCrossVehicle(Line line)
+Vehicle* WaypointManager::doesLineCrossVehicle(Line line)
 {
 	if (line.first == line.second)
 		return nullptr;
 
 	bool collision = false;
-	for (const BoundingBox* bb : m_vehicleBoundingBoxes)
+	for (pairDynamicBoundingBox bb : m_vehicleBoundingBoxes)
 	{
-		collision = CollisionHelper::doesLineIntersectBoundingBox(*bb, line.first, line.second);
+		collision = CollisionHelper::doesLineIntersectBoundingBox(bb.second->GetBoundingBox(), line.first, line.second);
 		if (collision == true)
 		{
-			return bb;
+			return bb.first;
 		}
 	}
 
@@ -327,3 +329,14 @@ bool WaypointManager::doWaypointsCrossBuilding(Waypoint* wp1, Waypoint* wp2)
 
 	return collision;
 }
+
+BoundingBox DynamicBoundingBox::GetBoundingBox()
+
+{
+	BoundingBox bb = CollisionHelper::createBoundingBoxFromPoints(corners[0] + *centre,
+		corners[1] + *centre,
+		corners[2] + *centre,
+		corners[3] + *centre);	//Create a bounding box from the corners plus the centre.
+	return bb;
+}
+

@@ -36,6 +36,7 @@ public:
 	Vector2D getVelocity() { return m_forceMotion.getVelocity(); }
 	/// <returns>The vehicles normalized direction, calculated from the change in position.</returns>
 	Vector2D getDirection() { return m_direction; }
+	Vector2D getScale() { return Vector2D(m_scale.x, m_scale.y); };
 
 	/// <param name="interval">How far ahead, in seconds, to predict the objects position. Passing in delta will get the objects expected position in 1 frame's time, for example</param>
 	/// <returns>The expected position that the object will be in "interval" seconds time.</returns>

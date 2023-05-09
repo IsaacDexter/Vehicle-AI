@@ -9,7 +9,8 @@ using namespace DirectX; // this means you don't need to put DirectX:: in front 
 
 
 #include <vector>
-using namespace std;
+#include <array>
+#include <map>
 
 class Waypoint;
 class Vehicle;
@@ -34,23 +35,17 @@ public:
 		corners[2] = Vector2D(- halfExtents.x, - halfExtents.y);	//Bottom Left
 		corners[3] = Vector2D(+ halfExtents.x, - halfExtents.y);	//Bottom Right
 	};
-	BoundingBox GetBoundingBox()
-	{
-		BoundingBox bb = CollisionHelper::createBoundingBoxFromPoints(	corners[0] + *centre,
-																		corners[1] + *centre,
-																		corners[2] + *centre,
-																		corners[3] + *centre	);	//Create a bounding box from the corners plus the centre.
-		return bb;
-	};
+	BoundingBox GetBoundingBox();
 private:
 	Vector2D* centre;
 	std::array<Vector2D, 4> corners;
 };
 
-typedef vector<Waypoint*> vecWaypoints;
-typedef vector <BoundingBox*> vecBoundingBox;
+typedef std::vector<Waypoint*> vecWaypoints;
+typedef std::vector <BoundingBox*> vecBoundingBox;
 typedef std::pair<Vector2D, Vector2D> Line;
-typedef std::map<Vehicle*, DynamicBoundingBox> mapDynamicBoundingBox;
+typedef std::map<Vehicle*, DynamicBoundingBox*> mapDynamicBoundingBox;
+typedef std::pair<Vehicle*, DynamicBoundingBox*> pairDynamicBoundingBox;
 
 class WaypointManager
 {
@@ -63,7 +58,7 @@ public:
 	/// <param name="vehicle">The vehicle to use as the key in the map</param>
 	/// <param name="centre">a reference to the vehicles position to update the bounding box</param>
 	/// <param name="extents">The width and height of the vehicle, halved</param>
-	void createDynamicBoundingBox(Vehicle* vehicle, Vector2D& centre,  Vector2D extents);
+	void createDynamicBoundingBox(Vehicle* vehicle, Vector2D* centre,  Vector2D extents);
 	void destroyWaypoints();
 
 	Waypoint* getWaypoint(const unsigned int index);
@@ -75,7 +70,7 @@ public:
 	size_t getQuadpointCount() { return m_quadpoints.size(); }
 	
 	const BoundingBox* doesLineCrossBuilding(Line line);
-	const BoundingBox* doesLineCrossVehicle(Line line);
+	Vehicle* doesLineCrossVehicle(Line line);
 	//Line getNearestEdge(BoundingBox* bb, Vector2D position);
 	float getDistanceBetweenLineAndPoint(Line line, Vector2D point);
 	float getSquaredDistanceBetweenLineAndPoint(Line line, Vector2D point);
