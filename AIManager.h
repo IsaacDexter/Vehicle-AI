@@ -5,9 +5,8 @@
 using namespace std;
 
 class Vehicle;
-class PickupItem;
-typedef vector<PickupItem*> vecPickups;
 class TaskManager;
+class PickupManager;
 
 class AIManager
 {
@@ -23,17 +22,19 @@ public:
 
 protected:
 	bool	checkForCollisions();
-	void	setRandomPickupPosition(PickupItem* pickup);
+	//void	setRandomPickupPosition(PickupItem* pickup);
 
 private:
-	vecPickups              m_pickups;
 	Vehicle*				m_pRedCar = nullptr;
 	Vehicle*				m_pBlueCar = nullptr;
 	Vehicle*				m_pCurrentCar = nullptr;
 	Vehicle*				m_pOtherCar = nullptr;
 	WaypointManager			m_waypointManager;
+	PickupManager*			m_pickupManager = nullptr;
 	TaskManager*			m_pTaskManager = nullptr;
 
 	WPARAM					m_currentMode = NULL;
+
+	Vector2D				m_clickPos = Vector2D(0.0f, 0.0f);
 };
 

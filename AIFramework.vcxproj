@@ -371,8 +371,10 @@
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Passenger.cpp" />
     <ClCompile Include="PassengerPickup.cpp" />
     <ClCompile Include="PickupItem.cpp" />
+    <ClCompile Include="PickupManager.cpp" />
     <ClCompile Include="SeekState.cpp" />
     <ClCompile Include="SFSM.cpp" />
     <ClCompile Include="State.cpp" />
@@ -400,8 +402,10 @@
     <ClInclude Include="main.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Passenger.h" />
     <ClInclude Include="PassengerPickup.h" />
     <ClInclude Include="PickupItem.h" />
+    <ClInclude Include="PickupManager.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="SeekState.h" />
     <ClInclude Include="SM.h" />

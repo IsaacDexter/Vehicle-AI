@@ -3,6 +3,7 @@
 #include <functional>
 #include "CollisionHelper.h"
 #include "PassengerPickup.h"
+#include "Passenger.h"
 
 //https://www.cars-data.com/en/ford-fiesta/curb-weight
 #define VEHICLE_MASS 0.00005f
@@ -67,6 +68,8 @@ void Vehicle::update(const float deltaTime)
 	if (diff.Length() > 0) { // if zero then don't update rotation
 		diff.Normalize();
 		m_radianRotation = atan2f((float)diff.y, (float)diff.x); // this is used by DrawableGameObject to set the rotation
+		//If the difference is zero, the vehicle hasn't moved, and needn't consume fuel. So in here, consume fuel
+		ConsumeFuel(deltaTime);
 	}
 	m_lastPosition = m_currentPosition;
 	m_direction = diff;
@@ -116,15 +119,34 @@ void Vehicle::setWaypointManager(WaypointManager* wpm)
 
 
 
-bool Vehicle::PickupPassenger(PassengerPickup* passenger, Vector2D destination)
+void Vehicle::ConsumeFuel(float dt)
+{
+	//consume fuel
+	m_fuel -= m_fuelConsumption * dt;
+	//Reduce to a minimum of zero fuel - you cannot have negative fuel.
+	if (m_fuel <= 0.0f)
+	{
+		//if fuel = 0, reduce speed
+		m_speed = m_emptySpeed;
+	}
+}
+
+void Vehicle::CollectPickup(PickupItem* pickup)
+{
+	pickup->pickup(this);
+}
+
+bool Vehicle::PickupPassenger(Passenger* passenger, Vector2D destination)
 {
 	//If we have space to collect a fare...
 	if (m_fares.size() < m_maxFares)
 	{
-		passenger->pickup(this);
+		//passenger->pickup(this);
 		m_fares.emplace(passenger, Vector2D(destination));
+		OutputDebugStringA(("Picked up fare, who wants to go to (" + std::to_string(destination.x) + ", " + std::to_string(destination.y) + ")\n").c_str());
 		return true;
 	}
+	OutputDebugStringA("Could not pick up fare, as there is no room.\n");
 	return false;
 }
 
@@ -139,7 +161,9 @@ void Vehicle::DeliverPassenger(Vector2D destination)
 		if (it->second == destination)
 		{
 			// drop off the fare
-			it->first->dropoff();
+			it->first->Dropoff();
+			delete it->first;
+			OutputDebugStringA("Delivered fare to destination.\n");
 			// delete the fare. This will also assign(increment) the iterator to be the next item in the list
 			it = m_fares.erase(it);
 			continue; // continue the next loop (we don't want to increment below as this will skip an item)

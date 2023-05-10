@@ -578,7 +578,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
 
 		std::stringstream posout;
 		posout << "" << xPos << " " << yPos << "" << endl;
-		OutputDebugStringA(posout.str().c_str());
+		//OutputDebugStringA(posout.str().c_str());
 
 
 		break;

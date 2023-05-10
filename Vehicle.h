@@ -15,9 +15,9 @@
 #define VEHICLE_MASS 0.00005f
 
 class TaskManager;
-class PassengerPickup;
-typedef std::pair<PassengerPickup*, Vector2D> Fare;
-typedef std::map<PassengerPickup*, Vector2D> FareMap;
+struct Passenger;
+typedef std::pair<Passenger*, Vector2D> Fare;
+typedef std::map<Passenger*, Vector2D> FareMap;
 
 enum class carColour
 {
@@ -76,12 +76,17 @@ protected:
 	float m_speed = 1.0f;
 	/// <summary>The speed to move at without fuel.</summary>
 	const float m_emptySpeed = 0.2f;
+	/// <summary>Stores the last amount of fuel.</summary>
+	float* m_lastSpeed = nullptr;
 
 	/// <summary>How many units of fuel to consume each second, increased by picking up passengers and restored by delivering them.</summary>
 	float m_fuelConsumption = 1.0f;
+	/// <summary>The total amount of fuel that can be fit in the tank.<summary>
+	const float m_maxFuel = 30.0f;
+	float m_fuel = m_maxFuel;
 
 	//The amount of money, in units, paid to the taxi by its fares.
-	float m_money;
+	float m_money = 0.0f;
 
 	/// <summary>The map of destinations to passengers to be delivered. Constrained in size by m_maxFares.</summary>
 	FareMap m_fares;
@@ -93,6 +98,8 @@ public:
 
 	float GetFuelConsumption() const { return m_fuelConsumption; };
 	void SetFuelConsumption(float fuelConsumption) { m_fuelConsumption = fuelConsumption; };
+	void ConsumeFuel(float dt);
+	void Refuel(float fuel);
 	
 	float GetSpeed() const { return m_speed; };
 	void SetSpeed(float speed) { m_speed = speed; };
@@ -100,13 +107,15 @@ public:
 #pragma region Pickups
 
 public:
+
+	void CollectPickup(PickupItem* pickup);
 	/// <summary><para>Tryies to collect a passenger and increases the vehicles fuel consumption as a result, until the passenger is delivered.</para>
 	/// <para>Upon delivering a passenger, the fuel consumption rate will restore and the space will free up.</para>
 	/// <para>A passenger will take up a space in the passengers array. Without space for another passenger, no passenger will be collected.</para>
 	/// <para>A vehicle will prioritise picking up passengers when they have a comfortable amount of fuel, and space, and aren't too close too a destination.</para></summary>
 	/// <param name="passenger">The pickup to store as the handler to the character, and to call pickup upon.</param>
 	/// <param name="destination">The destination asscociated with the character.</param>
-	bool PickupPassenger(PassengerPickup* passenger, Vector2D destination);
+	bool PickupPassenger(Passenger* passenger, Vector2D destination);
 	/// <summary><para>When a destination has been reached, this is called.</para>
 	/// <para>It removes the passenger from the array, freeing up a little bit of space and restoring fuel consumption.</para></summary>
 	/// <param name="destination">The destination to use as the key to find which character to remove.</param>
