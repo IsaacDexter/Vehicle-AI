@@ -367,6 +367,7 @@
     <ClCompile Include="DDSTextureLoader.cpp" />
     <ClCompile Include="DrawableGameObject.cpp" />
     <ClCompile Include="ForceMotion.cpp" />
+    <ClCompile Include="FuelPickup.cpp" />
     <ClCompile Include="HierarchicalState.cpp" />
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -398,6 +399,7 @@
     <ClInclude Include="DDSTextureLoader.h" />
     <ClInclude Include="DrawableGameObject.h" />
     <ClInclude Include="ForceMotion.h" />
+    <ClInclude Include="FuelPickup.h" />
     <ClInclude Include="HierarchicalState.h" />
     <ClInclude Include="main.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

@@ -66,7 +66,7 @@ void ArriveState::MoveState::Exit()
 
 void ArriveState::MoveState::Update(Vehicle* agent, float deltaTime)
 {
-	agent->applyForceInDirection(GetDirection(agent));	//Apply force in direction if the destination.
+	agent->applyForce(GetDirection(agent));	//Apply force in direction if the destination.
 }
 
 State* ArriveState::MoveState::Check(Vehicle* agent)
@@ -110,7 +110,7 @@ void ArriveState::BrakeState::Update(Vehicle* agent, float deltaTime)
 	float distanceSq = toDestination.LengthSq();
 	toDestination.Normalize();
 	//move towards the destination
-	agent->applyForceInDirection(toDestination);	//Apply force in direction if the destination.
+	agent->applyForce(toDestination);	//Apply force in direction if the destination.
 
 	//Find the direction from the destination
 	toDestination *= -1;

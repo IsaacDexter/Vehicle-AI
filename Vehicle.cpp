@@ -124,10 +124,34 @@ void Vehicle::ConsumeFuel(float dt)
 	//consume fuel
 	m_fuel -= m_fuelConsumption * dt;
 	//Reduce to a minimum of zero fuel - you cannot have negative fuel.
-	if (m_fuel <= 0.0f)
+	if (m_fuel < 0.0f)
 	{
+		m_fuel = 0.0f;
 		//if fuel = 0, reduce speed
-		m_speed = m_emptySpeed;
+		//if no current speed is stored, we must've only just ran out of speed.
+		if (m_lastSpeed == nullptr)
+		{
+			//store the current speed
+			m_lastSpeed = new float(m_emptySpeed);
+			//Reduce speed to the empty speed.
+			m_speed = m_emptySpeed;
+		}
+	}
+}
+
+void Vehicle::Refuel(float fuel)
+{
+	//Refuel the car as much as the engine can carry.
+	m_fuel = min(m_fuel + fuel, m_maxFuel);
+	//if the car has a speed stored, it's out of fuel
+	if (m_lastSpeed != nullptr)
+	{
+		//As the vehicle has just been refueled, it will no longer be on 0 fuel. So increase speed back up to what it was
+		//It does the + (m_speed - m_emptySpeed) to account for speed boosts picked up while fuel was empty.
+		m_speed = *m_lastSpeed + (m_speed - m_emptySpeed);
+		//clear the memory assigned to m_lastSpeed
+		delete m_lastSpeed;
+		m_lastSpeed = nullptr;
 	}
 }
 
@@ -174,13 +198,14 @@ void Vehicle::DeliverPassenger(Vector2D destination)
 
 void Vehicle::applyForceInDirection(const Vector2D& direction)
 {
-	Vector2D force = direction * m_forceMultiplier;
+	Vector2D force = direction;
+	force.Normalize();
 	applyForce(force);
 }
 
 void Vehicle::applyForce(const Vector2D& force)
 {
-	getForceMotion()->accumulateForce(force);
+	getForceMotion()->accumulateForce(force * m_speed);
 }
 
 void Vehicle::applyForceToPosition(const Vector2D& destination)
@@ -230,7 +255,7 @@ void Vehicle::avoidVehicles()
 					Vector2D avoidanceForce = intersect->getPosition() - getPosition();
 					avoidanceForce.Normalize();
 					avoidanceForce *= -1.5f;
-					applyForceInDirection(avoidanceForce);
+					applyForce(avoidanceForce);
 				}
 			}
 			delete intersected;
@@ -253,8 +278,8 @@ void Vehicle::avoidBuildings()
 			//apply an avoiding force in the direction against it.
 			Vector2D avoidanceForce = buildingPos - getPosition();
 			avoidanceForce.Normalize();
-			avoidanceForce *= -2.5f;
-			applyForceInDirection(avoidanceForce);
+			avoidanceForce *= -1.5f;
+			applyForce(avoidanceForce);
 
 		}
 	}
@@ -306,7 +331,7 @@ bool Vehicle::brake(float distanceSquared, float brakingRadiusSquared)
 		force *= -1;	//Get the inverse direction of the force
 		float brakePercentage = max(0.0f, ((brakingRadiusSquared)-distanceSquared) / (brakingRadiusSquared));	//Calculate a percentage of how much of the brake area has been covered
 		Vector2D brakeForce = force * (brakePercentage / 2.0f);	//Apply a brake force according to how close the car is to the location													
-		m_forceMotion.accumulateForce(brakeForce);
+		applyForce(brakeForce);
 	}
 	return inRange;
 }

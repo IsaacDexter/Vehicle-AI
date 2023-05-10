@@ -25,7 +25,7 @@ void SeekState::Update(Vehicle* agent, float deltaTime)
 {
 	Vector2D toDestination = m_destination->GetPosition() - agent->getPosition();
 	toDestination.Normalize();	//Find the direction toward the destination
-	agent->applyForceInDirection(toDestination);	//Apply force in direction if the destination.
+	agent->applyForce(toDestination);	//Apply force in direction if the destination.
 }
 
 State* SeekState::Check(Vehicle* agent)
