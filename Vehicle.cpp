@@ -2,6 +2,7 @@
 #include "Tasking.h"
 #include <functional>
 #include "CollisionHelper.h"
+#include "PassengerPickup.h"
 
 //https://www.cars-data.com/en/ford-fiesta/curb-weight
 #define VEHICLE_MASS 0.00005f
@@ -19,6 +20,9 @@ Vehicle::Vehicle() : m_forceMotion(VEHICLE_MASS, getPositionAddress())
 	m_pTaskManager = nullptr;
 	m_pStateManager = nullptr;
 	m_whiskers.push_back(new Whisker());
+
+	//Initialise Fares
+	m_fares = FareMap();
 }
 
 Vehicle::~Vehicle()
@@ -111,6 +115,38 @@ void Vehicle::setWaypointManager(WaypointManager* wpm)
 #pragma region Actions
 
 
+
+bool Vehicle::PickupPassenger(PassengerPickup* passenger, Vector2D destination)
+{
+	//If we have space to collect a fare...
+	if (m_fares.size() < m_maxFares)
+	{
+		passenger->pickup(this);
+		m_fares.emplace(passenger, Vector2D(destination));
+		return true;
+	}
+	return false;
+}
+
+void Vehicle::DeliverPassenger(Vector2D destination)
+{
+	//For each value
+	FareMap::iterator it = m_fares.begin();
+	// loop while the iterator is not at the end
+	while (it != m_fares.end())
+	{
+		//If the destination of a value is equal to the destination
+		if (it->second == destination)
+		{
+			// drop off the fare
+			it->first->dropoff();
+			// delete the fare. This will also assign(increment) the iterator to be the next item in the list
+			it = m_fares.erase(it);
+			continue; // continue the next loop (we don't want to increment below as this will skip an item)
+		}
+		it++; // increment the iterator
+	}
+}
 
 void Vehicle::applyForceInDirection(const Vector2D& direction)
 {

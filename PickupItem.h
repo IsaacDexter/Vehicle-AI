@@ -4,25 +4,16 @@
 
 #include <Windows.h>
 
-enum class pickuptype
-{
-    Fuel,
-    SpeedBoost,
-    Passenger,
-};
+class Vehicle;
 
-class PickupItem :
+
+class PickupItem abstract:
     public DrawableGameObject, public Collidable
 {
 public:
-    virtual HRESULT initMesh(ID3D11Device* pd3dDevice, pickuptype type);
-    void hasCollided() { }
-    pickuptype getType() { return m_type; }
-
+    virtual HRESULT initMesh(ID3D11Device* pd3dDevice);
+    virtual void pickup(Vehicle* collector) = 0;
 protected:
-
-private:
-    pickuptype m_type;
 
 };
 

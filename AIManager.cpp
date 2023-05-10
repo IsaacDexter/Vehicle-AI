@@ -1,7 +1,7 @@
 #include "AIManager.h"
 #include "Vehicle.h"
 #include "DrawableGameObject.h"
-#include "PickupItem.h"
+#include "PassengerPickup.h"
 #include "Waypoint.h"
 #include "main.h"
 #include "constants.h"
@@ -85,8 +85,8 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     m_pBlueCar->setStateManager(new SFSM(m_pBlueCar));
 
     // create a passenger pickup item
-    PickupItem* pPickupPassenger = new PickupItem();
-    hr = pPickupPassenger->initMesh(pd3dDevice, pickuptype::Passenger);
+    PassengerPickup* pPickupPassenger = new PassengerPickup();
+    hr = pPickupPassenger->initMesh(pd3dDevice);
     m_pickups.push_back(pPickupPassenger);
 
     // NOTE!! for fuel and speedboost - you will need to create these here yourself!
@@ -384,7 +384,7 @@ bool AIManager::checkForCollisions()
         &carScale,
         &dummy,
         &carPos,
-        XMLoadFloat4x4(m_pRedCar->getTransform())
+        XMLoadFloat4x4(m_pCurrentCar->getTransform())
     );
 
     // create a bounding sphere for the car
@@ -416,7 +416,7 @@ bool AIManager::checkForCollisions()
     if (boundingSphereCar.Intersects(boundingSpherePU))
     {
         //OutputDebugStringA("Collision with pickup!\n");
-        m_pickups[0]->hasCollided();
+        m_pickups[0]->pickup(m_pCurrentCar);
         setRandomPickupPosition(m_pickups[0]);
 
         // you will need to test the type of the pickup to decide on the behaviour
