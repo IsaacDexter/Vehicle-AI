@@ -369,6 +369,7 @@
     <ClCompile Include="DrawableGameObject.cpp" />
     <ClCompile Include="ForceMotion.cpp" />
     <ClCompile Include="FuelPickup.cpp" />
+    <ClCompile Include="GetPickupState.cpp" />
     <ClCompile Include="HierarchicalState.cpp" />
     <ClCompile Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -377,13 +378,13 @@
     <ClCompile Include="PassengerPickup.cpp" />
     <ClCompile Include="PickupItem.cpp" />
     <ClCompile Include="PickupManager.cpp" />
-    <ClCompile Include="RefuelState.cpp" />
     <ClCompile Include="SeekState.cpp" />
     <ClCompile Include="SFSM.cpp" />
     <ClCompile Include="SpeedPickup.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="FSM.cpp" />
     <ClCompile Include="Tasking.cpp" />
+    <ClCompile Include="TaxiState.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="WanderState.cpp" />
     <ClCompile Include="Waypoint.cpp" />
@@ -404,15 +405,19 @@
     <ClInclude Include="DrawableGameObject.h" />
     <ClInclude Include="ForceMotion.h" />
     <ClInclude Include="FuelPickup.h" />
+    <ClInclude Include="GetFuelPickupState.h" />
+    <ClInclude Include="GetPassengerPickupState.h" />
+    <ClInclude Include="GetPickupState.h" />
+    <ClInclude Include="GetSpeedPickupState.h" />
     <ClInclude Include="HierarchicalState.h" />
     <ClInclude Include="main.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="ParkState.h" />
     <ClInclude Include="Passenger.h" />
     <ClInclude Include="PassengerPickup.h" />
     <ClInclude Include="PickupItem.h" />
     <ClInclude Include="PickupManager.h" />
-    <ClInclude Include="RefuelState.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="SeekState.h" />
     <ClInclude Include="SM.h" />
@@ -424,6 +429,7 @@
     <ClInclude Include="structures.h" />
     <ClInclude Include="Target.h" />
     <ClInclude Include="Tasking.h" />
+    <ClInclude Include="TaxiState.h" />
     <ClInclude Include="Vector2D.h" />
     <ClInclude Include="Vehicle.h" />
     <ClInclude Include="WanderState.h" />

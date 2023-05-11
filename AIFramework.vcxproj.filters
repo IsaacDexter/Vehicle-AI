@@ -59,10 +59,15 @@
     <ClCompile Include="SpeedPickup.cpp">
       <Filter>Pickups</Filter>
     </ClCompile>
-    <ClCompile Include="RefuelState.cpp">
+    <ClCompile Include="DeliverState.cpp">
       <Filter>States\DecisionMaking</Filter>
     </ClCompile>
-    <ClCompile Include="DeliverState.cpp" />
+    <ClCompile Include="GetPickupState.cpp">
+      <Filter>States\DecisionMaking</Filter>
+    </ClCompile>
+    <ClCompile Include="TaxiState.cpp">
+      <Filter>States\DecisionMaking</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -146,10 +151,27 @@
     <ClInclude Include="SpeedPickup.h">
       <Filter>Pickups</Filter>
     </ClInclude>
-    <ClInclude Include="RefuelState.h">
+    <ClInclude Include="DeliverState.h">
       <Filter>States\DecisionMaking</Filter>
     </ClInclude>
-    <ClInclude Include="DeliverState.h" />
+    <ClInclude Include="GetPickupState.h">
+      <Filter>States\DecisionMaking</Filter>
+    </ClInclude>
+    <ClInclude Include="GetPassengerPickupState.h">
+      <Filter>States\DecisionMaking</Filter>
+    </ClInclude>
+    <ClInclude Include="GetFuelPickupState.h">
+      <Filter>States\DecisionMaking</Filter>
+    </ClInclude>
+    <ClInclude Include="GetSpeedPickupState.h">
+      <Filter>States\DecisionMaking</Filter>
+    </ClInclude>
+    <ClInclude Include="ParkState.h">
+      <Filter>States\DecisionMaking</Filter>
+    </ClInclude>
+    <ClInclude Include="TaxiState.h">
+      <Filter>States\DecisionMaking</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\blue.dds">

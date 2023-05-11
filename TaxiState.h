@@ -1,30 +1,12 @@
 #pragma once
 #include "HierarchicalState.h"
-#include <queue>
+#include <map>
 #include <functional>
 
 typedef std::function<void()> Transition;
 typedef std::function<float()> Priority;
-
-/// <summary>Holds function pointers that store both transitions and priority recalculations.</summary>
-struct Option
-{
-    Option()
-    {
-        //Initialise with nullptr
-        transition = nullptr;
-        priority = nullptr;
-    }
-    Option(std::function<void()>* transition, std::function<float()>* priority)
-    {
-        this->transition = transition;
-        this->priority = priority;
-    }
-    /// <summary>Holds a lambda with a reference to this state that calls a transition on a new instance of a state of a specified type</summary>
-    Transition* transition;
-    /// <summary>Holds a lambda with a reference to this state that calls an appropriate method to return the priority for this type of state transition</summary>
-    Priority* priority;
-};
+typedef std::map<Transition*, Priority*> OptionMap;
+typedef std::pair<Transition*, Priority*> Option;
 
 class TaxiState :
     public HierarchicalState
@@ -72,14 +54,15 @@ public:
 
 protected:
     virtual void CalculatePriorities();
+    virtual Transition* GetBestTransition();
 
     template<typename T>
     Transition* MakeTransition();
     
     /// <summary>The priority queue of functions which can be instanciated in memory with the new keyword. each of which will call set another state.</summary>
-    std::priority_queue<std::pair<float, Option*>, std::less<float>> m_options;
+    OptionMap m_options;
     /// <summary>The previous transition made. To stop making the same transition twice.</summary>
-    Option* m_chosenOption = nullptr;
+    Transition* m_lastTransition = nullptr;
 
 
 };
