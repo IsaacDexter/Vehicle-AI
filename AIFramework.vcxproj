@@ -365,6 +365,7 @@
     <ClCompile Include="Collidable.cpp" />
     <ClCompile Include="CollisionHelper.cpp" />
     <ClCompile Include="DDSTextureLoader.cpp" />
+    <ClCompile Include="DeliverState.cpp" />
     <ClCompile Include="DrawableGameObject.cpp" />
     <ClCompile Include="ForceMotion.cpp" />
     <ClCompile Include="FuelPickup.cpp" />
@@ -376,6 +377,7 @@
     <ClCompile Include="PassengerPickup.cpp" />
     <ClCompile Include="PickupItem.cpp" />
     <ClCompile Include="PickupManager.cpp" />
+    <ClCompile Include="RefuelState.cpp" />
     <ClCompile Include="SeekState.cpp" />
     <ClCompile Include="SFSM.cpp" />
     <ClCompile Include="SpeedPickup.cpp" />
@@ -398,6 +400,7 @@
     <ClInclude Include="constants.h" />
     <ClInclude Include="Controls.h" />
     <ClInclude Include="DDSTextureLoader.h" />
+    <ClInclude Include="DeliverState.h" />
     <ClInclude Include="DrawableGameObject.h" />
     <ClInclude Include="ForceMotion.h" />
     <ClInclude Include="FuelPickup.h" />
@@ -409,6 +412,7 @@
     <ClInclude Include="PassengerPickup.h" />
     <ClInclude Include="PickupItem.h" />
     <ClInclude Include="PickupManager.h" />
+    <ClInclude Include="RefuelState.h" />
     <CLInclude Include="resource.h" />
     <ClInclude Include="SeekState.h" />
     <ClInclude Include="SM.h" />

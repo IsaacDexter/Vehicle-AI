@@ -14,9 +14,11 @@ public:
     /// <param name="driver">The driver to attempt to pick up this passenger</param>
     void Pickup(Vehicle* driver);
     void Dropoff();
+    Vector2D GetDestination() const { return m_destination; }
 private:
     Vehicle* m_driver;
     const float m_fuelConsumptionIncrease = 0.125f;
     float m_tip;
+    Vector2D m_destination;
 };
 

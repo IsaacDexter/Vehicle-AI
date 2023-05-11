@@ -145,3 +145,51 @@ bool PickupManager::CheckCollisions(Vehicle* other)
 
     return collision;
 }
+
+PickupItem* PickupManager::GetNearestPickup(Vector2D location)
+{
+    PickupItem* nearest = nullptr;
+    //Initialise the shortest distance to the largest possible float. That way, every distance will be shorter than it.
+    float shortestDistanceSq = FLT_MAX;
+    //For each pickup 
+    for (auto it = m_pickups->begin(); it != m_pickups->end(); ++it)
+    {
+        //Find the squared distance to that pickup
+        float distanceSq = ((*it)->getPosition() - location).LengthSq();
+        //If its shorter than the shortest squared distance found
+        if (distanceSq < shortestDistanceSq)
+        {
+            //Store the new shortest distance, as well as the new nearest item.
+            shortestDistanceSq = distanceSq;
+            nearest = *it;
+        }
+    }
+    //Return the nearest item found, or nullptr if nothing was found. 
+    return nearest;
+}
+
+PickupItem* PickupManager::GetNearestPickup(Vector2D location, PickupType type)
+{
+    PickupItem* nearest = nullptr;
+    //Initialise the shortest distance to the largest possible float. That way, every distance will be shorter than it.
+    float shortestDistanceSq = FLT_MAX;
+    //For each pickup 
+    for (auto it = m_pickups->begin(); it != m_pickups->end(); ++it)
+    {
+        //If that pickup is of wanted type...
+        if ((*it)->GetType() == type)
+        {
+            //Find the squared distance to that pickup
+            float distanceSq = ((*it)->getPosition() - location).LengthSq();
+            //If its shorter than the shortest squared distance found
+            if (distanceSq < shortestDistanceSq)
+            {
+                //Store the new shortest distance, as well as the new nearest item.
+                shortestDistanceSq = distanceSq;
+                nearest = *it;
+            }
+        }
+    }
+    //Return the nearest item found of required type, or nullptr if nothing was found. 
+    return nearest;
+}

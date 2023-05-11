@@ -59,6 +59,10 @@
     <ClCompile Include="SpeedPickup.cpp">
       <Filter>Pickups</Filter>
     </ClCompile>
+    <ClCompile Include="RefuelState.cpp">
+      <Filter>States\DecisionMaking</Filter>
+    </ClCompile>
+    <ClCompile Include="DeliverState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -142,6 +146,10 @@
     <ClInclude Include="SpeedPickup.h">
       <Filter>Pickups</Filter>
     </ClInclude>
+    <ClInclude Include="RefuelState.h">
+      <Filter>States\DecisionMaking</Filter>
+    </ClInclude>
+    <ClInclude Include="DeliverState.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\blue.dds">
@@ -205,6 +213,9 @@
     </Filter>
     <Filter Include="Pickups">
       <UniqueIdentifier>{493cb539-bf78-4e0e-91d1-e37f3b61ae50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States\DecisionMaking">
+      <UniqueIdentifier>{fbe7d77f-18d2-4d84-a0a8-7bc764c66e57}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

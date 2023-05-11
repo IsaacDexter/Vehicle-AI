@@ -6,7 +6,7 @@ void Passenger::Pickup(Vehicle* driver)
 
 	m_driver = driver;
 	//Get a random destination
-	Vector2D destination = m_driver->getWaypointManager()->getRandomWaypoint()->getPosition();
+	m_destination = m_driver->getWaypointManager()->getRandomWaypoint()->getPosition();
 	//try to get the collector to pick up this passenger.
 	if (m_driver->PickupPassenger(this, destination))
 	{

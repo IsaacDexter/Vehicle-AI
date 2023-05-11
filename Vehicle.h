@@ -2,6 +2,7 @@
 
 #include "DrawableGameObject.h"
 #include "WaypointManager.h"
+#include "PickupManager.h"
 #include "Waypoint.h"
 #include "Vector2D.h"
 #include "Collidable.h"
@@ -15,9 +16,9 @@
 #define VEHICLE_MASS 0.00005f
 
 class TaskManager;
+struct Task;
+
 struct Passenger;
-typedef std::pair<Passenger*, Vector2D> Fare;
-typedef std::map<Passenger*, Vector2D> FareMap;
 
 enum class carColour
 {
@@ -63,6 +64,9 @@ public:
 	void setState(State* state) { if (m_pStateManager != nullptr) m_pStateManager->SetState(state); };
 	void hasCollided() {}
 
+	void SetPickupManager(PickupManager* pickupManager) { m_pickupManager = pickupManager; };
+	PickupManager* GetPickupManager() const { return m_pickupManager; };
+
 	ForceMotion* getForceMotion() { return &m_forceMotion; }
 
 	std::vector<Whisker*> getWhiskers() { return m_whiskers; };
@@ -88,10 +92,10 @@ protected:
 	//The amount of money, in units, paid to the taxi by its fares.
 	float m_money = 0.0f;
 
-	/// <summary>The map of destinations to passengers to be delivered. Constrained in size by m_maxFares.</summary>
-	FareMap m_fares;
 	/// <summary>The maximum amount of fares to be picked up in m_fares.</summary>
 	const unsigned int m_maxFares = 4;
+	/// <summary>The map of destinations to passengers to be delivered. Constrained in size by m_maxFares.</summary>
+	std::vector<Passenger*> m_fares;
 
 public:
 	void GiveTip(float tip) { m_money += tip; OutputDebugStringA(("m_money == " + std::to_string(m_money)).c_str()); };
@@ -105,6 +109,7 @@ public:
 	void SetSpeed(float speed) { m_speed = speed; };
 
 	void CheckFares();
+	Passenger* GetNearestFare();
 
 #pragma region Pickups
 
@@ -117,7 +122,7 @@ public:
 	/// <para>A vehicle will prioritise picking up passengers when they have a comfortable amount of fuel, and space, and aren't too close too a destination.</para></summary>
 	/// <param name="passenger">The pickup to store as the handler to the character, and to call pickup upon.</param>
 	/// <param name="destination">The destination asscociated with the character.</param>
-	bool PickupPassenger(Passenger* passenger, Vector2D destination);
+	bool PickupPassenger(Passenger* passenger);
 	/// <summary><para>When a destination has been reached, this is called.</para>
 	/// <para>It removes the passenger from the array, freeing up a little bit of space and restoring fuel consumption.</para></summary>
 	/// <param name="destination">The destination to use as the key to find which character to remove.</param>
@@ -195,61 +200,61 @@ public:
 #pragma region SteeringBehaviours
 
 	/// <summary>Get's a random position nearby the predicted position and adds a task that will apply force towards that position each frame, and on completion will call Wander again.</summary>
-	void Wander();
+	Task* Wander();
 
 	/// <summary>Get's a random waypoint in the area and adds a task that will apply force towards that position each frame, and on completion will call Wander again.</summary>
-	void Ramble();
+	Task* Ramble();
 
 	/// <summary>The Seek steering behavior returns a force that directs an agent toward a target game object's position.
 	///<para>We calculate the vector to the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
 	/// <param name="soughtObject">The game object whose position will be continually sought.</param>
-	void Seek(DrawableGameObject* soughtObject);
+	Task* Seek(DrawableGameObject* soughtObject);
 
 	/// <summary>The Seek steering behavior returns a force that directs an agent toward a target position.
 	///<para>We calculate the vector to the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
 	/// <param name="position">The position to be sought.</param>
-	void Seek(Vector2D position);
+	Task* Seek(Vector2D position);
 
 	/// <summary>The Seek steering behavior returns a force that directs an agent toward a target position, and stops when it reaches that position.
 	///<para>We calculate the vector to the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
 	/// <param name="position">The position to be sought.</param>
-	void Arrive(Vector2D position);
+	Task* Arrive(Vector2D position);
 
 	/// <summary>The Seek steering behavior returns a force that directs an agent toward a target game object's position, and stops when it reaches that position.
 	///<para>We calculate the vector to the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
 	/// <param name="soughtObject">The game object whose position will be continually sought.</param>
-	void Arrive(DrawableGameObject* soughtObject);
+	Task* Arrive(DrawableGameObject* soughtObject);
 
 	/// <summary>The Flee steering behavior returns a force that directs an agent away from a target game object's position.
 	///<para>We calculate the vector from the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
 	/// <param name="soughtObject">The game object whose position will be continually fled, while in range.</param>
-	void Flee(DrawableGameObject* soughtObject);
+	Task* Flee(DrawableGameObject* soughtObject);
 
 	/// <summary>The Seek steering behavior returns a force that directs an agent away from a target position.
 	///<para>We calculate the vector from the target position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
 	/// <param name="position">The position to be fled, while in range.</param>
-	void Flee(Vector2D position);
+	Task* Flee(Vector2D position);
 
 	/// <summary>The Evade steering behavior returns a force that directs an agent away from a target game object's predicted position.
 	///<para>We calculate the vector from the target position's predicted position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
 	/// <param name="soughtObject">The game object whose position will be continually evaded, while in range.</param>
-	void Evade(Vehicle* soughtObject);
+	Task* Evade(Vehicle* soughtObject);
 
 	/// <summary>The Intercept steering behavior returns a force that directs an agent away towards a target game object's predicted position.
 	///<para>We calculate the vector to the target position's predicted position, Calculate the unit equivalent, And scale it to the maximum speed of the agent.</para></summary>
 	/// <param name="soughtObject">The game object whose position will be continually intercepted.</param>
-	void Intercept(Vehicle* soughtObject);
+	Task* Intercept(Vehicle* soughtObject);
 
 	/// <summary>The car seeks, if it gets close to the other car, it will go round it, but continue moving towards its destination.</summary>
 	/// <param name="position">The position to seek to.</param>
-	void ObstaceAvoidance(Vector2D position);
+	Task* ObstaceAvoidance(Vector2D position);
 	
 	/// <summary>Adds a task that causes the vehicle to start avoiding buildings.</summary>
-	void BuildingAvoidance();
+	Task* BuildingAvoidance();
 
 	/// <summary>this car finds and follows the target car, always staying behind it.</summary>
 	/// <param name="soughtObject">The car to pursue after</param>
-	void Pursuit(Vehicle* soughtObject);
+	Task* Pursuit(Vehicle* soughtObject);
 
 #pragma endregion
 
@@ -266,6 +271,7 @@ protected: // protected properties
 
 	WaypointManager* m_waypointManager;
 	TaskManager* m_pTaskManager;
+	PickupManager* m_pickupManager;
 	SM* m_pStateManager;
 	ForceMotion m_forceMotion;
 

@@ -76,11 +76,14 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     m_pRedCar->setTaskManager(m_pTaskManager);
     m_pBlueCar->setTaskManager(m_pTaskManager);
 
+    //Set the state managers/machines
     m_pRedCar->setStateManager(new SFSM(m_pRedCar));
     m_pBlueCar->setStateManager(new SFSM(m_pBlueCar));
 
     //Set up the pickup manager
     m_pickupManager = new PickupManager(pd3dDevice, &m_waypointManager);
+    m_pBlueCar->SetPickupManager(m_pickupManager);
+    m_pRedCar->SetPickupManager(m_pickupManager);
 
     return hr;
 }

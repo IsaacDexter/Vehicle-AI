@@ -3,6 +3,7 @@
 
 HRESULT SpeedPickup::initMesh(ID3D11Device* pd3dDevice)
 {
+	m_type = PickupType::SPEED;
 	setTextureName(L"Resources\\pickup_speedboost.dds");
 	return PickupItem::initMesh(pd3dDevice);
 }

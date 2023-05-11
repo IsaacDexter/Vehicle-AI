@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
+#include "PickupItem.h"
 
-class PickupItem;
 class DrawableGameObject;
 class ID3D11Device;
 class WaypointManager;
@@ -15,6 +15,8 @@ public:
 	void Update(float dt);
 	bool CheckCollisions(Vehicle* other);
 	std::vector<PickupItem*>* GetPickups() const { return m_pickups; };
+	PickupItem* GetNearestPickup(Vector2D location);
+	PickupItem* GetNearestPickup(Vector2D location, PickupType type);
 private:
 	void CreatePickup();
 	void UpdatePickups(float dt);
