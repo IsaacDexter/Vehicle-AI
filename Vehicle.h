@@ -94,7 +94,7 @@ protected:
 	const unsigned int m_maxFares = 4;
 
 public:
-	void GiveTip(float tip) { m_money += tip; };
+	void GiveTip(float tip) { m_money += tip; OutputDebugStringA(("m_money == " + std::to_string(m_money)).c_str()); };
 
 	float GetFuelConsumption() const { return m_fuelConsumption; };
 	void SetFuelConsumption(float fuelConsumption) { m_fuelConsumption = fuelConsumption; };
@@ -103,6 +103,8 @@ public:
 	
 	float GetSpeed() const { return m_speed; };
 	void SetSpeed(float speed) { m_speed = speed; };
+
+	void CheckFares();
 
 #pragma region Pickups
 

@@ -79,6 +79,8 @@ void Vehicle::update(const float deltaTime)
 
 	DrawableGameObject::update(deltaTime);
 
+	CheckFares();
+
 	m_forceMotion.clearForce();
 }
 
@@ -152,6 +154,28 @@ void Vehicle::Refuel(float fuel)
 		//clear the memory assigned to m_lastSpeed
 		delete m_lastSpeed;
 		m_lastSpeed = nullptr;
+	}
+}
+
+void Vehicle::CheckFares()
+{
+	//For each value
+	FareMap::iterator it = m_fares.begin();
+	// loop while the iterator is not at the end
+	while (it != m_fares.end())
+	{
+		//If the destination has been passed
+		if (isPassed(it->second))
+		{
+			// drop off the fare
+			it->first->Dropoff();
+			delete it->first;
+			OutputDebugStringA("Delivered fare to destination.\n");
+			// delete the fare. This will also assign(increment) the iterator to be the next item in the list
+			it = m_fares.erase(it);
+			continue; // continue the next loop (we don't want to increment below as this will skip an item)
+		}
+		it++; // increment the iterator
 	}
 }
 
