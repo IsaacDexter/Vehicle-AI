@@ -81,7 +81,7 @@ protected:
 
 	/// <summary>How many units of fuel to consume each second, increased by picking up passengers and restored by delivering them.</summary>
 	float m_fuelConsumption = 1.0f;
-	/// <summary>The total amount of fuel that can be fit in the tank.<summary>
+	/// <summary>The total amount of fuel that can be fit in the tank.</summary>
 	const float m_maxFuel = 30.0f;
 	float m_fuel = m_maxFuel;
 

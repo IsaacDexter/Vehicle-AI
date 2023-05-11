@@ -53,7 +53,9 @@
       <Filter>Pickups</Filter>
     </ClCompile>
     <ClCompile Include="PickupManager.cpp" />
-    <ClCompile Include="FuelPickup.cpp" />
+    <ClCompile Include="FuelPickup.cpp">
+      <Filter>Pickups</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -131,7 +133,9 @@
     </ClInclude>
     <ClInclude Include="Passenger.h" />
     <ClInclude Include="PickupManager.h" />
-    <ClInclude Include="FuelPickup.h" />
+    <ClInclude Include="FuelPickup.h">
+      <Filter>Pickups</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\blue.dds">

@@ -132,7 +132,7 @@ void Vehicle::ConsumeFuel(float dt)
 		if (m_lastSpeed == nullptr)
 		{
 			//store the current speed
-			m_lastSpeed = new float(m_emptySpeed);
+			m_lastSpeed = new float(m_speed);
 			//Reduce speed to the empty speed.
 			m_speed = m_emptySpeed;
 		}

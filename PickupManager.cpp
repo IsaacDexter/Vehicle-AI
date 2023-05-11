@@ -1,5 +1,6 @@
 #include "PickupManager.h"
 #include "PassengerPickup.h"
+#include "FuelPickup.h"
 #include "DrawableGameObject.h"
 #include "WaypointManager.h"
 #include "Waypoint.h"
@@ -38,12 +39,35 @@ void PickupManager::Update(float dt)
 void PickupManager::CreatePickup()
 {
 	// NOTE!! for fuel and speedboost - you will need to create these here yourself!
-	// create a passenger pickup item
-	PassengerPickup* pPickupPassenger = new PassengerPickup();
-	pPickupPassenger->initMesh(m_pd3dDevice);
-	m_pickups->push_back(pPickupPassenger);
-	// (needs to be done after waypoint setup)
-	pPickupPassenger->setPosition(m_waypointManager->getRandomWaypoint()->getPosition());
+	// create a pickup item
+    PickupItem* pickup = nullptr;
+    unsigned int type = rand() % 3;
+    switch (type)
+    {
+    case 0:
+    {
+        pickup = new PassengerPickup();
+        break;
+    }
+    case 1:
+    {
+        pickup = new FuelPickup();
+        break;
+    }
+    case 2:
+    {
+        pickup = new FuelPickup();
+        break;
+    }
+    default:
+        break;
+    }
+
+    //initialise it and push it back
+	pickup->initMesh(m_pd3dDevice);
+	m_pickups->push_back(pickup);
+	//Set it to a random point in the wor;d
+	pickup->setPosition(m_waypointManager->getRandomWaypoint()->getPosition());
 }
 
 void PickupManager::UpdatePickups(float dt)
