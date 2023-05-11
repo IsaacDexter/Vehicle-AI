@@ -378,6 +378,7 @@
     <ClCompile Include="PickupManager.cpp" />
     <ClCompile Include="SeekState.cpp" />
     <ClCompile Include="SFSM.cpp" />
+    <ClCompile Include="SpeedPickup.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="FSM.cpp" />
     <ClCompile Include="Tasking.cpp" />
@@ -412,6 +413,7 @@
     <ClInclude Include="SeekState.h" />
     <ClInclude Include="SM.h" />
     <ClInclude Include="SFSM.h" />
+    <ClInclude Include="SpeedPickup.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="FSM.h" />
     <ClInclude Include="StaticTarget.h" />

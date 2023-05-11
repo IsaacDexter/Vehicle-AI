@@ -1,6 +1,7 @@
 #include "PickupManager.h"
 #include "PassengerPickup.h"
 #include "FuelPickup.h"
+#include "SpeedPickup.h"
 #include "DrawableGameObject.h"
 #include "WaypointManager.h"
 #include "Waypoint.h"
@@ -51,7 +52,7 @@ void PickupManager::CreatePickup()
     }
     case 1:
     {
-        pickup = new FuelPickup();
+        pickup = new SpeedPickup();
         break;
     }
     case 2:

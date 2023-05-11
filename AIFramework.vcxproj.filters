@@ -56,6 +56,9 @@
     <ClCompile Include="FuelPickup.cpp">
       <Filter>Pickups</Filter>
     </ClCompile>
+    <ClCompile Include="SpeedPickup.cpp">
+      <Filter>Pickups</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIManager.h" />
@@ -134,6 +137,9 @@
     <ClInclude Include="Passenger.h" />
     <ClInclude Include="PickupManager.h" />
     <ClInclude Include="FuelPickup.h">
+      <Filter>Pickups</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedPickup.h">
       <Filter>Pickups</Filter>
     </ClInclude>
   </ItemGroup>
