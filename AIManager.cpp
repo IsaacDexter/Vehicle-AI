@@ -300,10 +300,6 @@ void AIManager::keyUp(WPARAM param)
             m_pCurrentCar->Arrive(m_clickPos);
             break;
         }
-        case Controls::KEY_DEBUG:
-        {
-            OutputDebugStringA("DEBUG");
-        }
         case Controls::KEY_EVADE:
         {
             m_pCurrentCar->Evade(m_pOtherCar);
