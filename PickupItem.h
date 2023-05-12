@@ -6,9 +6,9 @@
 
 class Vehicle;
 
-enum PickupType
+enum class PickupType
 {
-    NONE = 0,
+    NONE,
     PASSENGER,
     FUEL,
     SPEED

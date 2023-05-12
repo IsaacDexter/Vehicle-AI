@@ -148,6 +148,12 @@ bool PickupManager::CheckCollisions(Vehicle* other)
 
 PickupItem* PickupManager::GetNearestPickup(Vector2D location)
 {
+    float out;
+    return GetNearestPickup(location, out);
+}
+
+PickupItem* PickupManager::GetNearestPickup(Vector2D location, float& distanceSq_out)
+{
     PickupItem* nearest = nullptr;
     //Initialise the shortest distance to the largest possible float. That way, every distance will be shorter than it.
     float shortestDistanceSq = FLT_MAX;
@@ -164,11 +170,18 @@ PickupItem* PickupManager::GetNearestPickup(Vector2D location)
             nearest = *it;
         }
     }
+    distanceSq_out = shortestDistanceSq;
     //Return the nearest item found, or nullptr if nothing was found. 
     return nearest;
 }
 
 PickupItem* PickupManager::GetNearestPickup(Vector2D location, PickupType type)
+{
+    float out;
+    return GetNearestPickup(location, type, out);
+}
+
+PickupItem* PickupManager::GetNearestPickup(Vector2D location, PickupType type, float& distanceSq_out)
 {
     PickupItem* nearest = nullptr;
     //Initialise the shortest distance to the largest possible float. That way, every distance will be shorter than it.
@@ -190,6 +203,7 @@ PickupItem* PickupManager::GetNearestPickup(Vector2D location, PickupType type)
             }
         }
     }
+    distanceSq_out = shortestDistanceSq;
     //Return the nearest item found of required type, or nullptr if nothing was found. 
     return nearest;
 }

@@ -110,6 +110,7 @@ public:
 
 	void CheckFares();
 	Passenger* GetNearestFare();
+	Passenger* GetNearestFare(float& distanceSq_out);
 
 #pragma region Pickups
 

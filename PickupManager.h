@@ -16,7 +16,9 @@ public:
 	bool CheckCollisions(Vehicle* other);
 	std::vector<PickupItem*>* GetPickups() const { return m_pickups; };
 	PickupItem* GetNearestPickup(Vector2D location);
+	PickupItem* GetNearestPickup(Vector2D location, float& distanceSq_out);
 	PickupItem* GetNearestPickup(Vector2D location, PickupType type);
+	PickupItem* GetNearestPickup(Vector2D location, PickupType type, float& distanceSq_out);
 private:
 	void CreatePickup();
 	void UpdatePickups(float dt);

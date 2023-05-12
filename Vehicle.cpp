@@ -181,6 +181,12 @@ void Vehicle::CheckFares()
 
 Passenger* Vehicle::GetNearestFare()
 {
+	float out;
+	return GetNearestFare(out);
+}
+
+Passenger* Vehicle::GetNearestFare(float& distanceSq_out)
+{
 	//For each fare...
 	Passenger* nearest = nullptr;
 	//store the shortest distance, initialising it as the maximum float so that any initial distance will be the shortest
@@ -196,6 +202,7 @@ Passenger* Vehicle::GetNearestFare()
 			nearest = *it;
 		}
 	}
+	distanceSq_out = shortestDistanceSq;
 	//Return the passenger closest to its destination, or nothing if there are no passengers.
 	return nearest;
 }
