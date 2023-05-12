@@ -143,7 +143,10 @@ void AIManager::update(const float fDeltaTime)
         for (Whisker* whisker : m_pCurrentCar->getWhiskers())
         {
             whisker->update(fDeltaTime);
-            AddItemToDrawList(whisker);
+            if (whisker->isVisible())
+            {
+                AddItemToDrawList(whisker);
+            }
         }
     }
     //update pickups

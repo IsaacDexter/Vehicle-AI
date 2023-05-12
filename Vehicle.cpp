@@ -53,6 +53,7 @@ HRESULT	Vehicle::initMesh(ID3D11Device* pd3dDevice, carColour colour)
 	for (Whisker* whisker : m_whiskers)
 	{
 		hr = whisker->init(pd3dDevice);
+		whisker->setVisible(false);
 	}
 
 	return hr;
@@ -568,10 +569,10 @@ Task* Vehicle::Intercept(Vehicle* soughtObject)
 
 Task* Vehicle::ObstaceAvoidance(Vector2D destination)
 {
-	executeFunc execute = [this] {; };	//Head towards that position
+	executeFunc execute = [this] {for (Whisker* whisker : this->getWhiskers()) whisker->setVisible(true); };	//Head towards that position
 	maintainFunc maintain = [this, destination](float dt) { applyForceToPosition(destination); avoidVehicles(); };
 	completeFunc complete = [this] {; };												//Once we're there, wander again, queueing up a new task at a new position
-	checkFunc check = [this, destination] { return this->isPassed(destination); };		//Each frame this task is active, check if we've passed the position
+	checkFunc check = [this, destination] { for (Whisker* whisker : this->getWhiskers()) whisker->setVisible(false);  return this->isPassed(destination); };		//Each frame this task is active, check if we've passed the position
 
 	Task* task = new Task(execute, maintain, complete, check);
 	m_pTaskManager->AddTask(task);
