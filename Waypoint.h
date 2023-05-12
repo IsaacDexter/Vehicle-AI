@@ -18,5 +18,12 @@ private:
     bool m_isOnTrack;
     bool m_visible;
     int  m_checkpointID;
+
+    const std::wstring m_blueTexture = L"Resources\\blue.dds";
+    const std::wstring m_greenTexture = L"Resources\\green.dds";
+    const std::wstring m_redTexture = L"Resources\\red.dds";
+
+    void setTexture(std::wstring texture);
+    std::wstring m_currentTexture = m_redTexture;
 };
 

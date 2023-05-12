@@ -6,7 +6,8 @@ void Passenger::Pickup(Vehicle* driver)
 
 	m_driver = driver;
 	//Get a random destination
-	m_destination = m_driver->getWaypointManager()->getRandomWaypoint()->getPosition();
+	m_waypoint = m_driver->getWaypointManager()->getRandomWaypoint();
+	m_destination = m_waypoint->getPosition();
 	//try to get the collector to pick up this passenger.
 	if (m_driver->PickupPassenger(this))
 	{
@@ -14,6 +15,7 @@ void Passenger::Pickup(Vehicle* driver)
 		m_tip = (m_destination - m_driver->getPosition()).Length();
 		//If such an operation was successful, increase the fuel consumption of the vehicle
 		m_driver->SetFuelConsumption(m_driver->GetFuelConsumption() + m_fuelConsumptionIncrease);
+		m_waypoint->setVisible(true);
 	}
 
 }

@@ -14,6 +14,9 @@
 #include "TaxiState.h"
 #include "FSM.h"
 
+#include <iomanip>
+#include <sstream>
+
 // AI Manager
 
 AIManager::AIManager()
@@ -94,7 +97,12 @@ void AIManager::update(const float fDeltaTime)
 {
     for (unsigned int i = 0; i < m_waypointManager.getWaypointCount(); i++) {
         m_waypointManager.getWaypoint(i)->update(fDeltaTime);
-        //AddItemToDrawList(m_waypointManager.getWaypoint(i)); // if you uncomment this, it will display the waypoints
+        if (m_waypointManager.getWaypoint(i)->isVisible())
+        {
+            //draw only visible waypoints
+            AddItemToDrawList(m_waypointManager.getWaypoint(i)); // if you uncomment this, it will display the waypoints
+
+        }
     }
 
     for (int i = 0; i < m_waypointManager.getQuadpointCount(); i++)
@@ -257,6 +265,24 @@ void AIManager::keyUp(WPARAM param)
         case VK_RIGHT:
         {
             m_pBlueCar->setState(new TaxiState());
+            break;
+        }
+        case Controls::KEY_MONEY:
+        {
+            {
+                std::stringstream stream;
+                stream << std::fixed << std::setprecision(2) << m_pRedCar->GetMoney();
+                std::string s = stream.str();
+                OutputDebugStringA(("Red Car has £" + s + "\n").c_str());
+            }
+
+            {
+                std::stringstream stream;
+                stream << std::fixed << std::setprecision(2) << m_pBlueCar->GetMoney();
+                std::string s = stream.str();
+                OutputDebugStringA(("Blue Car has £" + s + "\n").c_str());
+            }
+        
             break;
         }
         case Controls::KEY_MOVEMENT:

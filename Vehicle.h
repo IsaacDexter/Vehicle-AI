@@ -98,7 +98,8 @@ protected:
 	std::vector<Passenger*> m_fares;
 
 public:
-	void GiveTip(float tip) { m_money += tip; OutputDebugStringA(("m_money == " + std::to_string(m_money)).c_str()); };
+	void GiveTip(float tip) { m_money += tip; };
+	float GetMoney() const { return m_money; };
 
 	float GetFuelConsumption() const { return m_fuelConsumption; };
 	void SetFuelConsumption(float fuelConsumption) { m_fuelConsumption = fuelConsumption; };

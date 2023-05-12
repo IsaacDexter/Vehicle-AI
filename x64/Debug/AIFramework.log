@@ -3,7 +3,7 @@ C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Pi
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.20348.0\um\d3d11.h(14102,5): message : see declaration of 'ID3D11Device'
 C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\ForceMotion.h(32,22): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\ForceMotion.h(51,25): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.h(115): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.h(116): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
 C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\PassengerPickup.h(4,16): warning C4099: 'Passenger': type name first seen using 'struct' now seen using 'class'
 C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vehicle.h(21,8): message : see declaration of 'Passenger'
 C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Tasking.h(77,8): warning C4458: declaration of 'check' hides class member
@@ -13,8 +13,8 @@ C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Se
 C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\Vector2D.h(28,8): message : see declaration of 'Vector2D'
 C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\ArriveState.h(6,15): warning C4099: 'Vector2D': type name first seen using 'struct' now seen using 'class'
 C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\SeekState.h(6,7): message : see declaration of 'Vector2D'
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\AIManager.cpp(115,24): warning C4456: declaration of 'wp' hides previous local declaration
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\AIManager.cpp(111,15): message : see declaration of 'wp'
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\AIManager.cpp(115,24): warning C4189: 'wp': local variable is initialized but not referenced
-C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\AIManager.cpp(385,32): warning C4100: 'param': unreferenced formal parameter
+C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\AIManager.cpp(123,24): warning C4456: declaration of 'wp' hides previous local declaration
+C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\AIManager.cpp(119,15): message : see declaration of 'wp'
+C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\AIManager.cpp(123,24): warning C4189: 'wp': local variable is initialized but not referenced
+C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\AIManager.cpp(411,32): warning C4100: 'param': unreferenced formal parameter
   AIFramework.vcxproj -> C:\Users\Isaac\source\repos\IsaacDexter\ai-coding-assignment-2023-IsaacDexter\x64\Debug\AIFramework.exe

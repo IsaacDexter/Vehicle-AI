@@ -171,7 +171,7 @@ void Vehicle::CheckFares()
 			// drop off the fare
 			(*it)->Dropoff();
 			delete (*it);
-			OutputDebugStringA("Delivered fare to destination.\n");
+			//OutputDebugStringA("Delivered fare to destination.\n");
 			// delete the fare. This will also assign(increment) the iterator to be the next item in the list
 			it = m_fares.erase(it);
 			continue; // continue the next loop (we don't want to increment below as this will skip an item)
@@ -208,6 +208,7 @@ Passenger* Vehicle::GetNearestFare(float& distanceSq_out)
 	return nearest;
 }
 
+
 void Vehicle::CollectPickup(PickupItem* pickup)
 {
 	pickup->pickup(this);
@@ -220,10 +221,10 @@ bool Vehicle::PickupPassenger(Passenger* passenger)
 	{
 		//passenger->pickup(this);
 		m_fares.push_back(passenger);
-		OutputDebugStringA(("Picked up fare, who wants to go to (" + std::to_string(passenger->GetDestination().x) + ", " + std::to_string(passenger->GetDestination().y) + ")\n").c_str());
+		//OutputDebugStringA(("Picked up fare, who wants to go to (" + std::to_string(passenger->GetDestination().x) + ", " + std::to_string(passenger->GetDestination().y) + ")\n").c_str());
 		return true;
 	}
-	OutputDebugStringA("Could not pick up fare, as there is no room.\n");
+	//OutputDebugStringA("Could not pick up fare, as there is no room.\n");
 	return false;
 }
 
@@ -240,7 +241,7 @@ void Vehicle::DeliverPassenger(Vector2D destination)
 			// drop off the fare
 			(*it)->Dropoff();
 			delete (*it);
-			OutputDebugStringA("Delivered fare to destination.\n");
+			//OutputDebugStringA("Delivered fare to destination.\n");
 			// delete the fare. This will also assign(increment) the iterator to be the next item in the list
 			it = m_fares.erase(it);
 			continue; // continue the next loop (we don't want to increment below as this will skip an item)
