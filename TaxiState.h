@@ -40,5 +40,13 @@ public:
 
 protected:
     virtual State* GetBestState(Vehicle* agent);
+    virtual float Divide(float numerator, float denominator)
+    {
+        if (denominator == 0 || numerator == 0)
+        {
+            return 0;
+        }
+        return numerator / denominator;
+    }
 };
 

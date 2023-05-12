@@ -14,7 +14,10 @@ void GetPickupState::Enter(Vehicle* agent)
 	//Get the nearest destination
 	m_destination = agent->GetPickupManager()->GetNearestPickup(agent->getPosition(), m_type);
 	//Have the agent start heading towards the nearest destination and store a  handle to the task to allow the destination to be updated if a newer thang spawns, or the old thang is collected ( in that case cancel it).
-	m_task = agent->Arrive(m_destination);
+	if (m_destination != nullptr)
+	{
+		m_task = agent->Seek(m_destination->getPosition());
+	}
 }
 
 void GetPickupState::Exit()
@@ -29,7 +32,7 @@ void GetPickupState::Update(Vehicle* agent, float deltaTime)
 	//Update the destination to a nearer passenger if one exists, just in case a new one spawns or the old one was collected
 	m_destination = agent->GetPickupManager()->GetNearestPickup(agent->getPosition(), m_type);
 	//if the destination has been collected
-	if (m_destination != nullptr)
+	if (m_destination == nullptr)
 	{
 		//complete the arrival task. theres nowhere to go.
 		m_task->Complete();
@@ -38,10 +41,12 @@ void GetPickupState::Update(Vehicle* agent, float deltaTime)
 
 State* GetPickupState::Check(Vehicle* agent)
 {
+	bool check = m_task->Check();
 	//If there is no destination, or the car has reached the destination (short-circuited to stop checking for destination positions when there is no destination.)
-	if (m_destination == nullptr || m_task == nullptr || m_task->Check())
+	if (m_destination == nullptr || m_task == nullptr || check)
 	{
 		//transition back to the superstate where a decision can be made, as there is no need for passenger now, or passenger cannot be acquired.
 		return nullptr;
 	}
+	return this;
 }

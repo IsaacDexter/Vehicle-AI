@@ -28,6 +28,6 @@ private:
 	WaypointManager* m_waypointManager;
 	float m_counter = 0.0f;
 	/// <summary>How Often to spawn pickups in seconds</summary>
-	const float m_spawntime = 4.0f;
+	const float m_spawntime = 1.0f;
 };
 

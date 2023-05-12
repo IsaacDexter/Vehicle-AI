@@ -3,6 +3,7 @@
 namespace Controls
 {
 static const WPARAM KEY_MOVEMENT			=0x31;
+static const WPARAM KEY_DECISION			=0x32;
 static const WPARAM KEY_STATES				=0x34;
 static const WPARAM KEY_ARRIVE				=0x41;
 static const WPARAM KEY_EVADE				=0x45;

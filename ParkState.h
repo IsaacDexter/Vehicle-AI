@@ -10,6 +10,6 @@ public:
 	virtual void Enter(Vehicle* agent) override { ; };
 	virtual void Exit() override { ; };
 	virtual void Update(Vehicle* agent, float deltaTime) override { ; };
-	virtual State* Check(Vehicle* agent) override { return this; };
+	virtual State* Check(Vehicle* agent) override { return nullptr; };
 };
 

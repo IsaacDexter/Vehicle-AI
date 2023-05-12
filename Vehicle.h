@@ -104,6 +104,7 @@ public:
 	void SetFuelConsumption(float fuelConsumption) { m_fuelConsumption = fuelConsumption; };
 	void ConsumeFuel(float dt);
 	void Refuel(float fuel);
+	float GetFuel() const { return m_fuel; };
 	
 	float GetSpeed() const { return m_speed; };
 	void SetSpeed(float speed) { m_speed = speed; };
@@ -111,6 +112,7 @@ public:
 	void CheckFares();
 	Passenger* GetNearestFare();
 	Passenger* GetNearestFare(float& distanceSq_out);
+	int GetPassengerCount() const { return m_fares.size(); };
 
 #pragma region Pickups
 

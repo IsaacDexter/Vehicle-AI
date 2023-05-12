@@ -11,7 +11,8 @@
 #include "Controls.h"
 #include "SeekState.h"
 #include "ArriveState.h"
-#include "SFSM.h"
+#include "TaxiState.h"
+#include "FSM.h"
 
 // AI Manager
 
@@ -77,8 +78,8 @@ HRESULT AIManager::initialise(ID3D11Device* pd3dDevice)
     m_pBlueCar->setTaskManager(m_pTaskManager);
 
     //Set the state managers/machines
-    m_pRedCar->setStateManager(new SFSM(m_pRedCar));
-    m_pBlueCar->setStateManager(new SFSM(m_pBlueCar));
+    m_pRedCar->setStateManager(new FSM(m_pRedCar));
+    m_pBlueCar->setStateManager(new FSM(m_pBlueCar));
 
     //Set up the pickup manager
     m_pickupManager = new PickupManager(pd3dDevice, &m_waypointManager);
@@ -224,6 +225,47 @@ void AIManager::keyUp(WPARAM param)
             m_currentMode = Controls::KEY_MOVEMENT;
             break;
         }
+        case Controls::KEY_DECISION:
+        {
+            m_currentMode = Controls::KEY_DECISION;
+            break;
+        }
+        case Controls::KEY_STATES:
+        {
+            m_currentMode = Controls::KEY_STATES;
+            break;
+        }
+        default:
+            break;
+        }
+        break;
+    }
+    case Controls::KEY_DECISION:
+    {
+        //m_pBlueCar->setState(new TaxiState());
+        
+        switch (param)
+        {
+        case VK_LEFT:
+        {
+            m_pRedCar->setState(new TaxiState());
+            break;
+        }
+        case VK_RIGHT:
+        {
+            m_pBlueCar->setState(new TaxiState());
+            break;
+        }
+        case Controls::KEY_MOVEMENT:
+        {
+            m_currentMode = Controls::KEY_MOVEMENT;
+            break;
+        }
+        case Controls::KEY_DECISION:
+        {
+            m_currentMode = Controls::KEY_DECISION;
+            break;
+        }
         case Controls::KEY_STATES:
         {
             m_currentMode = Controls::KEY_STATES;
@@ -315,6 +357,11 @@ void AIManager::keyUp(WPARAM param)
         case Controls::KEY_MOVEMENT:
         {
             m_currentMode = Controls::KEY_MOVEMENT;
+            break;
+        }
+        case Controls::KEY_DECISION:
+        {
+            m_currentMode = Controls::KEY_DECISION;
             break;
         }
         case Controls::KEY_STATES:

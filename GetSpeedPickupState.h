@@ -4,5 +4,5 @@ class GetSpeedPickupState :
     public GetPickupState
 {
 public:
-    GetSpeedPickupState() { m_type = PickupType::SPEED; };
+    GetSpeedPickupState() : GetPickupState() { m_type = PickupType::SPEED; };
 };
