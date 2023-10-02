@@ -199,30 +199,28 @@ void AIManager::keyUp(WPARAM param)
         //Handle the specified movement system controls
         switch (param)
         {
+        case Controls::KEY_SELECT_RED_CAR:
+        {
+            //OutputDebugStringA("Currently controlling Red.\n");
+            m_pCurrentCar = m_pRedCar;
+            m_pOtherCar = m_pBlueCar;
+            break;
+        }
+        case Controls::KEY_SELECT_BLUE_CAR:
+        {
+            //OutputDebugStringA("Currently controlling Blue.\n");
+            m_pCurrentCar = m_pBlueCar;
+            m_pOtherCar = m_pRedCar;
+            break;
+        }
         case Controls::KEY_SEEK:
         {
-            m_pBlueCar->setState(new SeekState());
+            m_pCurrentCar->setState(new SeekState());
             break;
         }
         case Controls::KEY_ARRIVE:
         {
-            m_pBlueCar->setState(new ArriveState());
-            break;
-        }
-        case Controls::KEY_WANDER:
-        {
-            break;
-        }
-        case Controls::KEY_PURSUIT:
-        {
-            break;
-        }
-        case Controls::KEY_FLEE:
-        {
-            break;
-        }
-        case Controls::KEY_OBSTACLE_AVOIDANCE:
-        {
+            m_pCurrentCar->setState(new ArriveState());
             break;
         }
         case Controls::KEY_CLEAR:
@@ -257,14 +255,20 @@ void AIManager::keyUp(WPARAM param)
         
         switch (param)
         {
-        case VK_LEFT:
+        case Controls::KEY_SELECT_RED_CAR:
         {
             m_pRedCar->setState(new TaxiState());
             break;
         }
-        case VK_RIGHT:
+        case Controls::KEY_SELECT_BLUE_CAR:
         {
             m_pBlueCar->setState(new TaxiState());
+            break;
+        }
+        case Controls::KEY_CLEAR:
+        {
+            m_pBlueCar->setState(nullptr);
+            m_pRedCar->setState(nullptr);
             break;
         }
         case Controls::KEY_MONEY:
@@ -310,14 +314,14 @@ void AIManager::keyUp(WPARAM param)
         //handle the original tasking system mode
         switch (param)
         {
-        case VK_LEFT:
+        case Controls::KEY_SELECT_RED_CAR:
         {
             //OutputDebugStringA("Currently controlling Red.\n");
             m_pCurrentCar = m_pRedCar;
             m_pOtherCar = m_pBlueCar;
             break;
         }
-        case VK_RIGHT:
+        case Controls::KEY_SELECT_BLUE_CAR:
         {
             //OutputDebugStringA("Currently controlling Blue.\n");
             m_pCurrentCar = m_pBlueCar;
@@ -367,11 +371,6 @@ void AIManager::keyUp(WPARAM param)
         case Controls::KEY_OBSTACLE_AVOIDANCE:
         {
             m_pCurrentCar->ObstaceAvoidance(m_clickPos);
-            break;
-        }
-        case Controls::KEY_BUILDING_AVOIDANCE:
-        {
-           // m_pCurrentCar->BuildingAvoidance();
             break;
         }
         case Controls::KEY_PURSUIT:
